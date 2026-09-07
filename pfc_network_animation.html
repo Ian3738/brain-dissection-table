@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>前額葉皮質網絡：一次完整的調度循環</title>
+<style>
+:root{ --ink:#e3ecfb; --dim:#6b7f9e; }
+*{box-sizing:border-box}
+body{
+  margin:0; padding:26px 20px 40px;
+  background:#04070e;
+  font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+  color:var(--ink);
+}
+.stage{max-width:1000px;margin:0 auto}
+svg{width:100%;height:auto;display:block;border-radius:14px;box-shadow:0 24px 70px rgba(0,0,0,.6)}
+text{font-family:"PingFang TC","Noto Sans TC","Microsoft JhengHei",system-ui,sans-serif}
+
+/* ---------- shared 22s timeline ---------- */
+.pulse,.halo,.ringLit,.cap,.supX,.bar{
+  animation-duration:22s; animation-iteration-count:infinite; animation-timing-function:linear;
+}
+.wire{fill:none;stroke:#24314e;stroke-width:1.6}
+.pulse{fill:none;stroke-width:3.4;stroke-linecap:round;stroke-dasharray:11 100;stroke-dashoffset:0;opacity:0}
+.ring{fill:#0e1526;stroke:#2b3c5e;stroke-width:1.4}
+.ringLit{fill:none;stroke-width:2.4;opacity:.12}
+.halo{opacity:.1}
+.nlab{fill:#cddcf5;font-size:15px;font-weight:650;text-anchor:middle}
+.nsub{fill:#7488ab;font-size:10.5px;text-anchor:middle;letter-spacing:.3px}
+.elab{fill:#61759b;font-size:10px}
+.ghost{fill:none;stroke:#3d4a68;stroke-width:1.3;stroke-dasharray:3 5;opacity:.6}
+.cap{fill:#dbe6fa;font-size:14.5px;opacity:0}
+.capnum{fill:#5ea8ff;font-size:11.5px;font-weight:700}
+
+/* travelling light along each wire */
+@keyframes f1 {0%{stroke-dashoffset:112;opacity:0}1%{stroke-dashoffset:104;opacity:1}11%{stroke-dashoffset:8;opacity:1}12%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes f2 {0%,12%{stroke-dashoffset:112;opacity:0}13%{stroke-dashoffset:104;opacity:1}24%{stroke-dashoffset:8;opacity:1}25%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes f3 {0%,25%{stroke-dashoffset:112;opacity:0}26%{stroke-dashoffset:104;opacity:1}36%{stroke-dashoffset:8;opacity:1}37%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes f4 {0%,37%{stroke-dashoffset:112;opacity:0}38.5%{stroke-dashoffset:100;opacity:1}51%{stroke-dashoffset:8;opacity:1}52%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes f5 {0%,52%{stroke-dashoffset:112;opacity:0}53%{stroke-dashoffset:104;opacity:1}63%{stroke-dashoffset:8;opacity:1}64%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes f6a{0%,64%{stroke-dashoffset:112;opacity:0}65%{stroke-dashoffset:104;opacity:1}70%{stroke-dashoffset:8;opacity:1}71%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes f6b{0%,71%{stroke-dashoffset:112;opacity:0}72%{stroke-dashoffset:104;opacity:1}77%{stroke-dashoffset:8;opacity:1}78%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes f7 {0%,78%{stroke-dashoffset:112;opacity:0}79%{stroke-dashoffset:104;opacity:1}83%{stroke-dashoffset:8;opacity:1}84%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes f7b{0%,83%{stroke-dashoffset:112;opacity:0}84%{stroke-dashoffset:104;opacity:1}87%{stroke-dashoffset:8;opacity:1}88%,100%{stroke-dashoffset:0;opacity:0}}
+@keyframes f8 {0%,88%{stroke-dashoffset:112;opacity:0}89%{stroke-dashoffset:104;opacity:1}99%{stroke-dashoffset:8;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes fby{0%,40%{stroke-dashoffset:112;opacity:0}42%{stroke-dashoffset:100;opacity:.9}50%{stroke-dashoffset:8;opacity:.9}52%,100%{stroke-dashoffset:0;opacity:0}}
+
+/* node activation */
+@keyframes gDL{0%{opacity:.12}2%{opacity:1}11%{opacity:1}15%{opacity:.12}86%{opacity:.12}90%{opacity:1}99%{opacity:1}100%{opacity:.12}}
+@keyframes gFP{0%{opacity:.12}12%{opacity:.12}14%{opacity:1}24%{opacity:1}28%{opacity:.12}71%{opacity:.12}73%{opacity:1}78%{opacity:1}82%{opacity:.12}100%{opacity:.12}}
+@keyframes g3 {0%,25%{opacity:.12}27%{opacity:1}36%{opacity:1}40%,100%{opacity:.12}}
+@keyframes g4 {0%,37%{opacity:.12}39%{opacity:1}51%{opacity:1}55%,100%{opacity:.12}}
+@keyframes g5 {0%,52%{opacity:.12}54%{opacity:1}63%{opacity:1}67%,100%{opacity:.12}}
+@keyframes g6 {0%,64%{opacity:.12}66%{opacity:1}77%{opacity:1}81%,100%{opacity:.12}}
+@keyframes g7 {0%,78%{opacity:.12}80%{opacity:1}87%{opacity:1}91%,100%{opacity:.12}}
+@keyframes gAM{0%{opacity:.1}25%{opacity:.1}27%{opacity:.5}36%{opacity:.5}40%{opacity:.1}42%{opacity:.85}51%{opacity:.85}55%{opacity:.1}100%{opacity:.1}}
+@keyframes supX{0%,25%{opacity:0}28%{opacity:1}100%{opacity:.75}}
+
+/* subtitles */
+@keyframes c1{0%{opacity:0}1.5%{opacity:1}11%{opacity:1}12.5%,100%{opacity:0}}
+@keyframes c2{0%,12%{opacity:0}13.5%{opacity:1}24%{opacity:1}25.5%,100%{opacity:0}}
+@keyframes c3{0%,25%{opacity:0}26.5%{opacity:1}36%{opacity:1}37.5%,100%{opacity:0}}
+@keyframes c4{0%,37%{opacity:0}38.5%{opacity:1}51%{opacity:1}52.5%,100%{opacity:0}}
+@keyframes c5{0%,52%{opacity:0}53.5%{opacity:1}63%{opacity:1}64.5%,100%{opacity:0}}
+@keyframes c6{0%,64%{opacity:0}65.5%{opacity:1}77%{opacity:1}78.5%,100%{opacity:0}}
+@keyframes c7{0%,78%{opacity:0}79.5%{opacity:1}87%{opacity:1}88.5%,100%{opacity:0}}
+@keyframes c8{0%,88%{opacity:0}89.5%{opacity:1}99%{opacity:1}100%{opacity:0}}
+@keyframes barrun{0%{transform:scaleX(0)}100%{transform:scaleX(1)}}
+@keyframes drift{0%,100%{transform:translate(0,0)}50%{transform:translate(70px,26px)}}
+@keyframes breathe{0%,100%{opacity:.32}50%{opacity:.62}}
+
+.f1{animation-name:f1}.f2{animation-name:f2}.f3{animation-name:f3}.f4{animation-name:f4}
+.f5{animation-name:f5}.f6a{animation-name:f6a}.f6b{animation-name:f6b}.f7{animation-name:f7}
+.f7b{animation-name:f7b}.f8{animation-name:f8}.fby{animation-name:fby}
+.gDL{animation-name:gDL}.gFP{animation-name:gFP}.g3{animation-name:g3}.g4{animation-name:g4}
+.g5{animation-name:g5}.g6{animation-name:g6}.g7{animation-name:g7}.gAM{animation-name:gAM}
+.supX{animation-name:supX}
+.c1{animation-name:c1}.c2{animation-name:c2}.c3{animation-name:c3}.c4{animation-name:c4}
+.c5{animation-name:c5}.c6{animation-name:c6}.c7{animation-name:c7}.c8{animation-name:c8}
+.bar{animation-name:barrun;transform-origin:left center}
+.camera{animation:drift 30s ease-in-out infinite}
+.encl{animation:breathe 9s ease-in-out infinite}
+
+.lg{display:flex;flex-wrap:wrap;gap:10px 26px;margin:16px 4px 0;font-size:12.5px;color:var(--dim);line-height:1.7}
+.lg b{color:#8fa6c8;font-weight:600}
+.sw{display:inline-block;width:22px;height:0;border-top:2px solid;vertical-align:middle;margin-right:6px}
+.foot{max-width:1000px;margin:18px auto 0;font-size:12.5px;color:#55688a;line-height:1.8}
+@media (prefers-reduced-motion: reduce){
+  .pulse,.halo,.ringLit,.cap,.supX,.bar,.camera,.encl{animation:none}
+  .cap{opacity:0}.cap.c1{opacity:1}.halo,.ringLit{opacity:.45}
+}
+
+#homelink{
+  display:inline-block;margin:0 0 14px;font-size:12.5px;
+  color:#8fa6c9;text-decoration:none;border-bottom:1px solid #24314e;
+}
+#homelink:hover{color:#cddcf5;border-bottom-color:#8fa6c9}
+.svgwrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.svgwrap svg{min-width:640px}
+@media (max-width:700px){
+  .svgwrap::after{
+    content:"這張圖較寬，可以左右滑動";
+    display:block;font-size:11px;color:#6b7f9e;padding:6px 0 0;
+  }
+}
+</style>
+</head>
+<body>
+<a id="homelink" href="index.html">← 腦與學習 · 教學工具</a>
+<div class="stage">
+<div class="svgwrap"><svg viewBox="0 0 900 560" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <radialGradient id="bg" cx="42%" cy="36%" r="80%">
+    <stop offset="0" stop-color="#111c33"/><stop offset="1" stop-color="#05080f"/>
+  </radialGradient>
+  <radialGradient id="cam" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#3f6fd0" stop-opacity=".17"/><stop offset="1" stop-color="#3f6fd0" stop-opacity="0"/>
+  </radialGradient>
+  <radialGradient id="hBlue"><stop offset="0" stop-color="#5ea8ff" stop-opacity=".62"/><stop offset="1" stop-color="#5ea8ff" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hVio"><stop offset="0" stop-color="#8b7cff" stop-opacity=".62"/><stop offset="1" stop-color="#8b7cff" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hTeal"><stop offset="0" stop-color="#2ee6d6" stop-opacity=".62"/><stop offset="1" stop-color="#2ee6d6" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hRed"><stop offset="0" stop-color="#ff5f7a" stop-opacity=".62"/><stop offset="1" stop-color="#ff5f7a" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hAmb"><stop offset="0" stop-color="#ffb347" stop-opacity=".62"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hGrn"><stop offset="0" stop-color="#4ade80" stop-opacity=".62"/><stop offset="1" stop-color="#4ade80" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hPur"><stop offset="0" stop-color="#c084fc" stop-opacity=".62"/><stop offset="1" stop-color="#c084fc" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hOrg"><stop offset="0" stop-color="#fb923c" stop-opacity=".62"/><stop offset="1" stop-color="#fb923c" stop-opacity="0"/></radialGradient>
+  <radialGradient id="hYel"><stop offset="0" stop-color="#facc15" stop-opacity=".62"/><stop offset="1" stop-color="#facc15" stop-opacity="0"/></radialGradient>
+  <marker id="ar" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6.5" markerHeight="6.5" orient="auto">
+    <path d="M0,0 L8,4 L0,8 z" fill="#3a4d73"/>
+  </marker>
+
+  <path id="p_in"     pathLength="100" d="M155,58 L155,110"/>
+  <path id="p_out"    pathLength="100" d="M107,168 L26,168"/>
+  <path id="p_dlfp"   pathLength="100" d="M201,163 L278,167"/>
+  <path id="p_fpvl"   pathLength="100" d="M334,208 Q346,232 345,256"/>
+  <path id="p_vlhc"   pathLength="100" d="M388,284 Q470,255 546,158"/>
+  <path id="p_vldm"   pathLength="100" d="M391,297 L539,287"/>
+  <path id="p_vlam"   pathLength="100" d="M381,334 Q460,352 545,378"/>
+  <path id="p_hcgd"   pathLength="100" d="M624,168 Q690,205 740,254"/>
+  <path id="p_dmgd"   pathLength="100" d="M629,286 L730,286"/>
+  <path id="p_amhc"   pathLength="100" d="M620,369 Q694,336 692,285 Q690,222 620,172"/>
+  <path id="p_gdacc"  pathLength="100" d="M772,330 C700,470 430,468 288,402"/>
+  <path id="p_accfp"  pathLength="100" d="M252,350 Q258,258 306,208"/>
+  <path id="p_accofc" pathLength="100" d="M206,376 L148,324"/>
+  <path id="p_ofcdl"  pathLength="100" d="M118,262 L138,206"/>
+</defs>
+
+<rect x="0" y="0" width="900" height="560" rx="14" fill="url(#bg)"/>
+<circle class="camera" cx="330" cy="230" r="330" fill="url(#cam)"/>
+
+<text x="30" y="38" fill="#7e93b6" font-size="12" letter-spacing="2.6">腦與學習 ｜ 仿生大腦 AGENT 工作坊</text>
+<text x="30" y="62" fill="#e3ecfb" font-size="19" font-weight="700">前額葉皮質網絡：一次完整的調度循環</text>
+<rect x="640" y="30" width="230" height="3" rx="2" fill="#1c2946"/>
+<rect class="bar" x="640" y="30" width="230" height="3" rx="2" fill="#5ea8ff"/>
+
+<rect class="encl" x="60" y="85" width="355" height="370" rx="26"
+      fill="#16244a" fill-opacity=".16" stroke="#4a6ba8" stroke-width="1.2" stroke-dasharray="7 7"/>
+<text x="74" y="444" fill="#5d76a8" font-size="11.5" letter-spacing="1">前額葉皮質網絡</text>
+
+<path class="ghost" d="M186,124 Q380,64 554,112"/>
+<text x="370" y="70" fill="#4d5c7d" font-size="10.5" text-anchor="middle">✕ 刻意不存在：PFC 無「直接改寫記憶」連線</text>
+
+<!-- wires -->
+<use href="#p_in"     class="wire" marker-end="url(#ar)"/>
+<use href="#p_out"    class="wire" marker-end="url(#ar)"/>
+<use href="#p_dlfp"   class="wire" marker-end="url(#ar)"/>
+<use href="#p_fpvl"   class="wire" marker-end="url(#ar)"/>
+<use href="#p_vlhc"   class="wire" marker-end="url(#ar)"/>
+<use href="#p_vldm"   class="wire" marker-end="url(#ar)"/>
+<use href="#p_vlam"   class="wire" marker-end="url(#ar)" stroke="#4a3550" stroke-dasharray="4 5"/>
+<use href="#p_hcgd"   class="wire" marker-end="url(#ar)"/>
+<use href="#p_dmgd"   class="wire" marker-end="url(#ar)"/>
+<use href="#p_amhc"   class="wire" marker-end="url(#ar)" stroke="#3d3352"/>
+<use href="#p_gdacc"  class="wire" marker-end="url(#ar)"/>
+<use href="#p_accfp"  class="wire" marker-end="url(#ar)" stroke-dasharray="5 4"/>
+<use href="#p_accofc" class="wire" marker-end="url(#ar)"/>
+<use href="#p_ofcdl"  class="wire" marker-end="url(#ar)"/>
+
+<!-- inhibition bar -->
+<g class="supX" transform="translate(463,354) rotate(18)">
+  <line x1="0" y1="-11" x2="0" y2="11" stroke="#ff5f7a" stroke-width="2.6" stroke-linecap="round"/>
+  <line x1="7" y1="-9" x2="7" y2="9"   stroke="#ff5f7a" stroke-width="2.6" stroke-linecap="round" opacity=".5"/>
+</g>
+
+<!-- travelling pulses -->
+<use href="#p_in"     class="pulse f1"  stroke="#5ea8ff"/>
+<use href="#p_dlfp"   class="pulse f2"  stroke="#8b7cff"/>
+<use href="#p_fpvl"   class="pulse f3"  stroke="#2ee6d6"/>
+<use href="#p_vlhc"   class="pulse f4"  stroke="#4ade80"/>
+<use href="#p_vldm"   class="pulse f4"  stroke="#c084fc"/>
+<use href="#p_amhc"   class="pulse fby" stroke="#fb923c"/>
+<use href="#p_hcgd"   class="pulse f5"  stroke="#4ade80"/>
+<use href="#p_dmgd"   class="pulse f5"  stroke="#c084fc"/>
+<use href="#p_gdacc"  class="pulse f6a" stroke="#facc15"/>
+<use href="#p_accfp"  class="pulse f6b" stroke="#ff5f7a"/>
+<use href="#p_accofc" class="pulse f7"  stroke="#ff5f7a"/>
+<use href="#p_ofcdl"  class="pulse f7b" stroke="#ffb347"/>
+<use href="#p_out"    class="pulse f8"  stroke="#5ea8ff"/>
+
+<!-- edge labels -->
+<text class="elab" x="168" y="80">任務輸入</text>
+<text class="elab" x="26"  y="192">整合回答</text>
+<text class="elab" x="216" y="150">目標</text>
+<text class="elab" x="352" y="238">子任務</text>
+<text class="elab" x="455" y="243">叫用</text>
+<text class="elab" x="452" y="279">叫用</text>
+<text class="elab" x="424" y="376" fill="#a8657f">本題抑制</text>
+<text class="elab" x="682" y="212">查核</text>
+<text class="elab" x="659" y="277">查核</text>
+<text class="elab" x="702" y="330" fill="#a9784f">不經 PFC</text>
+<text class="elab" x="516" y="438">需補證 → 退回</text>
+<text class="elab" x="266" y="272" fill="#b3667c">重做</text>
+<text class="elab" x="142" y="366">計次</text>
+<text class="elab" x="60"  y="238">停止</text>
+
+<!-- nodes: PFC -->
+<g>
+  <circle class="halo gDL" cx="155" cy="160" r="74" fill="url(#hBlue)"/>
+  <circle class="ring" cx="155" cy="160" r="46"/>
+  <circle class="ringLit gDL" cx="155" cy="160" r="46" stroke="#5ea8ff"/>
+  <text class="nlab" x="155" y="155">DLPFC</text>
+  <text class="nsub" x="155" y="171">背外側</text>
+  <text class="nsub" x="155" y="185" fill="#8fa6c8">目標維持</text>
+</g>
+<g>
+  <circle class="halo gFP" cx="322" cy="168" r="70" fill="url(#hVio)"/>
+  <circle class="ring" cx="322" cy="168" r="42"/>
+  <circle class="ringLit gFP" cx="322" cy="168" r="42" stroke="#8b7cff"/>
+  <text class="nlab" x="322" y="163">FPC</text>
+  <text class="nsub" x="322" y="178">額極 BA10</text>
+  <text class="nsub" x="322" y="192" fill="#8fa6c8">任務拆解</text>
+</g>
+<g>
+  <circle class="halo g3" cx="348" cy="300" r="70" fill="url(#hTeal)"/>
+  <circle class="ring" cx="348" cy="300" r="42"/>
+  <circle class="ringLit g3" cx="348" cy="300" r="42" stroke="#2ee6d6"/>
+  <text class="nlab" x="348" y="295">VLPFC</text>
+  <text class="nsub" x="348" y="310">腹外側</text>
+  <text class="nsub" x="348" y="324" fill="#8fa6c8">抑制閘門</text>
+</g>
+<g>
+  <circle class="halo g6" cx="245" cy="392" r="70" fill="url(#hRed)"/>
+  <circle class="ring" cx="245" cy="392" r="42"/>
+  <circle class="ringLit g6" cx="245" cy="392" r="42" stroke="#ff5f7a"/>
+  <text class="nlab" x="245" y="387">ACC*</text>
+  <text class="nsub" x="245" y="402">前扣帶迴</text>
+  <text class="nsub" x="245" y="416" fill="#8fa6c8">衝突監控</text>
+</g>
+<g>
+  <circle class="halo g7" cx="112" cy="300" r="68" fill="url(#hAmb)"/>
+  <circle class="ring" cx="112" cy="300" r="40"/>
+  <circle class="ringLit g7" cx="112" cy="300" r="40" stroke="#ffb347"/>
+  <text class="nlab" x="112" y="295">OFC</text>
+  <text class="nsub" x="112" y="310">眶額</text>
+  <text class="nsub" x="112" y="324" fill="#8fa6c8">價值·停止</text>
+</g>
+
+<!-- nodes: other agents -->
+<g>
+  <circle class="halo g4" cx="585" cy="140" r="72" fill="url(#hGrn)"/>
+  <circle class="ring" cx="585" cy="140" r="44"/>
+  <circle class="ringLit g4" cx="585" cy="140" r="44" stroke="#4ade80"/>
+  <text class="nlab" x="585" y="138">海馬迴</text>
+  <text class="nsub" x="585" y="155" fill="#8fa6c8">記憶提取</text>
+</g>
+<g>
+  <circle class="halo g4" cx="585" cy="285" r="72" fill="url(#hPur)"/>
+  <circle class="ring" cx="585" cy="285" r="44"/>
+  <circle class="ringLit g4" cx="585" cy="285" r="44" stroke="#c084fc"/>
+  <text class="nlab" x="585" y="283">DMN</text>
+  <text class="nsub" x="585" y="300" fill="#8fa6c8">發散聯結</text>
+</g>
+<g>
+  <circle class="halo gAM" cx="585" cy="398" r="72" fill="url(#hOrg)"/>
+  <circle class="ring" cx="585" cy="398" r="44"/>
+  <circle class="ringLit gAM" cx="585" cy="398" r="44" stroke="#fb923c"/>
+  <text class="nlab" x="585" y="396">杏仁核</text>
+  <text class="nsub" x="585" y="413" fill="#8fa6c8">情緒標記</text>
+</g>
+<g>
+  <circle class="halo g5" cx="778" cy="285" r="76" fill="url(#hYel)"/>
+  <circle class="ring" cx="778" cy="285" r="46"/>
+  <circle class="ringLit g5" cx="778" cy="285" r="46" stroke="#facc15"/>
+  <text class="nlab" x="778" y="278">守衛</text>
+  <text class="nsub" x="778" y="295" fill="#8fa6c8">知識查核</text>
+</g>
+
+<!-- subtitle plate -->
+<rect x="28" y="494" width="628" height="38" rx="9" fill="#04070e" fill-opacity=".72" stroke="#1e2b47" stroke-width="1"/>
+<text class="cap c1" x="46" y="518"><tspan class="capnum">01 ／ </tspan>任務進入。DLPFC 寫下目標與成功條件，之後每一站都要重述。</text>
+<text class="cap c2" x="46" y="518"><tspan class="capnum">02 ／ </tspan>FPC 把任務拆成子任務，並暫存「還沒完成的那幾項」。</text>
+<text class="cap c3" x="46" y="518"><tspan class="capnum">03 ／ </tspan>VLPFC 開閘：本題叫用海馬迴與 DMN，明寫「不叫用杏仁核」。</text>
+<text class="cap c4" x="46" y="518"><tspan class="capnum">04 ／ </tspan>兩路並行。杏仁核仍把情緒標記直送海馬迴 —— 這條不經過 PFC。</text>
+<text class="cap c5" x="46" y="518"><tspan class="capnum">05 ／ </tspan>守衛逐句比對來源：有一項主張查無頁碼，判定「需補證」。</text>
+<text class="cap c6" x="46" y="518"><tspan class="capnum">06 ／ </tspan>ACC 偵測到衝突，觸發退回，把那一項打回 FPC 重做。</text>
+<text class="cap c7" x="46" y="518"><tspan class="capnum">07 ／ </tspan>OFC 計次：已達退回上限，停止再試，改標記「已知未解決」。</text>
+<text class="cap c8" x="46" y="518"><tspan class="capnum">08 ／ </tspan>DLPFC 整合輸出，並附上本次的叫用與退回紀錄。</text>
+
+<text x="872" y="522" fill="#3f5074" font-size="10" text-anchor="end">* ACC 屬內側額葉，非嚴格意義的 PFC，此處為教學簡化</text>
+</svg></div>
+
+<div class="lg">
+  <span><b><span class="sw" style="border-color:#3a4d73"></span>實線</b>　常態連線</span>
+  <span><b><span class="sw" style="border-color:#a8657f;border-top-style:dashed"></span>虛線＋⊣</b>　本題被抑制</span>
+  <span><b><span class="sw" style="border-color:#a9784f"></span>右側迴路</b>　繞過 PFC 的旁路</span>
+  <span><b><span class="sw" style="border-color:#4d5c7d;border-top-style:dashed"></span>灰色 ✕</b>　刻意不存在的邊</span>
+</div>
+</div>
+
+<div class="foot">
+教學模型聲明：本圖是把部分執行控制功能轉成可操作節點的教育性簡化，不是真實腦區的解剖或功能還原。真實的執行控制由分散、重疊且動態回饋的網絡共同完成，PFC 並非唯一指揮者。循環長度 22 秒，自動重播。
+</div>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>腦與學習 · 教學工具</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E🧠%3C/text%3E%3C/svg%3E">
+<meta name="description" content="台師大 115-1「腦與學習」教學工具：用真人磁振造影重建的大腦網格做的數位解剖，加上前額葉調度循環動畫。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="腦與學習 · 教學工具">
+<meta property="og:description" content="台師大 115-1「腦與學習」教學工具：用真人磁振造影重建的大腦網格做的數位解剖，加上前額葉調度循環動畫。">
+<meta property="og:url" content="https://ian3738.github.io/brain-dissection-table/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&family=EB+Garamond:ital,wght@0,400;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#efe9dd; --panel:#fcfaf5; --rail:#e5ddcd;
+  --ink:#1b1f26; --ink2:#4d5563; --ink3:#5a626f;
+  --rule:#d5cbb7; --brass:#7a5510; --brass-lit:#b98d2e;
+  --grey-matter:#8a5aa6; --white-matter:#4c7cb2;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0c0f14; --panel:#171c27; --rail:#0f131b;
+    --ink:#e6ecf5; --ink2:#a3aec0; --ink3:#8b96a8;
+    --rule:#28303f; --brass:#d8ae5c; --brass-lit:#f0cd85;
+    --grey-matter:#b587cf; --white-matter:#79aee4;
+  }
+}
+*{box-sizing:border-box}
+body{
+  margin:0; padding:0;
+  background:var(--ground); color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  font-size:15px; line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+}
+.la{font-family:"EB Garamond",Georgia,serif;font-style:italic}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+
+.wrap{max-width:760px;margin:0 auto;padding:56px 26px 72px}
+
+header{border-bottom:1px solid var(--rule);padding-bottom:26px;margin-bottom:34px}
+h1{
+  font-family:"Noto Serif TC",serif;font-weight:700;font-size:30px;
+  letter-spacing:.05em;margin:0 0 8px;line-height:1.25;text-wrap:balance;
+}
+.sub{color:var(--ink3);font-size:13px;letter-spacing:.1em}
+.lede{margin:20px 0 0;color:var(--ink2);max-width:62ch}
+
+.tools{display:flex;flex-direction:column;gap:18px;margin:0 0 40px}
+.tool{
+  display:block;text-decoration:none;color:inherit;
+  background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+  padding:20px 22px 21px;position:relative;
+  transition:border-color .18s,transform .18s;
+}
+.tool::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent,var(--brass))}
+.tool:hover{border-color:var(--brass);transform:translateY(-1px)}
+.tool:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.tool h2{font-family:"Noto Serif TC",serif;font-size:19px;font-weight:600;margin:0 0 3px;letter-spacing:.03em}
+.tool .en{font-size:12.5px;color:var(--ink3);display:block;margin-bottom:10px}
+.tool p{margin:0;font-size:13.5px;color:var(--ink2);line-height:1.7}
+.tool .go{
+  display:inline-block;margin-top:12px;font-size:12.5px;color:var(--brass);
+  letter-spacing:.06em;font-weight:500;
+}
+
+.stations{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.stations span{
+  font-size:11.5px;color:var(--ink2);background:var(--rail);
+  border:1px solid var(--rule);border-radius:2px;padding:2px 8px;
+}
+
+.note{
+  border-top:1px solid var(--rule);padding-top:24px;margin-top:8px;
+  font-size:12.5px;color:var(--ink3);line-height:1.8;
+}
+.note h3{
+  font-size:11px;letter-spacing:.2em;color:var(--ink3);
+  margin:0 0 8px;font-weight:500;text-transform:uppercase;
+}
+.note + .note{margin-top:22px}
+.note a{color:var(--brass);text-decoration:none;border-bottom:1px solid var(--rule)}
+.note a:hover{border-bottom-color:var(--brass)}
+.note b{color:var(--ink2);font-weight:500}
+
+kbd{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;
+  border:1px solid var(--rule);border-radius:2px;padding:1px 5px;
+  background:var(--rail);color:var(--ink2);
+}
+@media (prefers-reduced-motion: reduce){*{transition-duration:.001ms!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>腦與學習 · 教學工具</h1>
+    <div class="sub mono">115-1 ／ 國立臺灣師範大學</div>
+    <p class="lede">
+      兩支單檔網頁，瀏覽器直接開，不用安裝任何東西。畫面上那顆腦不是示意圖，
+      是真人的腦——磁振造影掃出來、經 FreeSurfer 重建的網格，45 萬個三角面。
+      每一條腦回、每一道溝都是那個人真正的形狀。
+    </p>
+  </header>
+
+  <div class="tools">
+
+    <a class="tool" href="brain_dissection_table.html" style="--accent:var(--grey-matter)">
+      <h2>數位大腦解剖檯</h2>
+      <span class="en la">Digital brain dissection</span>
+      <p>
+        四個檯位，從整顆腦一路看到皮質的六層結構。可以旋轉、可以切、可以一層一層剝，
+        點任何構造就出現它的標本籤。另有 16 步的自動導覽，適合上課投影。
+      </p>
+      <div class="stations">
+        <span>逐層剝離</span><span>切面掃描</span><span>皮質組織學</span><span>分區與網絡</span>
+      </div>
+      <span class="go">開啟 →</span>
+    </a>
+
+    <a class="tool" href="pfc_network_animation.html" style="--accent:var(--white-matter)">
+      <h2>前額葉網絡：一次完整的調度循環</h2>
+      <span class="en la">Prefrontal control loop</span>
+      <p>
+        訊號如何在背外側、額極、腹外側前額葉與前扣帶、眶額之間跑完一圈，
+        中途叫用海馬迴與預設模式網絡，杏仁核另走一條不經前額葉的旁路，
+        最後由知識查核守衛決定放不放行。22 秒循環動畫，每一步都標了序號與說明。
+      </p>
+      <div class="stations">
+        <span>寬幅圖，建議用電腦或平板開啟</span>
+      </div>
+      <span class="go">開啟 →</span>
+    </a>
+
+  </div>
+
+  <div class="note">
+    <h3>操作</h3>
+    拖曳旋轉，滾輪縮放，<kbd>Shift</kbd> ＋拖曳平移。點構造看說明，
+    <kbd>←</kbd> <kbd>→</kbd> 換層或換刀，導覽中按<kbd>空白鍵</kbd>推進。<br>
+    需要支援 WebGL 的瀏覽器。解剖檯 5.3 MB，第一次載入需要幾秒。
+  </div>
+
+  <div class="note">
+    <h3>資料來源與授權</h3>
+    網格資料來自 <b>Brain for Blender</b>，作者 Anderson M. Winkler，
+    <a href="https://brainder.org/research/brain-for-blender/">brainder.org</a>。
+    真人腦部磁振造影經 FreeSurfer 5.2.0 重建，皮質分區採 Desikan-Killiany 圖譜，
+    原始資料以 <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a> 釋出。
+    本專案為其衍生作品，同樣以 CC BY-SA 3.0 釋出。
+    <a href="https://github.com/Ian3738/brain-dissection-table">原始碼與完整聲明在 GitHub</a>。
+  </div>
+
+  <div class="note">
+    <h3>該講清楚的限制</h3>
+    皮質下結構是 FreeSurfer 的自動分割結果，邊界是統計圖譜推估出來的，
+    不等同於顯微鏡下的實際界線。組織學那一檯沒有網格可用，是依文獻繪製的示意圖，
+    不是這顆腦的切片。這是教學工具，不是診斷或研究用的影像軟體。
+  </div>
+
+</div>
+</body>
+</html>

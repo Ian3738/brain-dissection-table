@@ -1,0 +1,9 @@
+.DS_Store
+
+# 原始網格與打包產物：可由 source/pack_meshes.py 重新產生。
+# meshes.b64 有 5.2 MB，而且它的內容已經整份嵌在 brain_dissection_table.html 裡，
+# 再存一份只會讓 repo 肥一倍。
+source/brainder/
+source/meshdata/
+*.ply
+*.tar.bz2
