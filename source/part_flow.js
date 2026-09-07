@@ -35,29 +35,39 @@ function buildFlowScene() {
     const base = col(n.v || '--brass');
 
     const mesh = new THREE.Mesh(
-      new THREE.SphereGeometry(3.2, 20, 16),
+      new THREE.SphereGeometry(2.6, 18, 14),
       new THREE.MeshPhongMaterial({ color: base, shininess: 40 })
     );
     mesh.position.copy(pos);
     g.add(mesh);
 
     const halo = new THREE.Mesh(
-      new THREE.SphereGeometry(3.2, 20, 16),
+      new THREE.SphereGeometry(2.6, 18, 14),
       new THREE.MeshBasicMaterial({ color: base, transparent: true, opacity: 0, depthWrite: false })
     );
     halo.position.copy(pos);
     g.add(halo);
 
-    const el = document.createElement('button');
-    el.className = 'fl-label';
-    el.type = 'button';
-    el.innerHTML = `<span class="fl-zh">${n.zh}</span>`
-      + `<span class="fl-need n-${n.need.level}"></span>`;
-    el.title = n.zh + '　' + n.la;
-    el.addEventListener('click', () => showFlowNodeTag(key));
-    layer.appendChild(el);
+    // 畫面上的點
+    const dot = document.createElement('button');
+    dot.className = 'fl-dot';
+    dot.type = 'button';
+    dot.title = n.zh + '　' + n.la;
+    dot.setAttribute('aria-label', n.zh);
+    dot.addEventListener('click', () => showFlowNodeTag(key));
+    layer.appendChild(dot);
 
-    FLOW_OBJ.nodes[key] = { mesh, halo, labelEl: el, pos, base };
+    // 邊欄標籤，亮起時才拉出去
+    const tag = document.createElement('button');
+    tag.className = 'fl-tag';
+    tag.type = 'button';
+    tag.innerHTML = `<span class="t-zh">${n.zh}</span>`
+      + `<span class="t-need n-${n.need.level}"></span>`;
+    tag.title = n.la;
+    tag.addEventListener('click', () => showFlowNodeTag(key));
+    layer.appendChild(tag);
+
+    FLOW_OBJ.nodes[key] = { mesh, halo, dot, tag, pos, base };
   }
 
   // 兩個出口的路徑
@@ -112,7 +122,9 @@ function updateFlow() {
     nd.halo.scale.setScalar(1 + a * 2.8);
     nd.halo.material.opacity = a * 0.32;
     nd.mesh.material.color.copy(nd.base).lerp(col('--brass-lit'), a * 0.7);
-    nd.labelEl.classList.toggle('on', a > 0.3);
+    nd.lit = a > 0.3;
+    nd.dot.classList.toggle('on', nd.lit);
+    nd.tag.classList.toggle('on', nd.lit);
   }
 
   positionFlowLabels();
@@ -133,37 +145,49 @@ function updateFlow() {
 function positionFlowLabels() {
   if (!FLOW_OBJ.group) return;
   const r = canvasEl.getBoundingClientRect();
-  const shown = [];
+  const W = r.width, H = r.height;
+  const leads = document.getElementById('flowLeads');
+  const MARGIN = 14, GAP = 23, LEAD = 26;
+
+  const lit = { l: [], r: [] };
 
   for (const key in FLOW_OBJ.nodes) {
     const nd = FLOW_OBJ.nodes[key];
     _v.copy(nd.pos).applyMatrix4(pivot.matrixWorld).project(camera);
     const behind = _v.z > 1;
-    const x = (_v.x * 0.5 + 0.5) * r.width;
-    const y = (-_v.y * 0.5 + 0.5) * r.height;
-    nd.labelEl.style.opacity = behind ? 0 : '';
-    nd.labelEl.style.pointerEvents = behind ? 'none' : 'auto';
-    if (behind) {
-      nd.labelEl.style.transform = `translate(-50%,-50%) translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`;
-      continue;
-    }
-    shown.push({ nd, x, y, expanded: nd.labelEl.classList.contains('on') });
+    const x = (_v.x * 0.5 + 0.5) * W;
+    const y = (-_v.y * 0.5 + 0.5) * H;
+    nd.sx = x; nd.sy = y;
+
+    nd.dot.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`;
+    nd.dot.style.opacity = behind ? 0.25 : 1;
+    nd.dot.style.pointerEvents = behind ? 'none' : 'auto';
+
+    if (nd.lit && !behind) lit[x < W * 0.5 ? 'l' : 'r'].push(nd);
+    else nd.tag.classList.remove('on');
   }
 
-  // 展開的標籤會互相疊死。依 y 排序後把太近的往下推開，並畫一條引線回節點。
-  const wide = shown.filter((s) => s.expanded).sort((a, b) => a.y - b.y);
-  const GAP = 22;
-  for (let i = 1; i < wide.length; i++) {
-    const prev = wide[i - 1], cur = wide[i];
-    if (Math.abs(cur.x - prev.x) < 110 && cur.y - prev.y < GAP) {
-      cur.y = prev.y + GAP;
+  // 每一欄依 y 排序後往下推開，引線才不會互相交叉
+  let paths = '';
+  for (const side of ['l', 'r']) {
+    const list = lit[side].sort((a, b) => a.sy - b.sy);
+    let cursor = MARGIN;
+    for (const nd of list) {
+      const ty = Math.max(cursor, Math.min(H - MARGIN, nd.sy));
+      cursor = ty + GAP;
+      const tx = side === 'l' ? MARGIN : W - MARGIN;
+      // 右欄要靠右對齊，否則文字會撞到畫布邊緣被擠成一字一行
+      const anchor = side === 'l' ? '0,-50%' : '-100%,-50%';
+      nd.tag.style.transform = `translate(${tx}px,${ty.toFixed(1)}px) translate(${anchor})`;
+      nd.tag.classList.toggle('side-l', side === 'l');
+      // 引線：從節點水平拉一小段，再折到標籤高度
+      const elbow = side === 'l' ? Math.min(nd.sx - LEAD, tx + 118) : Math.max(nd.sx + LEAD, tx - 118);
+      paths += `<path class="lit" d="M${nd.sx.toFixed(1)} ${nd.sy.toFixed(1)}`
+        + `L${elbow.toFixed(1)} ${nd.sy.toFixed(1)}L${elbow.toFixed(1)} ${ty.toFixed(1)}`
+        + `L${(side === 'l' ? tx + 4 : tx - 4).toFixed(1)} ${ty.toFixed(1)}"/>`;
     }
   }
-
-  for (const s of shown) {
-    s.nd.labelEl.style.transform =
-      `translate(-50%,-50%) translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px)`;
-  }
+  if (leads) leads.innerHTML = paths;
 }
 /* ---------- 播放 ---------- */
 function flowTick(now) {
@@ -347,14 +371,26 @@ function enterFlow() {
   clipOn = false;
   for (const k in MAT) MAT[k].clippingPlanes = [];
   for (const name in OBJ) OBJ[name].visible = false;
-  for (const n of BY_GROUP.cortex) { OBJ[n].visible = true; OBJ[n].material = MAT.cortexGhost; }
-  MAT.cortexGhost.opacity = 0.075;   // 這一檯要看穿到深部，比剝離檯位更透
+
+  // 圖譜的作法：右半球留著當背牆，左半球拿掉，讓人從左側看進去。
+  // 半透明的殼看不出腦的形狀，實體的一半反而讀得懂。
+  if (!MAT.cortexWall) {
+    MAT.cortexWall = new THREE.MeshPhongMaterial({
+      color: col('--grey-matter').lerp(col('--stage'), 0.62),
+      shininess: 3, specular: 0x0a0a0a, side: THREE.DoubleSide,
+    });
+    MAT.cortexWall.clippingPlanes = [];
+  }
+  for (const n of BY_GROUP.cortex) {
+    const isLeft = n.startsWith('lh');
+    OBJ[n].visible = !isLeft;
+    if (!isLeft) OBJ[n].material = MAT.cortexWall;
+  }
+  // 節點掛在左側構造上，右側的會擋住視線
   for (const bare of ['Thalamus-Proper', 'Amygdala', 'Hippocampus', 'Accumbens-area',
                       'Caudate', 'Putamen', 'Pallidum', 'VentralDC']) {
-    for (const side of ['Left-', 'Right-']) {
-      const k = side + bare;
-      if (OBJ[k]) { OBJ[k].visible = true; OBJ[k].material = deepMat(k); }
-    }
+    const k = 'Left-' + bare;
+    if (OBJ[k]) { OBJ[k].visible = true; OBJ[k].material = deepMat(k); }
   }
   if (OBJ['Brain-Stem']) { OBJ['Brain-Stem'].visible = true; OBJ['Brain-Stem'].material = deepMat('Brain-Stem'); }
 

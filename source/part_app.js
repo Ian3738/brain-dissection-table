@@ -107,7 +107,7 @@ function setStation(k) {
     flyTo(...VIEWS.left);
   } else if (k === 'flow') {
     enterFlow();
-    flyTo(Math.PI * 0.78, Math.PI * 0.46, 385);
+    flyTo(Math.PI, Math.PI / 2, 330);
   } else {
     clipOn = false;
     buildLegend(Object.keys(CTX_TYPES).map((t) => ({ k: t, zh: CTX_TYPES[t].zh + '　' + CTX_TYPES[t].ba, v: '--grey-matter' })),

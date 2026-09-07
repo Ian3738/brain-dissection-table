@@ -629,29 +629,54 @@ svg text{font-family:"Noto Sans TC","PingFang TC",system-ui,sans-serif}
 
 /* ---------- 檯位五：運作流程 ---------- */
 #flowLabels{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
-.fl-label{
+#flowLeads{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#flowLeads path{fill:none;stroke:var(--rule);stroke-width:1.1;opacity:.55;
+  stroke-linejoin:round;stroke-linecap:round}
+#flowLeads path.lit{stroke:var(--brass);opacity:.75}
+#flowLeads circle{fill:var(--brass)}
+
+/* 節點標記：未亮起時是一個小點，亮起才拉到邊欄 */
+.fl-dot{
+  position:absolute;top:0;left:0;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;
+  border-radius:50%;border:1.5px solid var(--rule);background:var(--panel);
+  pointer-events:auto;cursor:pointer;padding:0;
+  transition:transform .18s,border-color .18s,box-shadow .18s;
+}
+.fl-dot:hover{border-color:var(--brass);transform:scale(1.5)}
+.fl-dot:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.fl-dot.on{
+  border-color:var(--brass);background:var(--brass-lit);
+  transform:scale(1.35);box-shadow:0 0 12px -1px var(--brass-lit);
+}
+
+/* 邊欄標籤：圖譜體例，左右兩欄，引線拉回節點 */
+.fl-tag{
   position:absolute;top:0;left:0;
-  font:inherit;text-align:left;cursor:pointer;
-  background:color-mix(in srgb, var(--panel) 88%, transparent);
-  border:1px solid var(--rule);border-radius:2px;
-  padding:2px 4px;white-space:nowrap;
-  pointer-events:auto;
-  transition:border-color .2s,box-shadow .2s,padding .2s;
+  font:inherit;background:transparent;border:0;padding:0;
+  white-space:nowrap;cursor:pointer;pointer-events:auto;
+  opacity:0;transition:opacity .22s;
+  display:flex;align-items:baseline;gap:6px;
 }
-/* 預設收成一個點；亮起或滑過才展開文字，否則 18 個標籤會互相疊死 */
-.fl-label .fl-zh{display:none}
-.fl-label.on,.fl-label:hover,.fl-label:focus-visible{padding:3px 7px 4px;z-index:2}
-.fl-label.on .fl-zh,.fl-label:hover .fl-zh,.fl-label:focus-visible .fl-zh{display:block}
-.fl-label:hover{border-color:var(--brass)}
-.fl-label:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-.fl-label.on{
-  border-color:var(--brass);
-  box-shadow:0 0 0 1px var(--brass),0 0 14px -2px var(--brass-lit);
-  opacity:1;
+.fl-tag.on{opacity:1}
+.fl-tag.side-l{flex-direction:row-reverse}
+.fl-tag .t-zh{
+  font-size:12.5px;font-weight:500;color:var(--ink);line-height:1.3;
+  background:color-mix(in srgb, var(--stage) 82%, transparent);
+  padding:1px 4px;border-radius:2px;
 }
-.fl-zh{display:block;font-size:12px;font-weight:500;color:var(--ink);line-height:1.3}
-.fl-la{display:block;font-family:"EB Garamond",Georgia,serif;font-style:italic;
-  font-size:10.5px;color:var(--ink3);line-height:1.25}
+.fl-tag:hover .t-zh{color:var(--brass)}
+.fl-tag .t-need{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  border:1px solid var(--rule);flex:0 0 6px;
+}
+.n-yes,.t-need.n-yes{background:var(--hippocampus);border-color:var(--hippocampus)}
+.n-partial,.t-need.n-partial{background:var(--brass);border-color:var(--brass)}
+.n-contested,.t-need.n-contested{background:var(--amygdala);border-color:var(--amygdala)}
+.n-no,.t-need.n-no{background:transparent;border-color:var(--ink3)}
+.need-yes{color:var(--hippocampus);border-color:var(--hippocampus)}
+.need-partial{color:var(--brass);border-color:var(--brass)}
+.need-contested{color:var(--amygdala);border-color:var(--amygdala)}
+.need-no{color:var(--ink3)}
 
 #flowLanes{position:relative;display:flex;flex-direction:column;gap:2px;padding-top:6px;
   max-height:210px;overflow-y:auto;overscroll-behavior:contain}
@@ -680,17 +705,6 @@ svg text{font-family:"Noto Sans TC","PingFang TC",system-ui,sans-serif}
 .lane-cursor{position:absolute;top:30px;bottom:0;width:1px;background:var(--brass);
   margin-left:170px;pointer-events:none;opacity:.85}
 
-/* 節點上的必要性標記 */
-.fl-need{display:inline-block;width:6px;height:6px;border-radius:50%;margin-left:6px;
-  vertical-align:middle;border:1px solid var(--rule)}
-.n-yes{background:var(--hippocampus);border-color:var(--hippocampus)}
-.n-partial{background:var(--brass);border-color:var(--brass)}
-.n-contested{background:var(--amygdala);border-color:var(--amygdala)}
-.n-no{background:transparent;border-color:var(--ink3)}
-.need-yes{color:var(--hippocampus);border-color:var(--hippocampus)}
-.need-partial{color:var(--brass);border-color:var(--brass)}
-.need-contested{color:var(--amygdala);border-color:var(--amygdala)}
-.need-no{color:var(--ink3)}
 
 /* 時間參數卡 */
 .tm{border-left:2px solid var(--rule);padding:2px 0 4px 9px;margin-bottom:9px}
@@ -821,7 +835,7 @@ svg text{font-family:"Noto Sans TC","PingFang TC",system-ui,sans-serif}
     <div class="canvas" id="canvas">
       <canvas id="gl"></canvas>
       <div id="histoWrap" hidden></div>
-      <div id="flowLabels" hidden></div>
+      <div id="flowLabels" hidden><svg id="flowLeads"></svg></div>
       <div id="loading">
         <span class="ld-t">載入標本中</span>
         <span class="ld-s mono">45 萬個三角面</span>
@@ -2333,29 +2347,39 @@ function buildFlowScene() {
     const base = col(n.v || '--brass');
 
     const mesh = new THREE.Mesh(
-      new THREE.SphereGeometry(3.2, 20, 16),
+      new THREE.SphereGeometry(2.6, 18, 14),
       new THREE.MeshPhongMaterial({ color: base, shininess: 40 })
     );
     mesh.position.copy(pos);
     g.add(mesh);
 
     const halo = new THREE.Mesh(
-      new THREE.SphereGeometry(3.2, 20, 16),
+      new THREE.SphereGeometry(2.6, 18, 14),
       new THREE.MeshBasicMaterial({ color: base, transparent: true, opacity: 0, depthWrite: false })
     );
     halo.position.copy(pos);
     g.add(halo);
 
-    const el = document.createElement('button');
-    el.className = 'fl-label';
-    el.type = 'button';
-    el.innerHTML = `<span class="fl-zh">${n.zh}</span>`
-      + `<span class="fl-need n-${n.need.level}"></span>`;
-    el.title = n.zh + '　' + n.la;
-    el.addEventListener('click', () => showFlowNodeTag(key));
-    layer.appendChild(el);
+    // 畫面上的點
+    const dot = document.createElement('button');
+    dot.className = 'fl-dot';
+    dot.type = 'button';
+    dot.title = n.zh + '　' + n.la;
+    dot.setAttribute('aria-label', n.zh);
+    dot.addEventListener('click', () => showFlowNodeTag(key));
+    layer.appendChild(dot);
 
-    FLOW_OBJ.nodes[key] = { mesh, halo, labelEl: el, pos, base };
+    // 邊欄標籤，亮起時才拉出去
+    const tag = document.createElement('button');
+    tag.className = 'fl-tag';
+    tag.type = 'button';
+    tag.innerHTML = `<span class="t-zh">${n.zh}</span>`
+      + `<span class="t-need n-${n.need.level}"></span>`;
+    tag.title = n.la;
+    tag.addEventListener('click', () => showFlowNodeTag(key));
+    layer.appendChild(tag);
+
+    FLOW_OBJ.nodes[key] = { mesh, halo, dot, tag, pos, base };
   }
 
   // 兩個出口的路徑
@@ -2410,7 +2434,9 @@ function updateFlow() {
     nd.halo.scale.setScalar(1 + a * 2.8);
     nd.halo.material.opacity = a * 0.32;
     nd.mesh.material.color.copy(nd.base).lerp(col('--brass-lit'), a * 0.7);
-    nd.labelEl.classList.toggle('on', a > 0.3);
+    nd.lit = a > 0.3;
+    nd.dot.classList.toggle('on', nd.lit);
+    nd.tag.classList.toggle('on', nd.lit);
   }
 
   positionFlowLabels();
@@ -2431,37 +2457,49 @@ function updateFlow() {
 function positionFlowLabels() {
   if (!FLOW_OBJ.group) return;
   const r = canvasEl.getBoundingClientRect();
-  const shown = [];
+  const W = r.width, H = r.height;
+  const leads = document.getElementById('flowLeads');
+  const MARGIN = 14, GAP = 23, LEAD = 26;
+
+  const lit = { l: [], r: [] };
 
   for (const key in FLOW_OBJ.nodes) {
     const nd = FLOW_OBJ.nodes[key];
     _v.copy(nd.pos).applyMatrix4(pivot.matrixWorld).project(camera);
     const behind = _v.z > 1;
-    const x = (_v.x * 0.5 + 0.5) * r.width;
-    const y = (-_v.y * 0.5 + 0.5) * r.height;
-    nd.labelEl.style.opacity = behind ? 0 : '';
-    nd.labelEl.style.pointerEvents = behind ? 'none' : 'auto';
-    if (behind) {
-      nd.labelEl.style.transform = `translate(-50%,-50%) translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`;
-      continue;
-    }
-    shown.push({ nd, x, y, expanded: nd.labelEl.classList.contains('on') });
+    const x = (_v.x * 0.5 + 0.5) * W;
+    const y = (-_v.y * 0.5 + 0.5) * H;
+    nd.sx = x; nd.sy = y;
+
+    nd.dot.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`;
+    nd.dot.style.opacity = behind ? 0.25 : 1;
+    nd.dot.style.pointerEvents = behind ? 'none' : 'auto';
+
+    if (nd.lit && !behind) lit[x < W * 0.5 ? 'l' : 'r'].push(nd);
+    else nd.tag.classList.remove('on');
   }
 
-  // 展開的標籤會互相疊死。依 y 排序後把太近的往下推開，並畫一條引線回節點。
-  const wide = shown.filter((s) => s.expanded).sort((a, b) => a.y - b.y);
-  const GAP = 22;
-  for (let i = 1; i < wide.length; i++) {
-    const prev = wide[i - 1], cur = wide[i];
-    if (Math.abs(cur.x - prev.x) < 110 && cur.y - prev.y < GAP) {
-      cur.y = prev.y + GAP;
+  // 每一欄依 y 排序後往下推開，引線才不會互相交叉
+  let paths = '';
+  for (const side of ['l', 'r']) {
+    const list = lit[side].sort((a, b) => a.sy - b.sy);
+    let cursor = MARGIN;
+    for (const nd of list) {
+      const ty = Math.max(cursor, Math.min(H - MARGIN, nd.sy));
+      cursor = ty + GAP;
+      const tx = side === 'l' ? MARGIN : W - MARGIN;
+      // 右欄要靠右對齊，否則文字會撞到畫布邊緣被擠成一字一行
+      const anchor = side === 'l' ? '0,-50%' : '-100%,-50%';
+      nd.tag.style.transform = `translate(${tx}px,${ty.toFixed(1)}px) translate(${anchor})`;
+      nd.tag.classList.toggle('side-l', side === 'l');
+      // 引線：從節點水平拉一小段，再折到標籤高度
+      const elbow = side === 'l' ? Math.min(nd.sx - LEAD, tx + 118) : Math.max(nd.sx + LEAD, tx - 118);
+      paths += `<path class="lit" d="M${nd.sx.toFixed(1)} ${nd.sy.toFixed(1)}`
+        + `L${elbow.toFixed(1)} ${nd.sy.toFixed(1)}L${elbow.toFixed(1)} ${ty.toFixed(1)}`
+        + `L${(side === 'l' ? tx + 4 : tx - 4).toFixed(1)} ${ty.toFixed(1)}"/>`;
     }
   }
-
-  for (const s of shown) {
-    s.nd.labelEl.style.transform =
-      `translate(-50%,-50%) translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px)`;
-  }
+  if (leads) leads.innerHTML = paths;
 }
 /* ---------- 播放 ---------- */
 function flowTick(now) {
@@ -2645,14 +2683,26 @@ function enterFlow() {
   clipOn = false;
   for (const k in MAT) MAT[k].clippingPlanes = [];
   for (const name in OBJ) OBJ[name].visible = false;
-  for (const n of BY_GROUP.cortex) { OBJ[n].visible = true; OBJ[n].material = MAT.cortexGhost; }
-  MAT.cortexGhost.opacity = 0.075;   // 這一檯要看穿到深部，比剝離檯位更透
+
+  // 圖譜的作法：右半球留著當背牆，左半球拿掉，讓人從左側看進去。
+  // 半透明的殼看不出腦的形狀，實體的一半反而讀得懂。
+  if (!MAT.cortexWall) {
+    MAT.cortexWall = new THREE.MeshPhongMaterial({
+      color: col('--grey-matter').lerp(col('--stage'), 0.62),
+      shininess: 3, specular: 0x0a0a0a, side: THREE.DoubleSide,
+    });
+    MAT.cortexWall.clippingPlanes = [];
+  }
+  for (const n of BY_GROUP.cortex) {
+    const isLeft = n.startsWith('lh');
+    OBJ[n].visible = !isLeft;
+    if (!isLeft) OBJ[n].material = MAT.cortexWall;
+  }
+  // 節點掛在左側構造上，右側的會擋住視線
   for (const bare of ['Thalamus-Proper', 'Amygdala', 'Hippocampus', 'Accumbens-area',
                       'Caudate', 'Putamen', 'Pallidum', 'VentralDC']) {
-    for (const side of ['Left-', 'Right-']) {
-      const k = side + bare;
-      if (OBJ[k]) { OBJ[k].visible = true; OBJ[k].material = deepMat(k); }
-    }
+    const k = 'Left-' + bare;
+    if (OBJ[k]) { OBJ[k].visible = true; OBJ[k].material = deepMat(k); }
   }
   if (OBJ['Brain-Stem']) { OBJ['Brain-Stem'].visible = true; OBJ['Brain-Stem'].material = deepMat('Brain-Stem'); }
 
@@ -2809,7 +2859,7 @@ function setStation(k) {
     flyTo(...VIEWS.left);
   } else if (k === 'flow') {
     enterFlow();
-    flyTo(Math.PI * 0.78, Math.PI * 0.46, 385);
+    flyTo(Math.PI, Math.PI / 2, 330);
   } else {
     clipOn = false;
     buildLegend(Object.keys(CTX_TYPES).map((t) => ({ k: t, zh: CTX_TYPES[t].zh + '　' + CTX_TYPES[t].ba, v: '--grey-matter' })),

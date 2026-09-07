@@ -101,29 +101,54 @@ HISTO_CSS = """
 
 /* ---------- 檯位五：運作流程 ---------- */
 #flowLabels{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
-.fl-label{
+#flowLeads{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+#flowLeads path{fill:none;stroke:var(--rule);stroke-width:1.1;opacity:.55;
+  stroke-linejoin:round;stroke-linecap:round}
+#flowLeads path.lit{stroke:var(--brass);opacity:.75}
+#flowLeads circle{fill:var(--brass)}
+
+/* 節點標記：未亮起時是一個小點，亮起才拉到邊欄 */
+.fl-dot{
+  position:absolute;top:0;left:0;width:9px;height:9px;margin:-4.5px 0 0 -4.5px;
+  border-radius:50%;border:1.5px solid var(--rule);background:var(--panel);
+  pointer-events:auto;cursor:pointer;padding:0;
+  transition:transform .18s,border-color .18s,box-shadow .18s;
+}
+.fl-dot:hover{border-color:var(--brass);transform:scale(1.5)}
+.fl-dot:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.fl-dot.on{
+  border-color:var(--brass);background:var(--brass-lit);
+  transform:scale(1.35);box-shadow:0 0 12px -1px var(--brass-lit);
+}
+
+/* 邊欄標籤：圖譜體例，左右兩欄，引線拉回節點 */
+.fl-tag{
   position:absolute;top:0;left:0;
-  font:inherit;text-align:left;cursor:pointer;
-  background:color-mix(in srgb, var(--panel) 88%, transparent);
-  border:1px solid var(--rule);border-radius:2px;
-  padding:2px 4px;white-space:nowrap;
-  pointer-events:auto;
-  transition:border-color .2s,box-shadow .2s,padding .2s;
+  font:inherit;background:transparent;border:0;padding:0;
+  white-space:nowrap;cursor:pointer;pointer-events:auto;
+  opacity:0;transition:opacity .22s;
+  display:flex;align-items:baseline;gap:6px;
 }
-/* 預設收成一個點；亮起或滑過才展開文字，否則 18 個標籤會互相疊死 */
-.fl-label .fl-zh{display:none}
-.fl-label.on,.fl-label:hover,.fl-label:focus-visible{padding:3px 7px 4px;z-index:2}
-.fl-label.on .fl-zh,.fl-label:hover .fl-zh,.fl-label:focus-visible .fl-zh{display:block}
-.fl-label:hover{border-color:var(--brass)}
-.fl-label:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-.fl-label.on{
-  border-color:var(--brass);
-  box-shadow:0 0 0 1px var(--brass),0 0 14px -2px var(--brass-lit);
-  opacity:1;
+.fl-tag.on{opacity:1}
+.fl-tag.side-l{flex-direction:row-reverse}
+.fl-tag .t-zh{
+  font-size:12.5px;font-weight:500;color:var(--ink);line-height:1.3;
+  background:color-mix(in srgb, var(--stage) 82%, transparent);
+  padding:1px 4px;border-radius:2px;
 }
-.fl-zh{display:block;font-size:12px;font-weight:500;color:var(--ink);line-height:1.3}
-.fl-la{display:block;font-family:"EB Garamond",Georgia,serif;font-style:italic;
-  font-size:10.5px;color:var(--ink3);line-height:1.25}
+.fl-tag:hover .t-zh{color:var(--brass)}
+.fl-tag .t-need{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  border:1px solid var(--rule);flex:0 0 6px;
+}
+.n-yes,.t-need.n-yes{background:var(--hippocampus);border-color:var(--hippocampus)}
+.n-partial,.t-need.n-partial{background:var(--brass);border-color:var(--brass)}
+.n-contested,.t-need.n-contested{background:var(--amygdala);border-color:var(--amygdala)}
+.n-no,.t-need.n-no{background:transparent;border-color:var(--ink3)}
+.need-yes{color:var(--hippocampus);border-color:var(--hippocampus)}
+.need-partial{color:var(--brass);border-color:var(--brass)}
+.need-contested{color:var(--amygdala);border-color:var(--amygdala)}
+.need-no{color:var(--ink3)}
 
 #flowLanes{position:relative;display:flex;flex-direction:column;gap:2px;padding-top:6px;
   max-height:210px;overflow-y:auto;overscroll-behavior:contain}
@@ -152,17 +177,6 @@ HISTO_CSS = """
 .lane-cursor{position:absolute;top:30px;bottom:0;width:1px;background:var(--brass);
   margin-left:170px;pointer-events:none;opacity:.85}
 
-/* 節點上的必要性標記 */
-.fl-need{display:inline-block;width:6px;height:6px;border-radius:50%;margin-left:6px;
-  vertical-align:middle;border:1px solid var(--rule)}
-.n-yes{background:var(--hippocampus);border-color:var(--hippocampus)}
-.n-partial{background:var(--brass);border-color:var(--brass)}
-.n-contested{background:var(--amygdala);border-color:var(--amygdala)}
-.n-no{background:transparent;border-color:var(--ink3)}
-.need-yes{color:var(--hippocampus);border-color:var(--hippocampus)}
-.need-partial{color:var(--brass);border-color:var(--brass)}
-.need-contested{color:var(--amygdala);border-color:var(--amygdala)}
-.need-no{color:var(--ink3)}
 
 /* 時間參數卡 */
 .tm{border-left:2px solid var(--rule);padding:2px 0 4px 9px;margin-bottom:9px}
@@ -219,7 +233,7 @@ html = html.replace(
     """<div class="canvas" id="canvas">
       <canvas id="gl"></canvas>
       <div id="histoWrap" hidden></div>
-      <div id="flowLabels" hidden></div>
+      <div id="flowLabels" hidden><svg id="flowLeads"></svg></div>
       <div id="loading">
         <span class="ld-t">載入標本中</span>
         <span class="ld-s mono">45 萬個三角面</span>
