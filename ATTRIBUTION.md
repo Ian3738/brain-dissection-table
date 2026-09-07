@@ -1,5 +1,12 @@
 # 出處與授權聲明
 
+## 本專案
+
+國立臺灣師範大學　梁至中教授
+國立清華大學博士候選人　陳奕安　製作
+
+台師大 115-1「腦與學習」教學用。自製部分（解剖檯的程式與文字、前額葉網絡動畫、大腦解題模擬）著作權為梁至中、陳奕安所有，以 CC BY-SA 3.0 授權釋出。
+
 ## 網格資料
 
 **Brain for Blender**
@@ -40,6 +47,21 @@
 
 授權全文見 [LICENSE](LICENSE)。
 
+## 大腦解題模擬
+
+`problem_solving_simulation.html` 為本專案作者自製，未使用 brainder 的網格資料，但因與本專案一同散布，同樣以 CC BY-SA 3.0 釋出。
+
+原本獨立放在 <https://github.com/Ian3738/brain-problem-solving-simulation>，2026-09-07 併入本專案，舊網址改為重導向。內層 app 封在 sandbox iframe 中，本專案只在外層加上共用的頁首頁尾，內容未修改。
+
+該工具引用的研究背景：
+
+- [Hippocampal-neocortical functional reorganization underlies children's cognitive development](https://pubmed.ncbi.nlm.nih.gov/PMC4286364)
+- [The Neurodevelopmental Basis of Math Anxiety](https://pmc.ncbi.nlm.nih.gov/articles/PMC3462591/)
+- [Default network activity, coupled with the frontoparietal control network, supports goal-directed cognition](https://pmc.ncbi.nlm.nih.gov/articles/PMC2914129/)
+- [Relating introspective accuracy to individual differences in brain structure](https://pmc.ncbi.nlm.nih.gov/articles/PMC3173849/)
+
+這些研究提供一般背景。教材中三題的具體光點順序是教學設計，並非研究直接觀測到的時序。
+
 ## 第三方程式庫
 
 | 程式庫 | 版本 | 授權 | 載入方式 |
@@ -48,5 +70,7 @@
 | Noto Sans TC、Noto Serif TC | — | SIL Open Font License 1.1 | Google Fonts |
 | EB Garamond | — | SIL Open Font License 1.1 | Google Fonts |
 | IBM Plex Mono | — | SIL Open Font License 1.1 | Google Fonts |
+| [Floating UI](https://floating-ui.com/) | 1.7 | MIT | unpkg CDN，僅解題模擬的提示框使用 |
+| [Lucide](https://lucide.dev/) | 1.17 | ISC | unpkg CDN，僅解題模擬的圖示使用 |
 
 Three.js 直接隨附在 `vendor/` 目錄，檔頭保留了原始的 MIT 授權宣告（Copyright 2010-2021 Three.js Authors）。字型由 Google Fonts 提供，未包含在本專案中；載不到時會退回系統字型。

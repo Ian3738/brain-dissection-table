@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>腦與學習 · 教學工具</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='26'%3E🧠%3C/text%3E%3C/svg%3E">
-<meta name="description" content="台師大 115-1「腦與學習」教學工具：用真人磁振造影重建的大腦網格做的數位解剖，加上前額葉調度循環動畫。">
+<meta name="description" content="台師大 115-1「腦與學習」教學工具：真人磁振造影重建的大腦數位解剖、前額葉調度循環動畫，以及數理解題的大腦分工模擬。">
 <meta property="og:type" content="website">
 <meta property="og:title" content="腦與學習 · 教學工具">
-<meta property="og:description" content="台師大 115-1「腦與學習」教學工具：用真人磁振造影重建的大腦網格做的數位解剖，加上前額葉調度循環動畫。">
+<meta property="og:description" content="台師大 115-1「腦與學習」教學工具：真人磁振造影重建的大腦數位解剖、前額葉調度循環動畫，以及數理解題的大腦分工模擬。">
 <meta property="og:url" content="https://ian3738.github.io/brain-dissection-table/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,14 +18,14 @@
   --ground:#efe9dd; --panel:#fcfaf5; --rail:#e5ddcd;
   --ink:#1b1f26; --ink2:#4d5563; --ink3:#5a626f;
   --rule:#d5cbb7; --brass:#7a5510; --brass-lit:#b98d2e;
-  --grey-matter:#8a5aa6; --white-matter:#4c7cb2;
+  --grey-matter:#8a5aa6; --white-matter:#4c7cb2; --lobe-occipital:#2f7050;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     --ground:#0c0f14; --panel:#171c27; --rail:#0f131b;
     --ink:#e6ecf5; --ink2:#a3aec0; --ink3:#8b96a8;
     --rule:#28303f; --brass:#d8ae5c; --brass-lit:#f0cd85;
-    --grey-matter:#b587cf; --white-matter:#79aee4;
+    --grey-matter:#b587cf; --white-matter:#79aee4; --lobe-occipital:#4fc48a;
   }
 }
 *{box-sizing:border-box}
@@ -47,6 +47,10 @@ h1{
   letter-spacing:.05em;margin:0 0 8px;line-height:1.25;text-wrap:balance;
 }
 .sub{color:var(--ink3);font-size:13px;letter-spacing:.1em}
+.byline{
+  margin-top:12px;font-size:13px;line-height:1.7;color:var(--ink2);
+  padding-left:11px;border-left:2px solid var(--brass);
+}
 .lede{margin:20px 0 0;color:var(--ink2);max-width:62ch}
 
 .tools{display:flex;flex-direction:column;gap:18px;margin:0 0 40px}
@@ -100,10 +104,15 @@ kbd{
   <header>
     <h1>腦與學習 · 教學工具</h1>
     <div class="sub mono">115-1 ／ 國立臺灣師範大學</div>
+    <div class="byline">
+      國立臺灣師範大學　梁至中教授<br>
+      國立清華大學博士候選人　陳奕安　製作
+    </div>
     <p class="lede">
-      兩支單檔網頁，瀏覽器直接開，不用安裝任何東西。畫面上那顆腦不是示意圖，
-      是真人的腦——磁振造影掃出來、經 FreeSurfer 重建的網格，45 萬個三角面。
-      每一條腦回、每一道溝都是那個人真正的形狀。
+      三支單檔網頁，瀏覽器直接開，不用安裝任何東西。解剖檯上那顆腦不是示意圖，
+      是真人的腦——磁振造影掃出來、經 FreeSurfer 重建的網格，45 萬個三角面，
+      每一條腦回、每一道溝都是那個人真正的形狀。另外兩支處理的是功能：
+      訊號怎麼跑，以及解一道題時誰在做什麼。
     </p>
   </header>
 
@@ -136,13 +145,29 @@ kbd{
       <span class="go">開啟 →</span>
     </a>
 
+    <a class="tool" href="problem_solving_simulation.html" style="--accent:var(--lobe-occipital)">
+      <h2>大腦解題模擬</h2>
+      <span class="en la">Problem solving simulation</span>
+      <p>
+        從一道題目出發，看記憶、推理、情緒、預設模式網絡與知識查核守衛怎麼分工。
+        數學的增根、物理的單位、化學的限量試劑，三種題型各有各的翻車點。
+        可以逐步播放，也可以停下來講解。
+      </p>
+      <div class="stations">
+        <span>數學｜排除增根</span><span>物理｜檢查單位</span><span>化學｜限量試劑</span>
+      </div>
+      <span class="go">開啟 →</span>
+    </a>
+
   </div>
 
   <div class="note">
     <h3>操作</h3>
-    拖曳旋轉，滾輪縮放，<kbd>Shift</kbd> ＋拖曳平移。點構造看說明，
-    <kbd>←</kbd> <kbd>→</kbd> 換層或換刀，導覽中按<kbd>空白鍵</kbd>推進。<br>
-    需要支援 WebGL 的瀏覽器。解剖檯 5.3 MB，第一次載入需要幾秒。
+    <b>解剖檯</b>　拖曳旋轉，滾輪縮放，<kbd>Shift</kbd> ＋拖曳平移。點構造看說明，
+    <kbd>←</kbd> <kbd>→</kbd> 換層或換刀，導覽中按<kbd>空白鍵</kbd>推進。
+    需要支援 WebGL 的瀏覽器，檔案 5.3 MB，第一次載入需要幾秒。<br>
+    <b>解題模擬</b>　選題目後按「播放解題動畫」，可暫停、逐步、重播。<br>
+    <b>前額葉動畫</b>　自動循環播放，不需操作。
   </div>
 
   <div class="note">
@@ -152,14 +177,20 @@ kbd{
     真人腦部磁振造影經 FreeSurfer 5.2.0 重建，皮質分區採 Desikan-Killiany 圖譜，
     原始資料以 <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a> 釋出。
     本專案為其衍生作品，同樣以 CC BY-SA 3.0 釋出。
-    <a href="https://github.com/Ian3738/brain-dissection-table">原始碼與完整聲明在 GitHub</a>。
+    <a href="https://github.com/Ian3738/brain-dissection-table">原始碼與完整聲明在 GitHub</a>。<br>
+    <b>製作</b>　國立臺灣師範大學　梁至中教授／國立清華大學博士候選人　陳奕安。
+    本站自製的部分著作權為作者所有，並以 CC BY-SA 3.0 授權使用。
   </div>
 
   <div class="note">
     <h3>該講清楚的限制</h3>
-    皮質下結構是 FreeSurfer 的自動分割結果，邊界是統計圖譜推估出來的，
+    <b>解剖檯</b>　皮質下結構是 FreeSurfer 的自動分割結果，邊界是統計圖譜推估出來的，
     不等同於顯微鏡下的實際界線。組織學那一檯沒有網格可用，是依文獻繪製的示意圖，
-    不是這顆腦的切片。這是教學工具，不是診斷或研究用的影像軟體。
+    不是這顆腦的切片。<br>
+    <b>解題模擬與前額葉動畫</b>　是功能關係的概念示意，不是腦造影、不是精確解剖定位，
+    也不是實測活化量。分段是為了講解方便，實際網絡並行運作，並依任務、年齡與熟練程度改變。
+    「知識查核守衛」是後設認知與驗算的教學比喻，不是獨立腦區，也不保證答案正確。<br>
+    這三支都是教學工具，不是診斷或研究用的軟體。
   </div>
 
 </div>

@@ -1,0 +1,1597 @@
+<!doctype html>
+<html lang="zh-Hant" data-visualize-standalone>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="繁體中文互動教學：透過數學、物理與化學解題情境，觀察記憶、推理、情緒與後設認知查核的協作。">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src 'unsafe-inline' blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<title>大腦解題模擬｜記憶、推理與知識查核</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@600&display=swap">
+<style>
+:root{
+  color-scheme:light dark;
+  --ground:#efe9dd; --rail:#e5ddcd;
+  --ink:#1b1f26; --ink2:#4d5563; --ink3:#5a626f;
+  --rule:#d5cbb7; --brass:#7a5510;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ground:#0c0f14; --rail:#0f131b;
+    --ink:#e6ecf5; --ink2:#a3aec0; --ink3:#8b96a8;
+    --rule:#28303f; --brass:#d8ae5c;
+  }
+}
+html,body{margin:0}
+body{
+  box-sizing:border-box; min-height:100vh;
+  display:flex; flex-direction:column;
+  background:var(--ground); color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+.site-bar{
+  display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
+  padding:12px 20px 11px; border-bottom:1px solid var(--rule); background:var(--rail);
+}
+.site-bar h1{
+  font-family:"Noto Serif TC","Songti TC",serif; font-weight:600; font-size:17px;
+  margin:0; letter-spacing:.04em;
+}
+.site-bar .back{
+  font-size:12.5px; color:var(--brass); text-decoration:none;
+  border-bottom:1px solid var(--rule); white-space:nowrap;
+}
+.site-bar .back:hover{border-bottom-color:var(--brass)}
+.site-bar .back:focus-visible{outline:2px solid var(--brass); outline-offset:2px}
+.site-bar .who{
+  margin-left:auto; font-size:11.5px; color:var(--ink3);
+  text-align:right; line-height:1.55;
+}
+iframe{
+  display:block; width:100%; flex:1 1 auto;
+  min-height:620px; border:0; background:inherit;
+}
+.site-foot{
+  border-top:1px solid var(--rule); background:var(--rail);
+  padding:14px 20px 18px; font-size:11.5px; line-height:1.75; color:var(--ink3);
+}
+.site-foot a{color:var(--brass); text-decoration:none; border-bottom:1px solid var(--rule)}
+.site-foot a:hover{border-bottom-color:var(--brass)}
+.site-foot b{color:var(--ink2); font-weight:500}
+@media (max-width:640px){
+  .site-bar .who{margin-left:0; text-align:left; width:100%}
+  iframe{min-height:78vh}
+}
+</style>
+</head>
+<body>
+<header class="site-bar">
+  <a class="back" href="index.html">← 腦與學習 · 教學工具</a>
+  <h1>大腦解題模擬</h1>
+  <div class="who">國立臺灣師範大學　梁至中教授<br>國立清華大學博士候選人　陳奕安　製作</div>
+</header>
+<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="大腦解題模擬｜記憶、推理與知識查核" srcdoc="&lt;!doctype html&gt;
+&lt;html lang=&quot;zh-Hant&quot; data-visualize-standalone&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+&lt;meta name=&quot;referrer&quot; content=&quot;no-referrer&quot;&gt;
+&lt;meta http-equiv=&quot;Content-Security-Policy&quot; content=&quot;default-src &#x27;none&#x27;; script-src &#x27;unsafe-inline&#x27; &#x27;unsafe-eval&#x27; &#x27;wasm-unsafe-eval&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; style-src &#x27;unsafe-inline&#x27; blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; img-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; font-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; media-src blob: data: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://esm.sh https://fonts.bunny.net https://fonts.googleapis.com https://fonts.gstatic.com https://unpkg.com; worker-src blob:; connect-src blob: data:; frame-src &#x27;none&#x27;; object-src &#x27;none&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;&quot;&gt;
+&lt;title&gt;大腦解題模擬｜記憶、推理與知識查核&lt;/title&gt;
+&lt;style&gt;:root {
+  color-scheme: light dark;
+  background-color: var(
+    --background,
+    var(--color-background-primary, light-dark(rgb(255 255 255), rgb(24 24 24)))
+  ) !important;
+
+  /* Agent-facing contract; keep in sync with SKILL.md. */
+  --background: var(
+    --color-background-primary,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --card: color-mix(in oklab, var(--foreground) 5%, var(--background));
+  --card-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --popover: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255), rgb(45 45 45))
+  );
+  --popover-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --primary: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --primary-foreground: var(
+    --color-text-inverse,
+    light-dark(rgb(255 255 255), rgb(13 13 13))
+  );
+  --secondary: var(
+    --color-background-secondary,
+    light-dark(rgb(255 255 255 / 96%), rgb(54 54 54 / 96%))
+  );
+  --secondary-foreground: var(
+    --color-text-primary,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --muted: color-mix(in srgb, var(--foreground) 10%, transparent);
+  --muted-foreground: var(
+    --color-text-secondary,
+    light-dark(rgb(26 28 31 / 49.4%), rgb(255 255 255 / 49.8%))
+  );
+  --accent: var(
+    --color-background-info,
+    light-dark(rgb(229 242 255), rgb(13 39 63))
+  );
+  --accent-foreground: var(
+    --color-text-info,
+    light-dark(rgb(51 156 255), rgb(131 195 255))
+  );
+  --destructive: var(
+    --color-text-warning,
+    light-dark(rgb(226 85 7), rgb(255 133 73))
+  );
+  --border: var(
+    --color-border-secondary,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+  --input: var(
+    --color-border-primary,
+    light-dark(
+      rgb(26 28 31 / 11.8%),
+      color-mix(in oklab, rgb(0 0 0) 10%, transparent)
+    )
+  );
+  --ring: var(
+    --color-ring-primary,
+    light-dark(rgb(51 156 255), rgb(131 195 255 / 76%))
+  );
+  --font-size-base: var(--font-text-md-size, 14px);
+  --blue: light-dark(rgb(51 156 255), rgb(51 156 255));
+  --orange: light-dark(rgb(226 85 7), rgb(251 106 34));
+  --green: light-dark(rgb(0 162 64), rgb(64 201 119));
+  --red: light-dark(rgb(224 46 42), rgb(255 103 100));
+  --purple: light-dark(rgb(146 79 247), rgb(173 123 249));
+  --yellow: light-dark(rgb(255 195 0), rgb(255 210 64));
+  --viz-series-1: var(--primary);
+  --viz-series-2: light-dark(rgb(243 136 59), rgb(245 154 86));
+  --viz-series-3: light-dark(rgb(93 201 119), rgb(116 213 139));
+  --viz-series-4: light-dark(rgb(235 119 177), rgb(240 143 192));
+  --viz-series-5: light-dark(rgb(155 121 236), rgb(170 145 239));
+  --viz-series-6: light-dark(rgb(58 185 177), rgb(90 203 194));
+
+  /* Internal implementation variables; not part of the agent contract. */
+  --font-sans: -apple-system, system-ui, &quot;Segoe UI&quot;, sans-serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, &quot;SF Mono&quot;, Menlo, Consolas, &quot;Liberation Mono&quot;,
+    monospace;
+  --font-size-normal: max(11px, var(--font-size-base));
+  --font-size-tooltip: calc(var(--font-size-base) - 1px);
+  --font-size-small: max(11px, calc(var(--font-size-base) - 2px));
+  --font-size-h1: calc(var(--font-size-normal) * 1.7142857143);
+  --font-size-h2: calc(var(--font-size-normal) * 1.4285714286);
+  --font-size-h3: calc(var(--font-size-normal) * 1.2857142857);
+  --font-weight-normal: 430;
+  --font-weight-medium: 500;
+  --icon-size: 16px;
+  --line-height-normal: calc(var(--font-size-normal) * 1.5);
+  --line-height-tooltip: calc(var(--font-size-tooltip) * 1.4285714286);
+  --line-height-small: calc(var(--font-size-small) + 4px);
+  --corner-shape: round;
+  --radius: var(--border-radius-lg, 10px);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px -1px rgb(0 0 0 / 8%);
+  --checkmark-image: url(&quot;data:image/svg+xml,%3Csvg xmlns=&#x27;http://www.w3.org/2000/svg&#x27; viewBox=&#x27;0 0 17 17&#x27;%3E%3Cpath d=&#x27;M12.8961 3.64101C13.1297 3.41418 13.4984 3.37523 13.7779 3.56581C14.0571 3.75635 14.1554 4.11331 14.0299 4.41347L13.9615 4.53847L7.71151 13.7045C7.59411 13.8767 7.4063 13.9877 7.19881 14.0072C6.99136 14.0267 6.78564 13.9533 6.63826 13.806L2.88826 10.056L2.79842 9.9457C2.6192 9.67407 2.64927 9.30496 2.88826 9.06581C3.12738 8.82669 3.49647 8.79676 3.76815 8.97597L3.8785 9.06581L7.03084 12.2182L12.8053 3.74941L12.8961 3.64101Z&#x27;/%3E%3C/svg%3E&quot;);
+
+  /* Legacy aliases; not part of the current agent contract. */
+  --viz-bg: transparent;
+  --viz-panel: var(--card);
+  --viz-border: var(--border);
+  --viz-text: var(--foreground);
+  --viz-muted: var(--muted-foreground);
+  --viz-accent: var(--primary);
+  --viz-accent-text: var(--primary-foreground);
+  --viz-accent-bg: var(--accent);
+  --viz-font-size: var(--font-size-base);
+  --viz-warning: var(--destructive);
+}
+
+:root[data-theme=&quot;light&quot;] {
+  color-scheme: light;
+}
+
+:root[data-theme=&quot;dark&quot;] {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html &gt; body {
+  /* Preserve MCP aliases for older inline renderers without creating :root cycles. */
+  --color-background-primary: var(
+    --background,
+    light-dark(rgb(255 255 255), rgb(24 24 24))
+  );
+  --color-text-primary: var(
+    --foreground,
+    light-dark(rgb(26 28 31), rgb(255 255 255))
+  );
+  --color-border-secondary: var(
+    --border,
+    light-dark(rgb(26 28 31 / 8%), rgb(255 255 255 / 8.2%))
+  );
+
+  margin: 0;
+  padding: var(--visualize-paint-gutter, 0px);
+  color: var(--foreground);
+  background: transparent !important;
+  font-family: var(--font-sans) !important;
+  font-size: var(--font-size-normal);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-normal);
+}
+
+a {
+  color: color-mix(in srgb, var(--viz-accent) 80%, var(--viz-text) 20%);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium, 500);
+  text-decoration: none;
+  text-underline-offset: 2px;
+}
+
+a:is(:hover, :focus-visible) {
+  text-decoration-line: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 0.5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin-block: 0;
+}
+
+h1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+h3,
+h4,
+h5,
+h6 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.3;
+}
+
+b,
+strong,
+th {
+  font-weight: var(--font-weight-medium);
+}
+
+code:not(pre code) {
+  display: inline;
+  padding: 1px 6px;
+  border-radius: var(--radius-sm);
+  corner-shape: var(--corner-shape);
+  background: var(--muted);
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  overflow-wrap: anywhere;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  word-break: break-word;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--foreground);
+  font: inherit;
+  text-align: start;
+}
+
+.table :is(th, td) {
+  padding-block: 10px;
+  padding-inline: 0 24px;
+  overflow-wrap: anywhere;
+  border-bottom: 1px solid var(--border);
+  text-align: start;
+  vertical-align: top;
+}
+
+.table-responsive &gt; .table :is(th, td) {
+  overflow-wrap: break-word;
+}
+
+.table :is(th, td):last-child {
+  padding-inline-end: 0;
+}
+
+.table :is(caption, thead th) {
+  font-weight: 600;
+}
+
+.table thead th {
+  padding-block: 8px;
+  border-bottom-color: color-mix(in srgb, var(--foreground) 16%, transparent);
+}
+
+.table tbody tr:last-child :is(th, td) {
+  border-bottom: 0;
+}
+
+.table.table-sm :is(th, td) {
+  padding-block: 6px;
+}
+
+.table.table-sm :is(th, td):not(:last-child) {
+  padding-inline-end: 16px;
+}
+
+.table :is(.text-end, [align=&quot;right&quot;]) {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+.table :is(.text-center, [align=&quot;center&quot;]) {
+  text-align: center;
+}
+
+.table .text-nowrap {
+  white-space: nowrap;
+}
+
+#widget {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  padding: 0;
+  background: transparent !important;
+}
+
+.card {
+  min-width: 0;
+  padding: 12px;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  border-radius: var(--radius-2xl);
+  corner-shape: var(--corner-shape);
+  color: var(--card-foreground);
+  background: var(--card);
+}
+
+#widget &gt; :not(.card, .progress) {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.tooltip {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  width: max-content;
+  max-width: min(
+    20rem,
+    var(--tooltip-available-width, calc(100vw - 10px)),
+    calc(100vw - 10px)
+  );
+  max-height: min(
+    var(--tooltip-available-height, calc(100vh - 10px)),
+    calc(100vh - 10px)
+  );
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--popover-foreground);
+  background: var(--popover);
+  box-shadow: none;
+  font-size: var(--font-size-tooltip);
+  line-height: var(--line-height-tooltip);
+  overflow-wrap: break-word;
+  white-space: normal;
+  pointer-events: none;
+  user-select: none;
+}
+
+.viz-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(180px, 24%), 1fr));
+  gap: 10px;
+}
+
+.viz-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.viz-stat-value {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.25;
+}
+
+.viz-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+hr {
+  width: 100%;
+  height: 1px;
+  margin-block: 6px;
+  border: 0;
+  background: var(--border);
+}
+
+.nav {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 4px;
+}
+
+.progress {
+  display: flex;
+  height: 8px;
+  margin-block: calc((var(--line-height-normal, 1.5em) - 8px) / 2);
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+}
+
+.progress-bar:only-child {
+  border-radius: var(--radius-full);
+}
+
+.progress-bar {
+  height: 100%;
+  flex-shrink: 0;
+  border: 0;
+  background: var(--viz-series-1);
+}
+
+.viz-badge {
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-foreground);
+  background: var(--accent);
+  font-weight: var(--font-weight-medium);
+}
+
+small,
+.text-small,
+.viz-badge {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+}
+
+.text-muted {
+  color: var(--muted-foreground);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.viz-controls &gt; .form-label {
+  display: grid;
+  min-width: min(100%, 260px);
+  flex: 1 1 280px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 12px;
+  margin-bottom: 0;
+}
+
+.viz-controls &gt; .form-label &gt; :is(.form-control, .form-range, .form-select) {
+  grid-column: 1 / -1;
+}
+
+.btn,
+.nav-link,
+.form-check-input,
+.form-control,
+.form-range,
+.form-select {
+  font: inherit;
+}
+
+.btn,
+.nav-link {
+  appearance: button;
+  display: inline-flex;
+  inline-size: fit-content;
+  max-inline-size: 100%;
+  min-height: 28px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0 8px;
+  -webkit-app-region: no-drag;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: var(--cursor-interaction, pointer);
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+.btn:is(.btn-block, .viz-tile) {
+  inline-size: 100%;
+}
+
+.btn.viz-tile {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+a.btn {
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:not(:disabled):hover,
+.nav-link:not(:disabled):not([aria-disabled=&quot;true&quot;]):hover {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.btn-primary {
+  border-color: transparent;
+  color: var(--primary-foreground);
+  background: var(--foreground);
+  background-clip: padding-box;
+}
+
+.btn-primary .text-muted {
+  color: color-mix(in srgb, var(--primary-foreground) 50%, transparent);
+}
+
+.btn-primary:not(:disabled):hover {
+  background: color-mix(in srgb, var(--foreground) 80%, transparent);
+  background-clip: padding-box;
+}
+
+.btn-ghost {
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.btn-ghost:not(:disabled):hover {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.nav-pills .nav-link {
+  min-width: 0;
+  border-color: transparent;
+  color: var(--muted-foreground);
+  background: transparent;
+}
+
+.nav-justified .nav-link {
+  flex: 1 1 0;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}
+
+.nav-pills .nav-link.active {
+  color: var(--foreground);
+  background: var(--muted);
+}
+
+.btn:disabled,
+.nav-link:disabled,
+.nav-link[aria-disabled=&quot;true&quot;] {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+[data-lucide] {
+  stroke-width: 1.6;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--foreground);
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  padding: 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  background: var(--secondary);
+}
+
+.form-control::placeholder {
+  color: var(--muted-foreground);
+}
+
+.form-control[type=&quot;file&quot;] {
+  padding: 0;
+  overflow: hidden;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control[type=&quot;file&quot;]::file-selector-button {
+  min-height: 26px;
+  margin-right: 8px;
+  padding: 0 8px;
+  border: 0;
+  border-right: 1px solid var(--input);
+  color: var(--secondary-foreground);
+  background: var(--secondary);
+  cursor: inherit;
+  font: inherit;
+}
+
+.form-control[type=&quot;file&quot;]:not(:disabled):hover::file-selector-button {
+  background: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-control-color[type=&quot;color&quot;] {
+  width: 40px;
+  height: 28px;
+  padding: 3px;
+  cursor: var(--cursor-interaction, pointer);
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.form-control-color[type=&quot;color&quot;]::-webkit-color-swatch {
+  border: 0;
+  border-radius: calc(var(--radius-lg) - 4px);
+  corner-shape: var(--corner-shape);
+}
+
+textarea.form-control {
+  height: auto;
+  min-height: 72px;
+  padding: 8px 10px;
+  resize: vertical;
+}
+
+.form-control:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-control:disabled,
+.form-select:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.form-select {
+  appearance: none;
+  display: block;
+  width: 100%;
+  min-height: 28px;
+  margin: 0;
+  padding: 0 32px 0 8px;
+  outline: none;
+  border: 1px solid var(--input);
+  border-radius: var(--radius-lg);
+  corner-shape: var(--corner-shape);
+  color: var(--foreground);
+  background-color: var(--secondary);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--muted-foreground) 50%),
+    linear-gradient(135deg, var(--muted-foreground) 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 10px) 50%;
+  background-repeat: no-repeat;
+  background-size: 4px 4px;
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-select:not(:disabled):hover {
+  background-color: color-mix(in srgb, var(--foreground) 6%, var(--secondary));
+}
+
+.form-select:focus-visible {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-check {
+  display: flex;
+  min-height: 20px;
+  align-items: center;
+  gap: 6px;
+}
+
+.form-check-input {
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  margin: 0;
+  border: 1px solid var(--input);
+  color: var(--primary-foreground);
+  background-color: transparent;
+  cursor: var(--cursor-interaction, default);
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    box-shadow 150ms;
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;] {
+  border-color: var(--input);
+  border-radius: var(--radius-sm);
+  corner-shape: var(--corner-shape);
+  background-color: var(--secondary);
+  box-shadow: var(--shadow-sm);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input:not(:disabled):not(:checked):hover {
+  background-color: var(--card);
+}
+
+.form-check:not(.form-switch) .form-check-input[type=&quot;checkbox&quot;]:checked {
+  border-color: var(--primary);
+  background-color: var(--primary);
+}
+
+.form-check:not(.form-switch)
+  .form-check-input[type=&quot;checkbox&quot;]:checked::before {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-foreground);
+  content: &quot;&quot;;
+  mask: var(--checkmark-image) center / 12px 12px no-repeat;
+}
+
+.form-check-input[type=&quot;radio&quot;] {
+  width: 14px;
+  height: 14px;
+  border-radius: var(--radius-full);
+}
+
+.form-check-input[type=&quot;radio&quot;]:checked {
+  border: 2px solid var(--primary);
+  background:
+    radial-gradient(circle, var(--primary-foreground) 0 2.5px, transparent 3px),
+    var(--primary);
+}
+
+.form-check:not(.form-switch) .form-check-input:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.form-check:not(.form-switch) .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+}
+
+.form-switch .form-check-input:disabled,
+.form-switch .form-check-input:disabled + .form-check-label {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.form-check-label {
+  color: var(--foreground);
+  cursor: var(--cursor-interaction, default);
+}
+
+.form-switch .form-check-input {
+  position: relative;
+  width: 32px;
+  height: 20px;
+  border: 0;
+  border-radius: var(--radius-full);
+  background: var(--muted);
+  box-shadow: none;
+  transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input::before {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  border: 1px solid light-dark(var(--primary-foreground), var(--foreground));
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+  box-shadow: var(--shadow-sm);
+  content: &quot;&quot;;
+  transform: translate(2px, -50%);
+  transition: transform 200ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.form-switch .form-check-input:checked {
+  background: var(--primary);
+}
+
+.form-switch .form-check-input:checked::before {
+  transform: translate(14px, -50%);
+}
+
+.form-switch .form-check-input:focus-visible {
+  box-shadow: 0 0 0 2px var(--ring);
+}
+
+.form-range {
+  appearance: none;
+  display: block;
+  width: 100%;
+  height: 28px;
+  flex: 1;
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  accent-color: var(--primary);
+  background: linear-gradient(
+      color-mix(in srgb, var(--foreground) 7%, transparent),
+      color-mix(in srgb, var(--foreground) 7%, transparent)
+    )
+    center / 100% 2px no-repeat;
+}
+
+.form-range::-webkit-slider-runnable-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-webkit-slider-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range::-moz-range-track {
+  height: 28px;
+  background: transparent;
+}
+
+.form-range::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: light-dark(var(--primary-foreground), var(--foreground));
+}
+
+.form-range:focus-visible::-moz-range-thumb {
+  border-color: var(--ring);
+  box-shadow: inset 0 0 0 1px var(--ring);
+}
+
+.form-range:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.btn:not(.btn-primary, .viz-tile):is(
+  [aria-pressed=&quot;true&quot;],
+  [aria-selected=&quot;true&quot;],
+  .is-selected
+) {
+  border-color: var(--primary);
+  color: var(--primary-foreground);
+  background: var(--primary);
+}
+
+.btn.viz-tile:is([aria-pressed=&quot;true&quot;], [aria-selected=&quot;true&quot;], .is-selected) {
+  border-color: var(--primary);
+  box-shadow: inset 0 0 0 1px var(--primary);
+}
+
+.btn:focus-visible,
+.nav-link:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (pointer: coarse) {
+  .btn,
+  .nav-link,
+  .form-control,
+  .form-select {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  /* Keep small-screen WebKit from zooming when a text field receives focus. */
+  .form-control,
+  .form-select {
+    font-size: max(16px, var(--font-size-normal));
+  }
+
+  .form-control[type=&quot;file&quot;]::file-selector-button {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .form-control-color[type=&quot;color&quot;] {
+    width: 44px;
+    height: 44px;
+  }
+
+  .form-control:is(
+    [type=&quot;date&quot;],
+    [type=&quot;datetime-local&quot;],
+    [type=&quot;month&quot;],
+    [type=&quot;time&quot;],
+    [type=&quot;week&quot;]
+  ) {
+    min-width: 0;
+    max-width: 100%;
+    padding-block: 8px;
+  }
+
+  .form-check {
+    min-height: 44px;
+    padding-inline: 15px;
+  }
+
+  .form-check-input {
+    position: relative;
+  }
+
+  .form-check-input::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    content: &quot;&quot;;
+    transform: translate(-50%, -50%);
+  }
+
+  .form-check-label {
+    display: inline-flex;
+    min-width: 44px;
+    min-height: 44px;
+    align-items: center;
+  }
+
+  .form-range {
+    height: 44px;
+    touch-action: pan-y;
+  }
+
+  .form-range::-webkit-slider-runnable-track {
+    height: 44px;
+  }
+
+  .form-range::-moz-range-track {
+    height: 44px;
+  }
+
+  .form-range::-webkit-slider-thumb {
+    margin-top: 12px;
+  }
+}
+
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+#widget &gt; svg {
+  width: 100%;
+}
+
+/* Model-authored chart rules can otherwise stretch icons after these styles load. */
+svg.lucide {
+  display: block;
+  width: var(--icon-size) !important;
+  height: var(--icon-size) !important;
+  flex: none;
+  margin: 0 !important;
+  stroke-width: 1.6;
+}
+
+.text-warning,
+.text-destructive {
+  color: var(--destructive);
+}
+
+html&gt;body{padding:0}&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;solve-brain&quot;&gt;
+ &lt;div class=&quot;viz-row&quot;&gt;&lt;strong&gt;一道題目，如何成為有依據的答案？&lt;/strong&gt;&lt;/div&gt;
+ &lt;div class=&quot;viz-controls&quot; style=&quot;margin-top:12px&quot;&gt;
+  &lt;label class=&quot;form-label&quot;&gt;題目&lt;select class=&quot;form-select&quot; id=&quot;sb-subject&quot;&gt;&lt;option value=&quot;math&quot;&gt;數學｜排除增根&lt;/option&gt;&lt;option value=&quot;physics&quot;&gt;物理｜檢查單位&lt;/option&gt;&lt;option value=&quot;chemistry&quot;&gt;化學｜限量試劑&lt;/option&gt;&lt;/select&gt;&lt;/label&gt;
+  &lt;button class=&quot;btn btn-primary&quot; type=&quot;button&quot; id=&quot;sb-play&quot;&gt;播放解題動畫&lt;/button&gt;
+  &lt;button class=&quot;btn&quot; type=&quot;button&quot; id=&quot;sb-prev&quot;&gt;上一步&lt;/button&gt;&lt;button class=&quot;btn&quot; type=&quot;button&quot; id=&quot;sb-next&quot;&gt;下一步&lt;/button&gt;
+ &lt;/div&gt;
+ &lt;div class=&quot;card&quot; style=&quot;margin-top:12px&quot;&gt;&lt;span class=&quot;text-small text-muted&quot;&gt;眼前的題目&lt;/span&gt;&lt;div id=&quot;sb-question&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+ &lt;div class=&quot;viz-row&quot; style=&quot;margin-top:12px&quot;&gt;&lt;span id=&quot;sb-stage&quot; aria-live=&quot;polite&quot;&gt;&lt;/span&gt;&lt;span class=&quot;text-small text-muted&quot; id=&quot;sb-status&quot;&gt;待播放&lt;/span&gt;&lt;/div&gt;
+ &lt;div id=&quot;sb-diagram&quot;&gt;&lt;svg class=&quot;sb-svg&quot; role=&quot;img&quot; aria-labelledby=&quot;sb-title sb-desc&quot;&gt;&lt;title id=&quot;sb-title&quot;&gt;解題時記憶、情緒、控制、內在聯想與查核的協作示意&lt;/title&gt;&lt;desc id=&quot;sb-desc&quot;&gt;&lt;/desc&gt;&lt;/svg&gt;&lt;/div&gt;
+ &lt;div id=&quot;sb-work&quot; aria-live=&quot;polite&quot;&gt;&lt;span class=&quot;text-small text-muted&quot; id=&quot;sb-work-label&quot;&gt;&lt;/span&gt;&lt;div id=&quot;sb-equation&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+ &lt;div id=&quot;sb-detail&quot; aria-live=&quot;polite&quot; style=&quot;margin-top:10px&quot;&gt;&lt;/div&gt;
+ &lt;div class=&quot;viz-row text-small&quot; style=&quot;margin-top:12px&quot;&gt;&lt;span class=&quot;sb-key&quot;&gt;&lt;i style=&quot;background:var(--viz-series-1)&quot;&gt;&lt;/i&gt;前額葉皮質&lt;/span&gt;&lt;span class=&quot;sb-key&quot;&gt;&lt;i style=&quot;background:var(--viz-series-2)&quot;&gt;&lt;/i&gt;海馬迴&lt;/span&gt;&lt;span class=&quot;sb-key&quot;&gt;&lt;i style=&quot;background:var(--viz-series-3)&quot;&gt;&lt;/i&gt;杏仁核&lt;/span&gt;&lt;span class=&quot;sb-key&quot;&gt;&lt;i style=&quot;background:var(--viz-series-4)&quot;&gt;&lt;/i&gt;預設模式網絡 DMN&lt;/span&gt;&lt;span class=&quot;sb-key&quot;&gt;&lt;i style=&quot;background:var(--viz-series-5)&quot;&gt;&lt;/i&gt;查核守衛＊&lt;/span&gt;&lt;/div&gt;
+ &lt;div class=&quot;text-small text-muted&quot; style=&quot;margin-top:10px&quot;&gt;＊守衛＝後設認知與驗算的教學比喻，非獨立腦區，也不是保證正確的裝置。DMN 含部分內側前額葉，與「前額葉」分類並非互斥。&lt;/div&gt;
+ &lt;div class=&quot;text-small text-muted&quot; style=&quot;margin-top:6px&quot;&gt;亮色＝本段講解焦點，非活化量；節點、連線與播放時間均為示意。實際網絡並行、依任務與熟練程度改變。&lt;/div&gt;
+ &lt;div class=&quot;text-small text-muted&quot; style=&quot;margin-top:6px&quot;&gt;研究：&lt;a href=&quot;https://pubmed.ncbi.nlm.nih.gov/PMC4286364&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;算術學習與海馬&lt;/a&gt; · &lt;a href=&quot;https://pmc.ncbi.nlm.nih.gov/articles/PMC3462591/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;兒童數學焦慮&lt;/a&gt; · &lt;a href=&quot;https://pmc.ncbi.nlm.nih.gov/articles/PMC2914129/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;DMN 與目標導向思考&lt;/a&gt; · &lt;a href=&quot;https://pmc.ncbi.nlm.nih.gov/articles/PMC3173849/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;後設認知&lt;/a&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;style&gt;
+#solve-brain {width:100%;color:var(--foreground)}
+#solve-brain .sb-svg {display:block;width:100%;overflow:visible}
+#solve-brain .sb-svg text {fill:var(--foreground);font-family:inherit;font-size:var(--font-size-base);font-weight:400;paint-order:stroke;stroke:var(--background);stroke-width:4px;stroke-linejoin:round}
+#solve-brain .sb-svg .sb-small {font-size:calc(var(--font-size-base) * .857);fill:var(--muted-foreground)}
+#solve-brain .sb-key {display:inline-flex;align-items:center;gap:5px}
+#solve-brain .sb-key i {width:9px;height:9px;display:inline-block;border-radius:50%}
+#solve-brain #sb-question,#solve-brain #sb-equation {white-space:pre-line}
+#solve-brain #sb-detail {min-height:3em}
+&lt;/style&gt;
+&lt;script&gt;
+(()=&gt;{
+const root=document.getElementById(&#x27;solve-brain&#x27;),q=s=&gt;root.querySelector(s),svg=q(&#x27;.sb-svg&#x27;),NS=&#x27;http://www.w3.org/2000/svg&#x27;;
+const C=[&#x27;var(--viz-series-1)&#x27;,&#x27;var(--viz-series-2)&#x27;,&#x27;var(--viz-series-3)&#x27;,&#x27;var(--viz-series-4)&#x27;,&#x27;var(--viz-series-5)&#x27;,&#x27;var(--muted-foreground)&#x27;];
+const problems={
+ math:{question:&#x27;求實數 x：√(x＋6)＝x&#x27;,work:[
+  [&#x27;讀題&#x27;,&#x27;未知數是 x；等號兩側必須相等。&#x27;],
+  [&#x27;保留條件&#x27;,&#x27;左側平方根非負，因此 x ≥ 0。&#x27;],
+  [&#x27;提取規則&#x27;,&#x27;兩側平方可求候選解，但可能引入增根。&#x27;],
+  [&#x27;聯想與策略&#x27;,&#x27;連結熟悉例題：「先平方，再代回原式」。&#x27;],
+  [&#x27;候選解・尚未驗算&#x27;,&#x27;x＋6＝x² → (x−3)(x＋2)＝0\n候選：x＝3 或 x＝−2&#x27;],
+  [&#x27;查核未通過・退回檢查&#x27;,&#x27;候選 x＝−2：√(−2＋6)＝2 ≠ −2\n違反 x ≥ 0，排除增根。&#x27;],
+  [&#x27;查核通過・本題結論&#x27;,&#x27;x＝3：√(3＋6)＝3 ✓\n唯一實數解：x＝3。&#x27;]],
+  final:&#x27;保留 x＝3，排除 x＝−2；把「平方後要代回」連結到這次經驗。&#x27;},
+ physics:{question:&#x27;物體從靜止開始，以恆定加速度 2 m/s² 運動 3 s。沿運動方向的位移是多少？&#x27;,work:[
+  [&#x27;讀題&#x27;,&#x27;要求位移；已知加速度與經過時間。&#x27;],
+  [&#x27;保留條件&#x27;,&#x27;v₀＝0；a＝2 m/s²；t＝3 s；加速度恆定。&#x27;],
+  [&#x27;提取規則&#x27;,&#x27;區分 v＝v₀＋at 與 s＝v₀t＋½at²。&#x27;],
+  [&#x27;聯想與策略&#x27;,&#x27;由速度—時間圖的面積聯想到位移。&#x27;],
+  [&#x27;刻意放入錯誤候選・尚未驗算&#x27;,&#x27;候選推法：s＝at → 2×3 →「6 m」？&#x27;],
+  [&#x27;查核未通過・退回檢查&#x27;,&#x27;at 的單位是 m/s，不是 m。\n混淆了速度與位移，需更換公式。&#x27;],
+  [&#x27;查核通過・本題結論&#x27;,&#x27;s＝½at²＝½×2×3²＝9 m ✓\n速度—時間圖面積：½×3×6＝9 m。&#x27;]],
+  final:&#x27;依恆加速度條件修正公式，並以單位與圖形面積交叉檢查。&#x27;},
+ chemistry:{question:&#x27;2 H₂＋O₂ → 2 H₂O。現有 H₂ 3 mol、O₂ 1 mol；反應進行至限量試劑耗盡，最多生成多少 H₂O？&#x27;,work:[
+  [&#x27;讀題&#x27;,&#x27;求水的最大生成量；兩種反應物皆有限。&#x27;],
+  [&#x27;保留條件&#x27;,&#x27;H₂＝3 mol；O₂＝1 mol；係數比 2：1：2。&#x27;],
+  [&#x27;提取規則&#x27;,&#x27;生成量同時受兩種反應物限制。&#x27;],
+  [&#x27;聯想與策略&#x27;,&#x27;每一組反應需要 2 份 H₂ 與 1 份 O₂。&#x27;],
+  [&#x27;刻意放入錯誤候選・尚未驗算&#x27;,&#x27;只看 H₂ 的候選答案：H₂O＝3 mol？&#x27;],
+  [&#x27;查核未通過・退回檢查&#x27;,&#x27;生成 3 mol H₂O 需要 1.5 mol O₂，\n超過現有 1 mol；氧氣是限量試劑。&#x27;],
+  [&#x27;查核通過・本題結論&#x27;,&#x27;H₂O 最多＝2 mol ✓\n消耗 H₂ 2 mol、O₂ 1 mol；剩餘 H₂ 1 mol。&#x27;]],
+  final:&#x27;以限量試劑及物料衡算檢查結果；將錯誤與修正策略一起連結。&#x27;}
+};
+const stages=[
+ {title:&#x27;看到題目・判讀重要性&#x27;,focus:[&#x27;pfc&#x27;,&#x27;am&#x27;,&#x27;other&#x27;],edges:[[&#x27;other&#x27;,&#x27;pfc&#x27;,0],[&#x27;am&#x27;,&#x27;pfc&#x27;,2]],detail:&#x27;視覺、語言與數量處理網絡協助讀題；杏仁核參與重要性與情緒評估。焦慮可能影響解題，但不是每次看到題目都會出現恐懼反應。&#x27;},
+ {title:&#x27;前額葉・維持目標與條件&#x27;,focus:[&#x27;pfc&#x27;,&#x27;other&#x27;],edges:[[&#x27;pfc&#x27;,&#x27;other&#x27;,0],[&#x27;other&#x27;,&#x27;pfc&#x27;,0]],detail:&#x27;前額葉與頂葉等控制網絡協作，維持未知數、已知條件與步驟；工作記憶與推理並非由前額葉單獨完成。&#x27;},
+ {title:&#x27;海馬迴・連結記憶&#x27;,focus:[&#x27;hc&#x27;,&#x27;pfc&#x27;,&#x27;other&#x27;],edges:[[&#x27;pfc&#x27;,&#x27;hc&#x27;,1],[&#x27;hc&#x27;,&#x27;pfc&#x27;,1],[&#x27;hc&#x27;,&#x27;other&#x27;,1]],detail:&#x27;海馬迴參與情節與關聯記憶提取，以及新學習。熟練公式與語義知識也依賴分散的皮質表徵，並非全部存放於海馬迴。&#x27;},
+ {title:&#x27;DMN・內在聯想與模擬&#x27;,focus:[&#x27;mp&#x27;,&#x27;pcc&#x27;,&#x27;ag&#x27;,&#x27;hc&#x27;,&#x27;pfc&#x27;],edges:[[&#x27;hc&#x27;,&#x27;pcc&#x27;,3],[&#x27;pcc&#x27;,&#x27;mp&#x27;,3],[&#x27;mp&#x27;,&#x27;ag&#x27;,3],[&#x27;ag&#x27;,&#x27;pfc&#x27;,3]],detail:&#x27;預設模式網絡（DMN）與記憶、內在聯想及模擬相關；在某些任務可與控制網絡協作。此處是可能的策略示意，並非每道數理題都會提高 DMN 活動。&#x27;},
+ {title:&#x27;前額葉・形成候選答案&#x27;,focus:[&#x27;pfc&#x27;,&#x27;other&#x27;,&#x27;hc&#x27;],edges:[[&#x27;hc&#x27;,&#x27;pfc&#x27;,1],[&#x27;pfc&#x27;,&#x27;other&#x27;,0],[&#x27;other&#x27;,&#x27;pfc&#x27;,0]],detail:&#x27;依目前提取的知識執行推理與運算。得到候選答案，仍須檢查條件與推理是否成立；熟悉感或自信不能代替驗算。&#x27;},
+ {title:&#x27;知識查核守衛・找出不一致&#x27;,focus:[&#x27;pfc&#x27;,&#x27;guard&#x27;],edges:[[&#x27;pfc&#x27;,&#x27;guard&#x27;,4],[&#x27;guard&#x27;,&#x27;pfc&#x27;,4]],detail:&#x27;「守衛」表示有意識地核對條件、代回原式、檢查單位或守恆。這是後設認知與查核行為的比喻，不是腦內可辨識真假的單一裝置。&#x27;},
+ {title:&#x27;修正・再查核・形成學習&#x27;,focus:[&#x27;pfc&#x27;,&#x27;guard&#x27;,&#x27;hc&#x27;,&#x27;other&#x27;],edges:[[&#x27;guard&#x27;,&#x27;pfc&#x27;,4],[&#x27;pfc&#x27;,&#x27;other&#x27;,0],[&#x27;pfc&#x27;,&#x27;guard&#x27;,4],[&#x27;pfc&#x27;,&#x27;hc&#x27;,1]],detail:&#x27;修正推理後重新查核；這次的條件、錯誤與解法可成為後續學習材料。驗算結論只適用於本題與其條件。&#x27;}
+];
+const specs=[
+ [&#x27;pfc&#x27;,.24,80,[&#x27;前額葉皮質&#x27;,&#x27;工作記憶／控制&#x27;],0],
+ [&#x27;mp&#x27;,.17,195,[&#x27;內側前額葉&#x27;,&#x27;mPFC · DMN&#x27;],3],
+ [&#x27;pcc&#x27;,.61,55,[&#x27;後扣帶等&#x27;,&#x27;PCC · DMN&#x27;],3],
+ [&#x27;ag&#x27;,.87,180,[&#x27;角回&#x27;,&#x27;AG · DMN&#x27;],3],
+ [&#x27;am&#x27;,.23,302,[&#x27;杏仁核&#x27;,&#x27;情緒／重要性&#x27;],2],
+ [&#x27;hc&#x27;,.53,310,[&#x27;海馬迴&#x27;,&#x27;記憶連結&#x27;],1],
+ [&#x27;other&#x27;,.82,306,[&#x27;頂葉等皮質&#x27;,&#x27;數量／語義&#x27;],5]
+];
+let stage=0,subject=&#x27;math&#x27;,elapsed=0,playing=false,last=0,width=0,links=[],nodes=[],guardPulse=null,guardTitle=null,progress=null;
+const duration=6000,reduced=matchMedia(&#x27;(prefers-reduced-motion: reduce)&#x27;).matches;
+function el(tag,attrs={},parent=svg){const e=document.createElementNS(NS,tag);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,v);parent.appendChild(e);return e;}
+function label(lines,x,y,cls=&#x27;&#x27;,anchor=&#x27;middle&#x27;){const t=el(&#x27;text&#x27;,{x,y,class:cls,&#x27;text-anchor&#x27;:anchor});[].concat(lines).forEach((l,i)=&gt;{const z=el(&#x27;tspan&#x27;,{x,dy:i?17:0},t);z.textContent=l;});const b=t.getBBox();let shift=b.x&lt;5?5-b.x:b.x+b.width&gt;width-5?width-5-b.x-b.width:0;if(shift){t.setAttribute(&#x27;x&#x27;,x+shift);for(const z of t.children)z.setAttribute(&#x27;x&#x27;,x+shift);}return t;}
+function backdrop(){const w=width;
+ el(&#x27;path&#x27;,{d:`M ${w*.09} 273 C ${w*.02} 220 ${w*.04} 110 ${w*.20} 67 C ${w*.31} 4 ${w*.55} 13 ${w*.66} 39 C ${w*.83} 34 ${w*.99} 116 ${w*.95} 221 C ${w*.92} 291 ${w*.78} 333 ${w*.6} 346 C ${w*.44} 369 ${w*.35} 328 ${w*.34} 290 C ${w*.21} 319 ${w*.14} 306 ${w*.09} 273 Z`,fill:&#x27;var(--muted)&#x27;,opacity:.44,stroke:&#x27;var(--border)&#x27;,&#x27;stroke-width&#x27;:1.2});
+ [
+ `M ${w*.4} 55 C ${w*.34} 97 ${w*.5} 128 ${w*.43} 164`,
+ `M ${w*.54} 53 C ${w*.5} 107 ${w*.61} 124 ${w*.57} 173`,
+ `M ${w*.17} 260 C ${w*.27} 212 ${w*.43} 249 ${w*.52} 221 C ${w*.64} 202 ${w*.76} 221 ${w*.85} 185`
+ ].forEach(d=&gt;el(&#x27;path&#x27;,{d,fill:&#x27;none&#x27;,stroke:&#x27;var(--border)&#x27;,&#x27;stroke-width&#x27;:1.1,opacity:.55}));
+ label(&#x27;概念展開圖&#x27;,8,18,&#x27;sb-small&#x27;,&#x27;start&#x27;);
+}
+function render(){width=q(&#x27;#sb-diagram&#x27;).clientWidth;if(!width)return;svg.setAttribute(&#x27;viewBox&#x27;,`0 0 ${width} 485`);svg.setAttribute(&#x27;height&#x27;,&#x27;485&#x27;);while(svg.children.length&gt;2)svg.lastChild.remove();links=[];nodes=[];backdrop();
+ const map={};specs.forEach(s=&gt;map[s[0]]={x:s[1]*width,y:s[2]});map.guard={x:width*.5,y:427};
+ // DMN is a distributed network. Its lightly drawn scaffold is not an activation map.
+ [[&#x27;mp&#x27;,&#x27;pcc&#x27;],[&#x27;pcc&#x27;,&#x27;ag&#x27;],[&#x27;ag&#x27;,&#x27;mp&#x27;]].forEach(([a,b])=&gt;el(&#x27;line&#x27;,{x1:map[a].x,y1:map[a].y,x2:map[b].x,y2:map[b].y,stroke:C[3],opacity:.18,&#x27;stroke-width&#x27;:1.4,&#x27;stroke-dasharray&#x27;:&#x27;4 5&#x27;}));
+ const defs=el(&#x27;defs&#x27;);C.forEach((c,i)=&gt;{const m=el(&#x27;marker&#x27;,{id:&#x27;sb-arrow-&#x27;+i,markerWidth:7,markerHeight:7,refX:6,refY:3,orient:&#x27;auto&#x27;,markerUnits:&#x27;userSpaceOnUse&#x27;},defs);el(&#x27;path&#x27;,{d:&#x27;M 0 0 L 6 3 L 0 6 Z&#x27;,fill:c},m);});
+ stages[stage].edges.forEach(([a,b,c],i)=&gt;{const p=map[a],r=map[b],dx=r.x-p.x,dy=r.y-p.y,dist=Math.hypot(dx,dy),nx=dx/dist,ny=dy/dist;
+  const bend=(a===&#x27;guard&#x27;||b===&#x27;guard&#x27;)?(a===&#x27;guard&#x27;?-width*.27:width*.18):(i%2?20:30);
+  const endRadius=b===&#x27;guard&#x27;?32:16,startRadius=a===&#x27;guard&#x27;?32:15;
+  const d=`M ${p.x+nx*startRadius} ${p.y+ny*startRadius} Q ${(p.x+r.x)/2-ny*bend} ${(p.y+r.y)/2+nx*bend} ${r.x-nx*endRadius} ${r.y-ny*endRadius}`;
+  const base=el(&#x27;path&#x27;,{d,fill:&#x27;none&#x27;,stroke:C[c],&#x27;stroke-width&#x27;:2,opacity:.3,&#x27;marker-end&#x27;:`url(#sb-arrow-${c})`});
+  const trail=el(&#x27;path&#x27;,{d,fill:&#x27;none&#x27;,stroke:C[c],&#x27;stroke-width&#x27;:2.5});const length=base.getTotalLength();trail.setAttribute(&#x27;stroke-dasharray&#x27;,length);
+  const dots=[0,1].map(()=&gt;el(&#x27;circle&#x27;,{r:4,fill:C[c],opacity:0}));links.push({base,trail,length,dots});
+ });
+ specs.forEach(s=&gt;{const p=map[s[0]],active=stages[stage].focus.includes(s[0]),g=el(&#x27;g&#x27;,{opacity:active?1:.48});const halo=el(&#x27;circle&#x27;,{cx:p.x,cy:p.y,r:21,fill:C[s[4]],opacity:active?.15:.035},g);el(&#x27;circle&#x27;,{cx:p.x,cy:p.y,r:11,fill:C[s[4]],&#x27;fill-opacity&#x27;:.2,stroke:C[s[4]],&#x27;stroke-width&#x27;:1.5},g);el(&#x27;circle&#x27;,{cx:p.x,cy:p.y,r:4,fill:C[s[4]]},g);const t=label(s[3],p.x,p.y+30);t.setAttribute(&#x27;opacity&#x27;,active?1:.67);nodes.push({halo,active});});
+ const gw=Math.min(292,width-28),gx=(width-gw)/2;
+ guardPulse=el(&#x27;rect&#x27;,{x:gx,y:397,width:gw,height:62,rx:10,fill:stage&gt;=5?C[4]:&#x27;var(--muted)&#x27;,&#x27;fill-opacity&#x27;:stage&gt;=5?.13:.4,stroke:stage&gt;=5?C[4]:&#x27;var(--border)&#x27;,&#x27;stroke-width&#x27;:1.5,&#x27;stroke-dasharray&#x27;:&#x27;5 4&#x27;});
+ guardTitle=label(&#x27;知識查核守衛&#x27;,width*.5,421);
+ label(&#x27;後設認知／驗算・非獨立腦區&#x27;,width*.5,445,&#x27;sb-small&#x27;);
+ el(&#x27;line&#x27;,{x1:8,y1:478,x2:width-8,y2:478,stroke:&#x27;var(--muted)&#x27;,&#x27;stroke-width&#x27;:3});progress=el(&#x27;line&#x27;,{x1:8,y1:478,x2:8,y2:478,stroke:C[4],&#x27;stroke-width&#x27;:3});
+ q(&#x27;#sb-question&#x27;).textContent=problems[subject].question;q(&#x27;#sb-stage&#x27;).textContent=`${stage+1} / 7　${stages[stage].title}`;
+ q(&#x27;#sb-work-label&#x27;).textContent=problems[subject].work[stage][0];q(&#x27;#sb-equation&#x27;).textContent=problems[subject].work[stage][1];
+ q(&#x27;#sb-detail&#x27;).textContent=stage===6?problems[subject].final+&#x27; &#x27;+stages[stage].detail:stages[stage].detail;
+ q(&#x27;#sb-desc&#x27;).textContent=stages[stage].detail+&#x27; &#x27;+problems[subject].work[stage].join(&#x27;。&#x27;);
+ q(&#x27;#sb-prev&#x27;).disabled=stage===0;q(&#x27;#sb-next&#x27;).disabled=stage===6;paint();
+}
+function paint(){const t=elapsed/duration;
+ links.forEach((l,i)=&gt;{const growth=reduced?1:Math.min(1,t*2.2);l.trail.setAttribute(&#x27;stroke-dashoffset&#x27;,l.length*(1-growth));l.dots.forEach((d,j)=&gt;{const u=t*2-j*.4-i*.1;if(u&lt;0||t&gt;=1||reduced){d.setAttribute(&#x27;opacity&#x27;,0);return;}const p=l.base.getPointAtLength((u%1)*l.length);d.setAttribute(&#x27;cx&#x27;,p.x);d.setAttribute(&#x27;cy&#x27;,p.y);d.setAttribute(&#x27;opacity&#x27;,.95);});});
+ nodes.forEach((n,i)=&gt;{if(n.active){const pulse=reduced?0:Math.sin(t*8-i*.8);n.halo.setAttribute(&#x27;r&#x27;,21+pulse*3);}});
+ if(stage===5){guardTitle.textContent=t&lt;.3?&#x27;知識查核守衛&#x27;:&#x27;不一致 → 退回修正&#x27;;}else if(stage===6){guardTitle.textContent=t&lt;.55?&#x27;修正後，再查核&#x27;:&#x27;本題查核通過&#x27;;}else guardTitle.textContent=&#x27;知識查核守衛&#x27;;
+ progress.setAttribute(&#x27;x2&#x27;,8+(width-16)*(stage+t)/7);
+}
+function pause(){playing=false;last=0;q(&#x27;#sb-play&#x27;).textContent=stage===6&amp;&amp;elapsed&gt;=duration?&#x27;重播解題動畫&#x27;:&#x27;繼續播放&#x27;;q(&#x27;#sb-play&#x27;).setAttribute(&#x27;aria-pressed&#x27;,&#x27;false&#x27;);q(&#x27;#sb-status&#x27;).textContent=stage===6&amp;&amp;elapsed&gt;=duration?&#x27;播放完成&#x27;:&#x27;已暫停&#x27;;}
+function step(delta){pause();stage=Math.max(0,Math.min(6,stage+delta));elapsed=duration*.75;render();q(&#x27;#sb-status&#x27;).textContent=&#x27;逐步講解&#x27;;}
+q(&#x27;#sb-prev&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;step(-1));q(&#x27;#sb-next&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;step(1));
+q(&#x27;#sb-play&#x27;).addEventListener(&#x27;click&#x27;,()=&gt;{if(playing){pause();return;}if(stage===6&amp;&amp;elapsed&gt;=duration){stage=0;elapsed=0;render();}playing=true;last=0;q(&#x27;#sb-play&#x27;).textContent=&#x27;暫停動畫&#x27;;q(&#x27;#sb-play&#x27;).setAttribute(&#x27;aria-pressed&#x27;,&#x27;true&#x27;);q(&#x27;#sb-status&#x27;).textContent=&#x27;播放中&#x27;;});
+q(&#x27;#sb-subject&#x27;).addEventListener(&#x27;change&#x27;,e=&gt;{pause();subject=e.target.value;stage=0;elapsed=0;render();q(&#x27;#sb-play&#x27;).textContent=&#x27;播放解題動畫&#x27;;q(&#x27;#sb-status&#x27;).textContent=&#x27;待播放&#x27;;});
+function frame(now){if(!root.isConnected)return;if(playing){if(last)elapsed+=Math.min(100,now-last);last=now;if(elapsed&gt;=duration){if(stage&lt;6){stage++;elapsed=0;render();}else{elapsed=duration;pause();}}paint();}requestAnimationFrame(frame);}
+document.addEventListener(&#x27;visibilitychange&#x27;,()=&gt;last=0);new ResizeObserver(render).observe(q(&#x27;#sb-diagram&#x27;));render();requestAnimationFrame(frame);
+})();
+&lt;/script&gt;
+
+&lt;script src=&quot;https://unpkg.com/@floating-ui/core@1.7.3/dist/floating-ui.core.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script src=&quot;https://unpkg.com/@floating-ui/dom@1.7.4/dist/floating-ui.dom.umd.min.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  if (window.FloatingUIDOM == null) {
+    return;
+  }
+  const { autoUpdate, computePosition, flip, offset, shift, size } =
+    window.FloatingUIDOM;
+  const tooltipPlacements = new Set([&quot;top&quot;, &quot;right&quot;, &quot;bottom&quot;, &quot;left&quot;]);
+  const tooltipId = `codex-visualization-tooltip-${
+    window.crypto?.randomUUID?.() ?? Date.now().toString(36)
+  }`;
+  const tooltipGap = 5;
+  const hoverDelay = 700;
+  const skipDelay = 300;
+  let activeTrigger = null;
+  let pendingTrigger = null;
+  let tooltip = null;
+  let openTimeout = null;
+  let autoUpdateCleanup = null;
+  let positionRequest = 0;
+  let skipDelayUntil = 0;
+  let lastPointerWasTouch = false;
+  let pinnedByTouch = false;
+
+  const getTrigger = (target) =&gt;
+    target?.nodeType === Node.ELEMENT_NODE
+      ? target.closest(&quot;[data-tooltip]&quot;)
+      : null;
+  const containsTarget = (trigger, target) =&gt;
+    target?.nodeType != null &amp;&amp; trigger.contains(target);
+  const getContent = (trigger) =&gt;
+    trigger.getAttribute(&quot;data-tooltip&quot;)?.trim() ?? &quot;&quot;;
+  const getPlacement = (trigger) =&gt; {
+    const placement = trigger.getAttribute(&quot;data-tooltip-placement&quot;);
+    return tooltipPlacements.has(placement) ? placement : &quot;top&quot;;
+  };
+  const getTooltip = () =&gt; {
+    if (tooltip == null) {
+      tooltip = document.createElement(&quot;div&quot;);
+      tooltip.id = tooltipId;
+      tooltip.className = &quot;tooltip&quot;;
+      tooltip.setAttribute(&quot;role&quot;, &quot;tooltip&quot;);
+    }
+    return tooltip;
+  };
+  const setDescribedBy = (trigger, described) =&gt; {
+    const ids = new Set(
+      (trigger.getAttribute(&quot;aria-describedby&quot;) ?? &quot;&quot;)
+        .split(/\s+/)
+        .filter(Boolean),
+    );
+    if (described) {
+      ids.add(tooltipId);
+    } else {
+      ids.delete(tooltipId);
+    }
+    if (ids.size === 0) {
+      trigger.removeAttribute(&quot;aria-describedby&quot;);
+    } else {
+      trigger.setAttribute(&quot;aria-describedby&quot;, [...ids].join(&quot; &quot;));
+    }
+  };
+  const clearOpenTimeout = () =&gt; {
+    if (openTimeout != null) {
+      window.clearTimeout(openTimeout);
+      openTimeout = null;
+    }
+    pendingTrigger = null;
+  };
+  const closeTooltip = (activateSkipDelay = true) =&gt; {
+    clearOpenTimeout();
+    pinnedByTouch = false;
+    positionRequest += 1;
+    autoUpdateCleanup?.();
+    autoUpdateCleanup = null;
+    if (activeTrigger == null) {
+      return;
+    }
+    setDescribedBy(activeTrigger, false);
+    activeTrigger = null;
+    tooltip?.remove();
+    if (activateSkipDelay) {
+      skipDelayUntil = Date.now() + skipDelay;
+    }
+  };
+  const updatePosition = (trigger, floating) =&gt; {
+    const request = ++positionRequest;
+    void computePosition(trigger, floating, {
+      middleware: [
+        offset(tooltipGap),
+        flip({ padding: tooltipGap }),
+        shift({ padding: tooltipGap }),
+        size({
+          padding: tooltipGap,
+          apply({ availableHeight, availableWidth, elements }) {
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-width&quot;,
+              `${Math.max(0, availableWidth)}px`,
+            );
+            elements.floating.style.setProperty(
+              &quot;--tooltip-available-height&quot;,
+              `${Math.max(0, availableHeight)}px`,
+            );
+          },
+        }),
+      ],
+      placement: getPlacement(trigger),
+      strategy: &quot;fixed&quot;,
+    })
+      .then(({ x, y }) =&gt; {
+        if (activeTrigger !== trigger || request !== positionRequest) {
+          return;
+        }
+        const scale = window.devicePixelRatio || 1;
+        floating.style.transform = `translate(${Math.round(x * scale) / scale}px, ${Math.round(y * scale) / scale}px)`;
+        floating.style.visibility = &quot;visible&quot;;
+      })
+      .catch(() =&gt; {
+        if (activeTrigger === trigger &amp;&amp; request === positionRequest) {
+          closeTooltip(false);
+        }
+      });
+  };
+  const openTooltip = (trigger) =&gt; {
+    const content = getContent(trigger);
+    if (!trigger.isConnected || content.length === 0) {
+      return;
+    }
+    clearOpenTimeout();
+    if (activeTrigger === trigger) {
+      return;
+    }
+    closeTooltip();
+    const floating = getTooltip();
+    floating.textContent = content;
+    floating.style.visibility = &quot;hidden&quot;;
+    floating.style.transform = &quot;translate(0, 0)&quot;;
+    document.body.appendChild(floating);
+    activeTrigger = trigger;
+    setDescribedBy(trigger, true);
+    autoUpdateCleanup = autoUpdate(trigger, floating, () =&gt; {
+      updatePosition(trigger, floating);
+    });
+  };
+  const requestOpen = (trigger, immediate = false) =&gt; {
+    if (
+      getContent(trigger).length === 0 ||
+      activeTrigger === trigger ||
+      pendingTrigger === trigger
+    ) {
+      return;
+    }
+    clearOpenTimeout();
+    pendingTrigger = trigger;
+    const delay =
+      immediate || activeTrigger != null || Date.now() &lt; skipDelayUntil
+        ? 0
+        : hoverDelay;
+    if (delay === 0) {
+      openTooltip(trigger);
+      return;
+    }
+    openTimeout = window.setTimeout(() =&gt; {
+      openTimeout = null;
+      pendingTrigger = null;
+      openTooltip(trigger);
+    }, delay);
+  };
+  const handlePointerOpen = (event) =&gt; {
+    if (event.pointerType === &quot;touch&quot;) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    requestOpen(trigger);
+  };
+  const handlePointer = (event) =&gt; {
+    lastPointerWasTouch =
+      event.type === &quot;pointerdown&quot; &amp;&amp; event.pointerType === &quot;touch&quot;;
+  };
+  const handleTouchClick = (event) =&gt; {
+    const isTouch = event.pointerType === &quot;touch&quot; || lastPointerWasTouch;
+    lastPointerWasTouch = false;
+    if (!isTouch || event.detail === 0) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (
+      trigger == null ||
+      !trigger.isConnected ||
+      getContent(trigger).length === 0 ||
+      (pinnedByTouch &amp;&amp; activeTrigger === trigger)
+    ) {
+      if (pinnedByTouch) {
+        closeTooltip();
+      }
+      return;
+    }
+    openTooltip(trigger);
+    pinnedByTouch = activeTrigger === trigger;
+    window.setTimeout(() =&gt; {
+      if (activeTrigger === trigger &amp;&amp; !trigger.isConnected) {
+        closeTooltip(false);
+      }
+    }, 0);
+  };
+  const handleLeave = (event) =&gt; {
+    if (pinnedByTouch) {
+      return;
+    }
+    const trigger = getTrigger(event.target);
+    if (trigger == null || containsTarget(trigger, event.relatedTarget)) {
+      return;
+    }
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const handleFocusIn = (event) =&gt; {
+    const trigger = getTrigger(event.target);
+    if (trigger?.matches(&quot;:focus-visible&quot;)) {
+      requestOpen(trigger, true);
+    }
+  };
+  const handleKeyDown = (event) =&gt; {
+    if (event.key === &quot;Escape&quot;) {
+      closeTooltip();
+    }
+  };
+  const handleContextMenu = (event) =&gt; {
+    lastPointerWasTouch = false;
+    const trigger = getTrigger(event.target);
+    if (activeTrigger === trigger || pendingTrigger === trigger) {
+      closeTooltip();
+    }
+  };
+  const destroy = () =&gt; {
+    closeTooltip(false);
+    lastPointerWasTouch = false;
+    document.removeEventListener(&quot;pointerover&quot;, handlePointerOpen);
+    document.removeEventListener(&quot;pointerdown&quot;, handlePointer);
+    document.removeEventListener(&quot;pointercancel&quot;, handlePointer);
+    document.removeEventListener(&quot;click&quot;, handleTouchClick);
+    document.removeEventListener(&quot;pointerout&quot;, handleLeave);
+    document.removeEventListener(&quot;focusin&quot;, handleFocusIn);
+    document.removeEventListener(&quot;focusout&quot;, handleLeave);
+    document.removeEventListener(&quot;keydown&quot;, handleKeyDown);
+    document.removeEventListener(&quot;contextmenu&quot;, handleContextMenu);
+    tooltip = null;
+  };
+
+  document.addEventListener(&quot;pointerover&quot;, handlePointerOpen);
+  document.addEventListener(&quot;pointerdown&quot;, handlePointer);
+  document.addEventListener(&quot;pointercancel&quot;, handlePointer);
+  document.addEventListener(&quot;click&quot;, handleTouchClick);
+  document.addEventListener(&quot;pointerout&quot;, handleLeave);
+  document.addEventListener(&quot;focusin&quot;, handleFocusIn);
+  document.addEventListener(&quot;focusout&quot;, handleLeave);
+  document.addEventListener(&quot;keydown&quot;, handleKeyDown);
+  document.addEventListener(&quot;contextmenu&quot;, handleContextMenu);
+  window.addEventListener(&quot;pagehide&quot;, destroy, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-tabs&quot;&gt;
+(() =&gt; {
+  const selector = &#x27;.nav[role=&quot;tablist&quot;] [role=&quot;tab&quot;]&#x27;;
+  const disabled = &#x27;:disabled,[aria-disabled=&quot;true&quot;]&#x27;;
+  const selectTab = (selected) =&gt; {
+    const panelId = selected.getAttribute(&quot;aria-controls&quot;);
+    for (const tab of selected.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;)) {
+      const active = tab === selected;
+      tab.classList.toggle(&quot;active&quot;, active);
+      tab.setAttribute(&quot;aria-selected&quot;, String(active));
+      const id = tab.getAttribute(&quot;aria-controls&quot;);
+      const panel = id &amp;&amp; document.getElementById(id);
+      if (panel != null) {
+        panel.hidden = id !== panelId;
+        if (!panel.hidden &amp;&amp; selected.id) {
+          panel.setAttribute(&quot;aria-labelledby&quot;, selected.id);
+        }
+      }
+    }
+  };
+  const interact = (event) =&gt; {
+    const tab = event.target?.closest?.(selector);
+    if (event.defaultPrevented || tab == null || tab.matches(disabled)) {
+      return;
+    }
+    if (event.type === &quot;click&quot;) {
+      selectTab(tab);
+      return;
+    }
+    const tabs = Array.from(
+      tab.closest(&#x27;[role=&quot;tablist&quot;]&#x27;).querySelectorAll(&#x27;[role=&quot;tab&quot;]&#x27;),
+    ).filter((candidate) =&gt; !candidate.matches(disabled));
+    const current = tabs.indexOf(tab);
+    let next;
+    if (event.key === &quot;ArrowRight&quot; || event.key === &quot;ArrowDown&quot;) {
+      next = (current + 1) % tabs.length;
+    } else if (event.key === &quot;ArrowLeft&quot; || event.key === &quot;ArrowUp&quot;) {
+      next = (current + tabs.length - 1) % tabs.length;
+    } else if (event.key === &quot;Home&quot;) {
+      next = 0;
+    } else if (event.key === &quot;End&quot;) {
+      next = tabs.length - 1;
+    } else {
+      return;
+    }
+    event.preventDefault();
+    tabs[next].focus();
+    selectTab(tabs[next]);
+  };
+
+  for (const list of document.querySelectorAll(&#x27;.nav[role=&quot;tablist&quot;]&#x27;)) {
+    const selected =
+      list.querySelector(&#x27;[role=&quot;tab&quot;][aria-selected=&quot;true&quot;]&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;].active&#x27;) ??
+      list.querySelector(&#x27;[role=&quot;tab&quot;]&#x27;);
+    if (selected != null) {
+      selectTab(selected);
+    }
+  }
+  document.addEventListener(&quot;click&quot;, interact);
+  document.addEventListener(&quot;keydown&quot;, interact);
+  window.addEventListener(&quot;pagehide&quot;, () =&gt; {
+    document.removeEventListener(&quot;click&quot;, interact);
+    document.removeEventListener(&quot;keydown&quot;, interact);
+  }, { once: true });
+})();
+&lt;/script&gt;
+&lt;script id=&quot;codex-visualization-lucide&quot; async src=&quot;https://unpkg.com/lucide@1.17.0/dist/umd/lucide.js&quot;&gt;&lt;/script&gt;
+&lt;script&gt;
+(() =&gt; {
+  const initialize = () =&gt; {
+    globalThis.lucide?.createIcons({ attrs: { width: 16, height: 16 } });
+  };
+  if (globalThis.lucide != null) {
+    initialize();
+    return;
+  }
+  document
+    .getElementById(&quot;codex-visualization-lucide&quot;)
+    ?.addEventListener(&quot;load&quot;, initialize, { once: true });
+})();
+&lt;/script&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+"></iframe>
+<footer class="site-foot">
+  <b>教學範圍</b>　這是功能關係的概念示意，不是個人腦造影、精確解剖定位、實測活化量或生理時間模擬。
+  分段便於講解，實際網絡會並行，並依任務、年齡與熟練程度改變。
+  「知識查核守衛」是後設認知與驗算的教學比喻，不是獨立腦區，也不保證答案正確。
+  熟練知識依賴分散的皮質表徵，並非都存放在海馬迴；前額葉也不單獨完成推理。<br>
+  <b>製作</b>　國立臺灣師範大學　梁至中教授／國立清華大學博士候選人　陳奕安。
+  台師大 115-1「腦與學習」教學用，以
+  <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a> 釋出，
+  <a href="https://github.com/Ian3738/brain-dissection-table" target="_blank" rel="noopener">原始碼在 GitHub</a>。
+</footer>
+</body>
+</html>

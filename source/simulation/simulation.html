@@ -1,0 +1,131 @@
+<div id="solve-brain">
+ <div class="viz-row"><strong>一道題目，如何成為有依據的答案？</strong></div>
+ <div class="viz-controls" style="margin-top:12px">
+  <label class="form-label">題目<select class="form-select" id="sb-subject"><option value="math">數學｜排除增根</option><option value="physics">物理｜檢查單位</option><option value="chemistry">化學｜限量試劑</option></select></label>
+  <button class="btn btn-primary" type="button" id="sb-play">播放解題動畫</button>
+  <button class="btn" type="button" id="sb-prev">上一步</button><button class="btn" type="button" id="sb-next">下一步</button>
+ </div>
+ <div class="card" style="margin-top:12px"><span class="text-small text-muted">眼前的題目</span><div id="sb-question"></div></div>
+ <div class="viz-row" style="margin-top:12px"><span id="sb-stage" aria-live="polite"></span><span class="text-small text-muted" id="sb-status">待播放</span></div>
+ <div id="sb-diagram"><svg class="sb-svg" role="img" aria-labelledby="sb-title sb-desc"><title id="sb-title">解題時記憶、情緒、控制、內在聯想與查核的協作示意</title><desc id="sb-desc"></desc></svg></div>
+ <div id="sb-work" aria-live="polite"><span class="text-small text-muted" id="sb-work-label"></span><div id="sb-equation"></div></div>
+ <div id="sb-detail" aria-live="polite" style="margin-top:10px"></div>
+ <div class="viz-row text-small" style="margin-top:12px"><span class="sb-key"><i style="background:var(--viz-series-1)"></i>前額葉皮質</span><span class="sb-key"><i style="background:var(--viz-series-2)"></i>海馬迴</span><span class="sb-key"><i style="background:var(--viz-series-3)"></i>杏仁核</span><span class="sb-key"><i style="background:var(--viz-series-4)"></i>預設模式網絡 DMN</span><span class="sb-key"><i style="background:var(--viz-series-5)"></i>查核守衛＊</span></div>
+ <div class="text-small text-muted" style="margin-top:10px">＊守衛＝後設認知與驗算的教學比喻，非獨立腦區，也不是保證正確的裝置。DMN 含部分內側前額葉，與「前額葉」分類並非互斥。</div>
+ <div class="text-small text-muted" style="margin-top:6px">亮色＝本段講解焦點，非活化量；節點、連線與播放時間均為示意。實際網絡並行、依任務與熟練程度改變。</div>
+ <div class="text-small text-muted" style="margin-top:6px">研究：<a href="https://pubmed.ncbi.nlm.nih.gov/PMC4286364" target="_blank" rel="noopener">算術學習與海馬</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3462591/" target="_blank" rel="noopener">兒童數學焦慮</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2914129/" target="_blank" rel="noopener">DMN 與目標導向思考</a> · <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC3173849/" target="_blank" rel="noopener">後設認知</a></div>
+</div>
+<style>
+#solve-brain {width:100%;color:var(--foreground)}
+#solve-brain .sb-svg {display:block;width:100%;overflow:visible}
+#solve-brain .sb-svg text {fill:var(--foreground);font-family:inherit;font-size:var(--font-size-base);font-weight:400;paint-order:stroke;stroke:var(--background);stroke-width:4px;stroke-linejoin:round}
+#solve-brain .sb-svg .sb-small {font-size:calc(var(--font-size-base) * .857);fill:var(--muted-foreground)}
+#solve-brain .sb-key {display:inline-flex;align-items:center;gap:5px}
+#solve-brain .sb-key i {width:9px;height:9px;display:inline-block;border-radius:50%}
+#solve-brain #sb-question,#solve-brain #sb-equation {white-space:pre-line}
+#solve-brain #sb-detail {min-height:3em}
+</style>
+<script>
+(()=>{
+const root=document.getElementById('solve-brain'),q=s=>root.querySelector(s),svg=q('.sb-svg'),NS='http://www.w3.org/2000/svg';
+const C=['var(--viz-series-1)','var(--viz-series-2)','var(--viz-series-3)','var(--viz-series-4)','var(--viz-series-5)','var(--muted-foreground)'];
+const problems={
+ math:{question:'求實數 x：√(x＋6)＝x',work:[
+  ['讀題','未知數是 x；等號兩側必須相等。'],
+  ['保留條件','左側平方根非負，因此 x ≥ 0。'],
+  ['提取規則','兩側平方可求候選解，但可能引入增根。'],
+  ['聯想與策略','連結熟悉例題：「先平方，再代回原式」。'],
+  ['候選解・尚未驗算','x＋6＝x² → (x−3)(x＋2)＝0\n候選：x＝3 或 x＝−2'],
+  ['查核未通過・退回檢查','候選 x＝−2：√(−2＋6)＝2 ≠ −2\n違反 x ≥ 0，排除增根。'],
+  ['查核通過・本題結論','x＝3：√(3＋6)＝3 ✓\n唯一實數解：x＝3。']],
+  final:'保留 x＝3，排除 x＝−2；把「平方後要代回」連結到這次經驗。'},
+ physics:{question:'物體從靜止開始，以恆定加速度 2 m/s² 運動 3 s。沿運動方向的位移是多少？',work:[
+  ['讀題','要求位移；已知加速度與經過時間。'],
+  ['保留條件','v₀＝0；a＝2 m/s²；t＝3 s；加速度恆定。'],
+  ['提取規則','區分 v＝v₀＋at 與 s＝v₀t＋½at²。'],
+  ['聯想與策略','由速度—時間圖的面積聯想到位移。'],
+  ['刻意放入錯誤候選・尚未驗算','候選推法：s＝at → 2×3 →「6 m」？'],
+  ['查核未通過・退回檢查','at 的單位是 m/s，不是 m。\n混淆了速度與位移，需更換公式。'],
+  ['查核通過・本題結論','s＝½at²＝½×2×3²＝9 m ✓\n速度—時間圖面積：½×3×6＝9 m。']],
+  final:'依恆加速度條件修正公式，並以單位與圖形面積交叉檢查。'},
+ chemistry:{question:'2 H₂＋O₂ → 2 H₂O。現有 H₂ 3 mol、O₂ 1 mol；反應進行至限量試劑耗盡，最多生成多少 H₂O？',work:[
+  ['讀題','求水的最大生成量；兩種反應物皆有限。'],
+  ['保留條件','H₂＝3 mol；O₂＝1 mol；係數比 2：1：2。'],
+  ['提取規則','生成量同時受兩種反應物限制。'],
+  ['聯想與策略','每一組反應需要 2 份 H₂ 與 1 份 O₂。'],
+  ['刻意放入錯誤候選・尚未驗算','只看 H₂ 的候選答案：H₂O＝3 mol？'],
+  ['查核未通過・退回檢查','生成 3 mol H₂O 需要 1.5 mol O₂，\n超過現有 1 mol；氧氣是限量試劑。'],
+  ['查核通過・本題結論','H₂O 最多＝2 mol ✓\n消耗 H₂ 2 mol、O₂ 1 mol；剩餘 H₂ 1 mol。']],
+  final:'以限量試劑及物料衡算檢查結果；將錯誤與修正策略一起連結。'}
+};
+const stages=[
+ {title:'看到題目・判讀重要性',focus:['pfc','am','other'],edges:[['other','pfc',0],['am','pfc',2]],detail:'視覺、語言與數量處理網絡協助讀題；杏仁核參與重要性與情緒評估。焦慮可能影響解題，但不是每次看到題目都會出現恐懼反應。'},
+ {title:'前額葉・維持目標與條件',focus:['pfc','other'],edges:[['pfc','other',0],['other','pfc',0]],detail:'前額葉與頂葉等控制網絡協作，維持未知數、已知條件與步驟；工作記憶與推理並非由前額葉單獨完成。'},
+ {title:'海馬迴・連結記憶',focus:['hc','pfc','other'],edges:[['pfc','hc',1],['hc','pfc',1],['hc','other',1]],detail:'海馬迴參與情節與關聯記憶提取，以及新學習。熟練公式與語義知識也依賴分散的皮質表徵，並非全部存放於海馬迴。'},
+ {title:'DMN・內在聯想與模擬',focus:['mp','pcc','ag','hc','pfc'],edges:[['hc','pcc',3],['pcc','mp',3],['mp','ag',3],['ag','pfc',3]],detail:'預設模式網絡（DMN）與記憶、內在聯想及模擬相關；在某些任務可與控制網絡協作。此處是可能的策略示意，並非每道數理題都會提高 DMN 活動。'},
+ {title:'前額葉・形成候選答案',focus:['pfc','other','hc'],edges:[['hc','pfc',1],['pfc','other',0],['other','pfc',0]],detail:'依目前提取的知識執行推理與運算。得到候選答案，仍須檢查條件與推理是否成立；熟悉感或自信不能代替驗算。'},
+ {title:'知識查核守衛・找出不一致',focus:['pfc','guard'],edges:[['pfc','guard',4],['guard','pfc',4]],detail:'「守衛」表示有意識地核對條件、代回原式、檢查單位或守恆。這是後設認知與查核行為的比喻，不是腦內可辨識真假的單一裝置。'},
+ {title:'修正・再查核・形成學習',focus:['pfc','guard','hc','other'],edges:[['guard','pfc',4],['pfc','other',0],['pfc','guard',4],['pfc','hc',1]],detail:'修正推理後重新查核；這次的條件、錯誤與解法可成為後續學習材料。驗算結論只適用於本題與其條件。'}
+];
+const specs=[
+ ['pfc',.24,80,['前額葉皮質','工作記憶／控制'],0],
+ ['mp',.17,195,['內側前額葉','mPFC · DMN'],3],
+ ['pcc',.61,55,['後扣帶等','PCC · DMN'],3],
+ ['ag',.87,180,['角回','AG · DMN'],3],
+ ['am',.23,302,['杏仁核','情緒／重要性'],2],
+ ['hc',.53,310,['海馬迴','記憶連結'],1],
+ ['other',.82,306,['頂葉等皮質','數量／語義'],5]
+];
+let stage=0,subject='math',elapsed=0,playing=false,last=0,width=0,links=[],nodes=[],guardPulse=null,guardTitle=null,progress=null;
+const duration=6000,reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function el(tag,attrs={},parent=svg){const e=document.createElementNS(NS,tag);for(const [k,v]of Object.entries(attrs))e.setAttribute(k,v);parent.appendChild(e);return e;}
+function label(lines,x,y,cls='',anchor='middle'){const t=el('text',{x,y,class:cls,'text-anchor':anchor});[].concat(lines).forEach((l,i)=>{const z=el('tspan',{x,dy:i?17:0},t);z.textContent=l;});const b=t.getBBox();let shift=b.x<5?5-b.x:b.x+b.width>width-5?width-5-b.x-b.width:0;if(shift){t.setAttribute('x',x+shift);for(const z of t.children)z.setAttribute('x',x+shift);}return t;}
+function backdrop(){const w=width;
+ el('path',{d:`M ${w*.09} 273 C ${w*.02} 220 ${w*.04} 110 ${w*.20} 67 C ${w*.31} 4 ${w*.55} 13 ${w*.66} 39 C ${w*.83} 34 ${w*.99} 116 ${w*.95} 221 C ${w*.92} 291 ${w*.78} 333 ${w*.6} 346 C ${w*.44} 369 ${w*.35} 328 ${w*.34} 290 C ${w*.21} 319 ${w*.14} 306 ${w*.09} 273 Z`,fill:'var(--muted)',opacity:.44,stroke:'var(--border)','stroke-width':1.2});
+ [
+ `M ${w*.4} 55 C ${w*.34} 97 ${w*.5} 128 ${w*.43} 164`,
+ `M ${w*.54} 53 C ${w*.5} 107 ${w*.61} 124 ${w*.57} 173`,
+ `M ${w*.17} 260 C ${w*.27} 212 ${w*.43} 249 ${w*.52} 221 C ${w*.64} 202 ${w*.76} 221 ${w*.85} 185`
+ ].forEach(d=>el('path',{d,fill:'none',stroke:'var(--border)','stroke-width':1.1,opacity:.55}));
+ label('概念展開圖',8,18,'sb-small','start');
+}
+function render(){width=q('#sb-diagram').clientWidth;if(!width)return;svg.setAttribute('viewBox',`0 0 ${width} 485`);svg.setAttribute('height','485');while(svg.children.length>2)svg.lastChild.remove();links=[];nodes=[];backdrop();
+ const map={};specs.forEach(s=>map[s[0]]={x:s[1]*width,y:s[2]});map.guard={x:width*.5,y:427};
+ // DMN is a distributed network. Its lightly drawn scaffold is not an activation map.
+ [['mp','pcc'],['pcc','ag'],['ag','mp']].forEach(([a,b])=>el('line',{x1:map[a].x,y1:map[a].y,x2:map[b].x,y2:map[b].y,stroke:C[3],opacity:.18,'stroke-width':1.4,'stroke-dasharray':'4 5'}));
+ const defs=el('defs');C.forEach((c,i)=>{const m=el('marker',{id:'sb-arrow-'+i,markerWidth:7,markerHeight:7,refX:6,refY:3,orient:'auto',markerUnits:'userSpaceOnUse'},defs);el('path',{d:'M 0 0 L 6 3 L 0 6 Z',fill:c},m);});
+ stages[stage].edges.forEach(([a,b,c],i)=>{const p=map[a],r=map[b],dx=r.x-p.x,dy=r.y-p.y,dist=Math.hypot(dx,dy),nx=dx/dist,ny=dy/dist;
+  const bend=(a==='guard'||b==='guard')?(a==='guard'?-width*.27:width*.18):(i%2?20:30);
+  const endRadius=b==='guard'?32:16,startRadius=a==='guard'?32:15;
+  const d=`M ${p.x+nx*startRadius} ${p.y+ny*startRadius} Q ${(p.x+r.x)/2-ny*bend} ${(p.y+r.y)/2+nx*bend} ${r.x-nx*endRadius} ${r.y-ny*endRadius}`;
+  const base=el('path',{d,fill:'none',stroke:C[c],'stroke-width':2,opacity:.3,'marker-end':`url(#sb-arrow-${c})`});
+  const trail=el('path',{d,fill:'none',stroke:C[c],'stroke-width':2.5});const length=base.getTotalLength();trail.setAttribute('stroke-dasharray',length);
+  const dots=[0,1].map(()=>el('circle',{r:4,fill:C[c],opacity:0}));links.push({base,trail,length,dots});
+ });
+ specs.forEach(s=>{const p=map[s[0]],active=stages[stage].focus.includes(s[0]),g=el('g',{opacity:active?1:.48});const halo=el('circle',{cx:p.x,cy:p.y,r:21,fill:C[s[4]],opacity:active?.15:.035},g);el('circle',{cx:p.x,cy:p.y,r:11,fill:C[s[4]],'fill-opacity':.2,stroke:C[s[4]],'stroke-width':1.5},g);el('circle',{cx:p.x,cy:p.y,r:4,fill:C[s[4]]},g);const t=label(s[3],p.x,p.y+30);t.setAttribute('opacity',active?1:.67);nodes.push({halo,active});});
+ const gw=Math.min(292,width-28),gx=(width-gw)/2;
+ guardPulse=el('rect',{x:gx,y:397,width:gw,height:62,rx:10,fill:stage>=5?C[4]:'var(--muted)','fill-opacity':stage>=5?.13:.4,stroke:stage>=5?C[4]:'var(--border)','stroke-width':1.5,'stroke-dasharray':'5 4'});
+ guardTitle=label('知識查核守衛',width*.5,421);
+ label('後設認知／驗算・非獨立腦區',width*.5,445,'sb-small');
+ el('line',{x1:8,y1:478,x2:width-8,y2:478,stroke:'var(--muted)','stroke-width':3});progress=el('line',{x1:8,y1:478,x2:8,y2:478,stroke:C[4],'stroke-width':3});
+ q('#sb-question').textContent=problems[subject].question;q('#sb-stage').textContent=`${stage+1} / 7　${stages[stage].title}`;
+ q('#sb-work-label').textContent=problems[subject].work[stage][0];q('#sb-equation').textContent=problems[subject].work[stage][1];
+ q('#sb-detail').textContent=stage===6?problems[subject].final+' '+stages[stage].detail:stages[stage].detail;
+ q('#sb-desc').textContent=stages[stage].detail+' '+problems[subject].work[stage].join('。');
+ q('#sb-prev').disabled=stage===0;q('#sb-next').disabled=stage===6;paint();
+}
+function paint(){const t=elapsed/duration;
+ links.forEach((l,i)=>{const growth=reduced?1:Math.min(1,t*2.2);l.trail.setAttribute('stroke-dashoffset',l.length*(1-growth));l.dots.forEach((d,j)=>{const u=t*2-j*.4-i*.1;if(u<0||t>=1||reduced){d.setAttribute('opacity',0);return;}const p=l.base.getPointAtLength((u%1)*l.length);d.setAttribute('cx',p.x);d.setAttribute('cy',p.y);d.setAttribute('opacity',.95);});});
+ nodes.forEach((n,i)=>{if(n.active){const pulse=reduced?0:Math.sin(t*8-i*.8);n.halo.setAttribute('r',21+pulse*3);}});
+ if(stage===5){guardTitle.textContent=t<.3?'知識查核守衛':'不一致 → 退回修正';}else if(stage===6){guardTitle.textContent=t<.55?'修正後，再查核':'本題查核通過';}else guardTitle.textContent='知識查核守衛';
+ progress.setAttribute('x2',8+(width-16)*(stage+t)/7);
+}
+function pause(){playing=false;last=0;q('#sb-play').textContent=stage===6&&elapsed>=duration?'重播解題動畫':'繼續播放';q('#sb-play').setAttribute('aria-pressed','false');q('#sb-status').textContent=stage===6&&elapsed>=duration?'播放完成':'已暫停';}
+function step(delta){pause();stage=Math.max(0,Math.min(6,stage+delta));elapsed=duration*.75;render();q('#sb-status').textContent='逐步講解';}
+q('#sb-prev').addEventListener('click',()=>step(-1));q('#sb-next').addEventListener('click',()=>step(1));
+q('#sb-play').addEventListener('click',()=>{if(playing){pause();return;}if(stage===6&&elapsed>=duration){stage=0;elapsed=0;render();}playing=true;last=0;q('#sb-play').textContent='暫停動畫';q('#sb-play').setAttribute('aria-pressed','true');q('#sb-status').textContent='播放中';});
+q('#sb-subject').addEventListener('change',e=>{pause();subject=e.target.value;stage=0;elapsed=0;render();q('#sb-play').textContent='播放解題動畫';q('#sb-status').textContent='待播放';});
+function frame(now){if(!root.isConnected)return;if(playing){if(last)elapsed+=Math.min(100,now-last);last=now;if(elapsed>=duration){if(stage<6){stage++;elapsed=0;render();}else{elapsed=duration;pause();}}paint();}requestAnimationFrame(frame);}
+document.addEventListener('visibilitychange',()=>last=0);new ResizeObserver(render).observe(q('#sb-diagram'));render();requestAnimationFrame(frame);
+})();
+</script>

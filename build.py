@@ -1,18 +1,25 @@
 #!/usr/bin/env python3
 """
-把 source/ 裡的分段組裝成 brain_dissection_table.html。
+組裝這個站的兩支產出：
+
+    brain_dissection_table.html       source/ 的分段 + source/meshdata/ 的網格
+    problem_solving_simulation.html   source/simulation/ 的樣板 + 片段 + 共用外框
 
 完整重現流程：
 
     python3 source/pack_meshes.py     # 下載 brainder 網格並打包（約 21 MB，需連網）
-    python3 build.py                  # 組裝成單一 HTML
+    python3 build.py                  # 組裝兩支 HTML
 
 第一步會在 source/meshdata/ 產生 meshes.b64 與 meshes.json。
 那兩個檔案沒有進版控——meshes.b64 有 5.2 MB，而且它的內容已經整份嵌在
 brain_dissection_table.html 裡了，再存一份只是讓 repo 肥一倍。
 
+解題模擬的內層 app 完全不動：它整份封在一個 sandbox iframe 的 srcdoc 裡，
+共用的頁首頁尾只加在外層那層殼上。要換內容就改 source/simulation/ 的兩個檔。
+
 網格資料來源：Brain for Blender, Anderson M. Winkler, brainder.org — CC BY-SA 3.0
 """
+import html as html_mod
 import os
 import sys
 
@@ -20,6 +27,13 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 SRC = os.path.join(ROOT, "source")
 DEST = os.path.join(ROOT, "brain_dissection_table.html")
 MESH = os.path.join(SRC, "meshdata")
+
+# 全站共用的署名，改一次就好
+CREDIT_NAMES = (
+    "國立臺灣師範大學　梁至中教授<br>"
+    "國立清華大學博士候選人　陳奕安　製作"
+)
+CREDIT_NAMES_TEXT = "國立臺灣師範大學 梁至中教授／國立清華大學博士候選人 陳奕安 製作"
 
 if not os.path.isfile(os.path.join(MESH, "meshes.b64")):
     sys.exit(
@@ -136,6 +150,8 @@ html = html.replace(
 CREDIT = """
   <footer class="credit">
     <a href="index.html">← 腦與學習 · 教學工具</a><br>
+    <b>國立臺灣師範大學　梁至中教授</b><br>
+    <b>國立清華大學博士候選人　陳奕安　製作</b><br>
     <b>網格資料</b>　Brain for Blender — Anderson M. Winkler，<a href="https://brainder.org/research/brain-for-blender/" target="_blank" rel="noopener">brainder.org</a>。
     真人腦部磁振造影（Siemens Magnetom Trio 3T，德州大學聖安東尼奧健康科學中心影像研究所）經 FreeSurfer 5.2.0 重建，
     皮質分區採 Desikan-Killiany 圖譜。原始資料以 <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a> 釋出，
@@ -185,3 +201,114 @@ html = html.replace(old, script_block)
 open(DEST, "w", encoding="utf-8").write(html)
 print(f"輸出 {DEST}")
 print(f"大小 {os.path.getsize(DEST) / 1048576:.2f} MB")
+
+
+# ============================================================================
+# 解題模擬：外層殼加共用頁首頁尾，內層 sandbox iframe 一字不動
+# ============================================================================
+SIM_SRC = os.path.join(SRC, "simulation")
+SIM_DEST = os.path.join(ROOT, "problem_solving_simulation.html")
+
+sim_template = open(os.path.join(SIM_SRC, "standalone-template.html"), encoding="utf-8").read()
+sim_fragment = open(os.path.join(SIM_SRC, "simulation.html"), encoding="utf-8").read()
+
+MARKER = "{{SIMULATION_FRAGMENT}}"
+if sim_template.count(MARKER) != 1:
+    sys.exit("source/simulation/standalone-template.html 必須剛好有一個 {{SIMULATION_FRAGMENT}} 標記。")
+sim = sim_template.replace(MARKER, html_mod.escape(sim_fragment, quote=True))
+
+# ---- 外層樣式：換成本站的頁首頁尾，iframe 改成填滿剩餘高度 ----
+OLD_SHELL_CSS = (
+    "<style>:root{color-scheme:light dark;background:light-dark(rgb(255 255 255), rgb(24 24 24))}"
+    "html,body{margin:0}body{box-sizing:border-box;padding:1rem;background:inherit}"
+    "iframe{display:block;width:100%;height:calc(100vh - 2rem);margin:0 auto;border:0}</style>"
+)
+NEW_SHELL_CSS = """<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@600&display=swap">
+<style>
+:root{
+  color-scheme:light dark;
+  --ground:#efe9dd; --rail:#e5ddcd;
+  --ink:#1b1f26; --ink2:#4d5563; --ink3:#5a626f;
+  --rule:#d5cbb7; --brass:#7a5510;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --ground:#0c0f14; --rail:#0f131b;
+    --ink:#e6ecf5; --ink2:#a3aec0; --ink3:#8b96a8;
+    --rule:#28303f; --brass:#d8ae5c;
+  }
+}
+html,body{margin:0}
+body{
+  box-sizing:border-box; min-height:100vh;
+  display:flex; flex-direction:column;
+  background:var(--ground); color:var(--ink);
+  font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+}
+.site-bar{
+  display:flex; align-items:baseline; gap:14px; flex-wrap:wrap;
+  padding:12px 20px 11px; border-bottom:1px solid var(--rule); background:var(--rail);
+}
+.site-bar h1{
+  font-family:"Noto Serif TC","Songti TC",serif; font-weight:600; font-size:17px;
+  margin:0; letter-spacing:.04em;
+}
+.site-bar .back{
+  font-size:12.5px; color:var(--brass); text-decoration:none;
+  border-bottom:1px solid var(--rule); white-space:nowrap;
+}
+.site-bar .back:hover{border-bottom-color:var(--brass)}
+.site-bar .back:focus-visible{outline:2px solid var(--brass); outline-offset:2px}
+.site-bar .who{
+  margin-left:auto; font-size:11.5px; color:var(--ink3);
+  text-align:right; line-height:1.55;
+}
+iframe{
+  display:block; width:100%; flex:1 1 auto;
+  min-height:620px; border:0; background:inherit;
+}
+.site-foot{
+  border-top:1px solid var(--rule); background:var(--rail);
+  padding:14px 20px 18px; font-size:11.5px; line-height:1.75; color:var(--ink3);
+}
+.site-foot a{color:var(--brass); text-decoration:none; border-bottom:1px solid var(--rule)}
+.site-foot a:hover{border-bottom-color:var(--brass)}
+.site-foot b{color:var(--ink2); font-weight:500}
+@media (max-width:640px){
+  .site-bar .who{margin-left:0; text-align:left; width:100%}
+  iframe{min-height:78vh}
+}
+</style>"""
+if sim.count(OLD_SHELL_CSS) != 1:
+    sys.exit("解題模擬的外層樣式與預期不符，樣板可能換版了；請重新對照 source/simulation/standalone-template.html。")
+sim = sim.replace(OLD_SHELL_CSS, NEW_SHELL_CSS)
+
+SIM_HEADER = """<body>
+<header class="site-bar">
+  <a class="back" href="index.html">← 腦與學習 · 教學工具</a>
+  <h1>大腦解題模擬</h1>
+  <div class="who">""" + CREDIT_NAMES + """</div>
+</header>
+"""
+sim = sim.replace("<body>\n", SIM_HEADER, 1)
+
+SIM_FOOTER = """<footer class="site-foot">
+  <b>教學範圍</b>　這是功能關係的概念示意，不是個人腦造影、精確解剖定位、實測活化量或生理時間模擬。
+  分段便於講解，實際網絡會並行，並依任務、年齡與熟練程度改變。
+  「知識查核守衛」是後設認知與驗算的教學比喻，不是獨立腦區，也不保證答案正確。
+  熟練知識依賴分散的皮質表徵，並非都存放在海馬迴；前額葉也不單獨完成推理。<br>
+  <b>製作</b>　國立臺灣師範大學　梁至中教授／國立清華大學博士候選人　陳奕安。
+  台師大 115-1「腦與學習」教學用，以
+  <a href="https://creativecommons.org/licenses/by-sa/3.0/" target="_blank" rel="noopener">CC BY-SA 3.0</a> 釋出，
+  <a href="https://github.com/Ian3738/brain-dissection-table" target="_blank" rel="noopener">原始碼在 GitHub</a>。
+</footer>
+</body>"""
+if sim.count("</body>\n</html>") != 1:
+    sys.exit("解題模擬外層找不到唯一的 </body>。")
+sim = sim.replace("</body>\n</html>", SIM_FOOTER + "\n</html>", 1)
+
+open(SIM_DEST, "w", encoding="utf-8").write(sim)
+print(f"輸出 {SIM_DEST}")
+print(f"大小 {os.path.getsize(SIM_DEST) / 1024:.0f} KB")

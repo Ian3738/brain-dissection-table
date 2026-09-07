@@ -1,6 +1,9 @@
-# 數位大腦解剖檯
+# 腦與學習 · 教學工具
 
-國立臺灣師範大學 115-1「腦與學習」的教學工具。兩支單檔網頁，瀏覽器直接開，不用安裝任何東西。
+國立臺灣師範大學 115-1「腦與學習」的教學工具。三支單檔網頁，瀏覽器直接開，不用安裝任何東西。
+
+**國立臺灣師範大學　梁至中教授**
+**國立清華大學博士候選人　陳奕安　製作**
 
 **線上開啟 → https://ian3738.github.io/brain-dissection-table/**
 
@@ -8,7 +11,13 @@
 
 ## 這是什麼
 
-畫面上那顆腦不是示意圖，是真人的腦。磁振造影掃出來，用 FreeSurfer 重建成表面網格，45 萬個三角面。每一條腦回、每一道溝都是那個人真正的形狀。
+| 工具 | 處理的問題 |
+|---|---|
+| [數位大腦解剖檯](brain_dissection_table.html) | 構造長什麼樣、在哪裡 |
+| [前額葉網絡動畫](pfc_network_animation.html) | 訊號怎麼跑完一圈 |
+| [大腦解題模擬](problem_solving_simulation.html) | 解一道題時誰在做什麼 |
+
+解剖檯上那顆腦不是示意圖，是真人的腦。磁振造影掃出來，用 FreeSurfer 重建成表面網格，45 萬個三角面。每一條腦回、每一道溝都是那個人真正的形狀。
 
 ### 解剖檯（`brain_dissection_table.html`）
 
@@ -30,6 +39,20 @@
 這是寬幅圖，建議用電腦或平板開啟。手機上可以左右滑動。
 
 > 「知識查核守衛」是後設認知與驗算的教學比喻，不是獨立腦區，也不保證答案正確。解剖檯裡點它會亮起額極、前扣帶、前腦島與腹內側前額葉——那是參與者，不是邊界。
+
+### 大腦解題模擬（`problem_solving_simulation.html`）
+
+從一道題目出發，呈現前額葉皮質、海馬迴、杏仁核、預設模式網絡與「知識查核守衛」的協作。可逐步播放，也可以停下來講解。
+
+| 情境 | 查核重點 | 結論 |
+|---|---|---|
+| 數學：√(x＋6)＝x | 定義與符號條件、代回原式、排除增根 | x＝3 |
+| 物理：靜止出發，恆加速度 2 m/s²，經過 3 s | 區分速度與位移、單位與圖形面積 | 位移 9 m |
+| 化學：H₂ 3 mol、O₂ 1 mol | 限量試劑、反應係數與物料衡算 | 最多產生 H₂O 2 mol |
+
+這一支原本獨立放在 `brain-problem-solving-simulation`，2026-09-07 併進來，舊網址改為重導向。它的內層 app 封在一個 sandbox iframe 裡，本站只在外層加了共用的頁首頁尾，內容一字未動。內層會從 unpkg.com 取用 floating-ui 與 lucide 做提示框與圖示，取不到時會自行跳過，不影響主要功能。
+
+研究來源見該工具頁尾與 [ATTRIBUTION.md](ATTRIBUTION.md)。
 
 ---
 
@@ -56,6 +79,10 @@ Three.js 隨附在 `vendor/`，不走 CDN——教室網路擋得掉 cdnjs，這
 
 **本專案為其衍生作品，同樣以 CC BY-SA 3.0 釋出。** 相同方式分享是有傳染性的：你可以自由使用、修改、再散布，包括商業用途，但必須標示出處，而且衍生作品必須維持同一個授權。詳見 [LICENSE](LICENSE) 與 [ATTRIBUTION.md](ATTRIBUTION.md)。
 
+本站自製的部分（解剖檯的程式與文字、前額葉動畫、解題模擬）著作權為梁至中、陳奕安所有，同樣以 CC BY-SA 3.0 授權使用。要標示出處時，請寫：
+
+> 腦與學習 · 教學工具（梁至中、陳奕安），CC BY-SA 3.0，https://ian3738.github.io/brain-dissection-table/
+
 ---
 
 ## 給要拿去改的人
@@ -68,8 +95,10 @@ Three.js 隨附在 `vendor/`，不走 CDN——教室網路擋得掉 cdnjs，這
 
 ```bash
 python3 source/pack_meshes.py   # 下載 brainder 網格（約 21 MB）並打包
-python3 build.py                # 把 source/ 的分段組裝成單一 HTML
+python3 build.py                # 組裝 brain_dissection_table.html 與 problem_solving_simulation.html
 ```
+
+解題模擬的內容改 `source/simulation/simulation.html`；`source/simulation/standalone-template.html` 是它原本的外殼，共用頁首頁尾由 `build.py` 在組裝時注入，所以樣板本身保持原樣，之後要換一份新的樣板也套得上。
 
 第一步會在 `source/meshdata/` 產生 `meshes.b64` 與 `meshes.json`，這兩個檔案沒有進版控——`meshes.b64` 有 5.2 MB，內容已經整份嵌在 `brain_dissection_table.html` 裡了。
 
@@ -81,6 +110,6 @@ python3 build.py                # 把 source/ 的分段組裝成單一 HTML
 
 ## 該講清楚的限制
 
-皮質下結構是 FreeSurfer 的自動分割結果，邊界是統計圖譜推估出來的，不等同於顯微鏡下的實際界線。組織學那一檯沒有網格可用，是依文獻繪製的示意圖，不是這顆腦的切片。這兩點在教學時要跟學生說。
+皮質下結構是 FreeSurfer 的自動分割結果，邊界是統計圖譜推估出來的，不等同於顯微鏡下的實際界線。組織學那一檯沒有網格可用，是依文獻繪製的示意圖，不是這顆腦的切片。這幾點在教學時要跟學生說。
 
 這是教學工具，不是診斷或研究用的影像軟體。
