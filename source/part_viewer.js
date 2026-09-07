@@ -246,6 +246,7 @@ function tick() {
     if (Math.abs(dth) < 0.002 && Math.abs(camTarget.dist - cam.dist) < 0.5) camTarget = null;
     applyCamera();
   }
+  if (typeof positionFlowLabels === 'function' && FLOW_OBJ.group) positionFlowLabels();
   renderer.render(scene, camera);
 }
 

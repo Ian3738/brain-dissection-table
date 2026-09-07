@@ -7,6 +7,7 @@ const STATIONS = {
   slice: { title: '切面掃描', hint: '掃過去，看構造什麼時候出現、什麼時候消失。' },
   histo: { title: '皮質組織學', hint: '換皮質類型的時候，盯著第 IV 層。' },
   network: { title: '分區與網絡', hint: '右邊換著色依據。拖曳旋轉，滾輪縮放。' },
+  flow: { title: '運作流程', hint: '按播放，或直接拖時間軸。泳道重疊處就是同時在跑的。' },
 };
 
 let station = 'peel';
@@ -54,6 +55,24 @@ const CTL = {
       <span class="step-read mono" id="histoRead">六層都在</span>
     </div>`,
   network: () => viewButtons(),
+  flow: () => `
+    <div class="ctl-row">
+      <span class="ctl-label">時間軌</span>
+      <div class="seg" id="trackSeg">
+        ${FLOW_TRACKS.map((t) => `<button data-tr="${t.id}">${t.zh.replace(/^[^·]+· /, '')}</button>`).join('')}
+      </div>
+      <span class="step-read mono" id="flowZeroTop"></span>
+    </div>
+    <div class="ctl-row">
+      <span class="ctl-label">時間</span>
+      <button class="tool-btn" id="flowPlay" aria-pressed="false">播放</button>
+      <input type="range" id="flowSlider" min="0" max="1500" step="1" value="0" aria-label="時間，毫秒">
+      <span class="step-read mono" id="flowRead">0 ms</span>
+      <div class="seg" id="speedSeg">
+        <button data-s="0.15">慢</button><button data-s="0.4">中</button><button data-s="1">即時</button>
+      </div>
+    </div>
+    <div id="flowLanes"></div>${viewButtons()}`,
 };
 
 function setStation(k) {
@@ -70,6 +89,8 @@ function setStation(k) {
   $('gl').style.display = is3D ? 'block' : 'none';
   $('histoWrap').hidden = !is3D ? false : true;
 
+  if (station !== 'flow' && typeof leaveFlow === 'function') leaveFlow();
+
   if (k === 'peel') {
     clipOn = false;
     for (const m in MAT) MAT[m].clippingPlanes = [];
@@ -84,6 +105,9 @@ function setStation(k) {
   } else if (k === 'network') {
     enterNetwork();
     flyTo(...VIEWS.left);
+  } else if (k === 'flow') {
+    enterFlow();
+    flyTo(Math.PI * 0.78, Math.PI * 0.46, 385);
   } else {
     clipOn = false;
     buildLegend(Object.keys(CTX_TYPES).map((t) => ({ k: t, zh: CTX_TYPES[t].zh + '　' + CTX_TYPES[t].ba, v: '--grey-matter' })),
@@ -146,6 +170,13 @@ function wireControls() {
   });
 
   seg('typeSeg', 't', histoTo, (t) => setCortexType(t));
+
+  const fp = $('flowPlay');
+  if (fp) fp.addEventListener('click', () => setFlowPlaying(!flowPlaying));
+  const fs = $('flowSlider');
+  if (fs) fs.addEventListener('input', () => setFlowTime(+fs.value, true));
+  seg('speedSeg', 's', String(flowSpeed), (v) => { flowSpeed = +v; });
+  seg('trackSeg', 'tr', flowTrack, (id) => setFlowTrack(id));
   seg('viewSeg', 'v', null, (v) => flyTo(...VIEWS[v]));
 }
 
@@ -221,7 +252,8 @@ function setTheme(t) {
     const g = OBJ[name].userData.group;
     if (g === 'deep') OBJ[name].material = deepMat(name);
   }
-  if (station === 'peel') applyPeel(peelLevel);
+  if (station === 'flow') { disposeFlowScene(); enterFlow(); }
+  else if (station === 'peel') applyPeel(peelLevel);
   else if (station === 'slice') enterSlice();
   else if (station === 'network') enterNetwork();
   else drawHisto();
@@ -254,6 +286,9 @@ function boot() {
     if (tourOn && (e.key === ' ' || e.key === 'Enter')) {
       e.preventDefault(); $('tourNext').click(); return;
     }
+    if (!tourOn && station === 'flow' && e.key === ' ') {
+      e.preventDefault(); setFlowPlaying(!flowPlaying); return;
+    }
     const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
     if (!d) return;
     e.preventDefault();
@@ -262,6 +297,8 @@ function boot() {
       const ax = AXES[sliceAxis];
       slicePos = Math.max(ax.lo, Math.min(ax.hi, slicePos + d * 2));
       applySlice();
+    } else if (station === 'flow') {
+      setFlowTime(flowT + d * 50, true);
     } else if (station === 'histo') {
       const ks = Object.keys(CTX_TYPES);
       setCortexType(ks[(ks.indexOf(histoTo) + d + ks.length) % ks.length]);

@@ -98,6 +98,86 @@ HISTO_CSS = """
 .f5{animation-delay:4.7s}
 .f6{animation-delay:6.2s}
 
+
+/* ---------- 檯位五：運作流程 ---------- */
+#flowLabels{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
+.fl-label{
+  position:absolute;top:0;left:0;
+  font:inherit;text-align:left;cursor:pointer;
+  background:color-mix(in srgb, var(--panel) 88%, transparent);
+  border:1px solid var(--rule);border-radius:2px;
+  padding:2px 4px;white-space:nowrap;
+  pointer-events:auto;
+  transition:border-color .2s,box-shadow .2s,padding .2s;
+}
+/* 預設收成一個點；亮起或滑過才展開文字，否則 18 個標籤會互相疊死 */
+.fl-label .fl-zh{display:none}
+.fl-label.on,.fl-label:hover,.fl-label:focus-visible{padding:3px 7px 4px;z-index:2}
+.fl-label.on .fl-zh,.fl-label:hover .fl-zh,.fl-label:focus-visible .fl-zh{display:block}
+.fl-label:hover{border-color:var(--brass)}
+.fl-label:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.fl-label.on{
+  border-color:var(--brass);
+  box-shadow:0 0 0 1px var(--brass),0 0 14px -2px var(--brass-lit);
+  opacity:1;
+}
+.fl-zh{display:block;font-size:12px;font-weight:500;color:var(--ink);line-height:1.3}
+.fl-la{display:block;font-family:"EB Garamond",Georgia,serif;font-style:italic;
+  font-size:10.5px;color:var(--ink3);line-height:1.25}
+
+#flowLanes{position:relative;display:flex;flex-direction:column;gap:2px;padding-top:6px;
+  max-height:210px;overflow-y:auto;overscroll-behavior:contain}
+.lane-head{display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;padding:0 4px 6px;
+  border-bottom:1px solid var(--rule-soft);margin-bottom:4px}
+.lane-zero{font-size:11.5px;color:var(--ink3);letter-spacing:.04em}
+.lane-zero b{color:var(--brass);font-weight:500}
+.lane-hint{font-size:11.5px;color:var(--ink3);flex:1 1 260px;line-height:1.5}
+.ev{
+  display:flex;align-items:center;gap:10px;width:100%;
+  font:inherit;background:transparent;border:0;padding:2px 4px;cursor:pointer;
+  border-radius:2px;color:var(--ink3);text-align:left;
+}
+.ev:hover{background:var(--rule-soft)}
+.ev:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.ev.lit{color:var(--ink)}
+.ev-name{flex:0 0 156px;font-size:12px;line-height:1.35}
+.ev.lit .ev-name{color:var(--brass);font-weight:500}
+.ev-track{position:relative;flex:1 1 auto;height:9px;background:var(--rule-soft);border-radius:1px}
+.ev-bar{position:absolute;top:0;bottom:0;border-radius:1px;opacity:.45;transition:opacity .18s}
+.ev.lit .ev-bar{opacity:1}
+.ev.past .ev-bar{opacity:.7}
+.ev-bar.c-contested{background-image:repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(0,0,0,.35) 2px,rgba(0,0,0,.35) 4px)}
+.ev-bar.c-extrapolated{opacity:.3!important;border:1px dashed currentColor}
+.ev-val{flex:0 0 120px;text-align:right;font-size:10.5px;color:var(--ink3)}
+.lane-cursor{position:absolute;top:30px;bottom:0;width:1px;background:var(--brass);
+  margin-left:170px;pointer-events:none;opacity:.85}
+
+/* 節點上的必要性標記 */
+.fl-need{display:inline-block;width:6px;height:6px;border-radius:50%;margin-left:6px;
+  vertical-align:middle;border:1px solid var(--rule)}
+.n-yes{background:var(--hippocampus);border-color:var(--hippocampus)}
+.n-partial{background:var(--brass);border-color:var(--brass)}
+.n-contested{background:var(--amygdala);border-color:var(--amygdala)}
+.n-no{background:transparent;border-color:var(--ink3)}
+.need-yes{color:var(--hippocampus);border-color:var(--hippocampus)}
+.need-partial{color:var(--brass);border-color:var(--brass)}
+.need-contested{color:var(--amygdala);border-color:var(--amygdala)}
+.need-no{color:var(--ink3)}
+
+/* 時間參數卡 */
+.tm{border-left:2px solid var(--rule);padding:2px 0 4px 9px;margin-bottom:9px}
+.tm:last-child{margin-bottom:0}
+.tm-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.tm-v{font-size:13.5px;color:var(--ink);font-weight:500}
+.tm-b{font-size:10px;letter-spacing:.08em;padding:1px 6px;border-radius:1px;border:1px solid var(--rule)}
+.b-established{color:var(--hippocampus);border-color:var(--hippocampus)}
+.b-contested{color:var(--amygdala);border-color:var(--amygdala)}
+.b-extrapolated{color:var(--ink3)}
+.tm-w{font-size:12.5px;color:var(--ink2);margin-top:2px;line-height:1.55}
+.tm-e{font-size:11.5px;color:var(--ink3);margin-top:3px;line-height:1.6}
+.tm-c{color:var(--amygdala)}
+.tag-hr{border:0;border-top:1px dashed var(--rule);margin:8px 0}
+
 /* ---------- 出處 ---------- */
 .credit{
   grid-column:1 / -1;
@@ -139,6 +219,7 @@ html = html.replace(
     """<div class="canvas" id="canvas">
       <canvas id="gl"></canvas>
       <div id="histoWrap" hidden></div>
+      <div id="flowLabels" hidden></div>
       <div id="loading">
         <span class="ld-t">載入標本中</span>
         <span class="ld-s mono">45 萬個三角面</span>
@@ -169,7 +250,8 @@ b64 = open(os.path.join(MESH, "meshes.b64"), encoding="utf-8").read()
 
 parts = [
     open(os.path.join(SRC, f), encoding="utf-8").read()
-    for f in ("part_data.js", "part_viewer.js", "part_ui.js", "part_histo.js", "part_app.js")
+    for f in ("part_data.js", "part_flow_data.js", "part_viewer.js", "part_ui.js",
+              "part_histo.js", "part_flow.js", "part_app.js")
 ]
 
 js = ('"use strict";\n'

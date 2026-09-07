@@ -626,6 +626,86 @@ svg text{font-family:"Noto Sans TC","PingFang TC",system-ui,sans-serif}
 .f5{animation-delay:4.7s}
 .f6{animation-delay:6.2s}
 
+
+/* ---------- 檯位五：運作流程 ---------- */
+#flowLabels{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
+.fl-label{
+  position:absolute;top:0;left:0;
+  font:inherit;text-align:left;cursor:pointer;
+  background:color-mix(in srgb, var(--panel) 88%, transparent);
+  border:1px solid var(--rule);border-radius:2px;
+  padding:2px 4px;white-space:nowrap;
+  pointer-events:auto;
+  transition:border-color .2s,box-shadow .2s,padding .2s;
+}
+/* 預設收成一個點；亮起或滑過才展開文字，否則 18 個標籤會互相疊死 */
+.fl-label .fl-zh{display:none}
+.fl-label.on,.fl-label:hover,.fl-label:focus-visible{padding:3px 7px 4px;z-index:2}
+.fl-label.on .fl-zh,.fl-label:hover .fl-zh,.fl-label:focus-visible .fl-zh{display:block}
+.fl-label:hover{border-color:var(--brass)}
+.fl-label:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.fl-label.on{
+  border-color:var(--brass);
+  box-shadow:0 0 0 1px var(--brass),0 0 14px -2px var(--brass-lit);
+  opacity:1;
+}
+.fl-zh{display:block;font-size:12px;font-weight:500;color:var(--ink);line-height:1.3}
+.fl-la{display:block;font-family:"EB Garamond",Georgia,serif;font-style:italic;
+  font-size:10.5px;color:var(--ink3);line-height:1.25}
+
+#flowLanes{position:relative;display:flex;flex-direction:column;gap:2px;padding-top:6px;
+  max-height:210px;overflow-y:auto;overscroll-behavior:contain}
+.lane-head{display:flex;gap:14px;flex-wrap:wrap;align-items:baseline;padding:0 4px 6px;
+  border-bottom:1px solid var(--rule-soft);margin-bottom:4px}
+.lane-zero{font-size:11.5px;color:var(--ink3);letter-spacing:.04em}
+.lane-zero b{color:var(--brass);font-weight:500}
+.lane-hint{font-size:11.5px;color:var(--ink3);flex:1 1 260px;line-height:1.5}
+.ev{
+  display:flex;align-items:center;gap:10px;width:100%;
+  font:inherit;background:transparent;border:0;padding:2px 4px;cursor:pointer;
+  border-radius:2px;color:var(--ink3);text-align:left;
+}
+.ev:hover{background:var(--rule-soft)}
+.ev:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.ev.lit{color:var(--ink)}
+.ev-name{flex:0 0 156px;font-size:12px;line-height:1.35}
+.ev.lit .ev-name{color:var(--brass);font-weight:500}
+.ev-track{position:relative;flex:1 1 auto;height:9px;background:var(--rule-soft);border-radius:1px}
+.ev-bar{position:absolute;top:0;bottom:0;border-radius:1px;opacity:.45;transition:opacity .18s}
+.ev.lit .ev-bar{opacity:1}
+.ev.past .ev-bar{opacity:.7}
+.ev-bar.c-contested{background-image:repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(0,0,0,.35) 2px,rgba(0,0,0,.35) 4px)}
+.ev-bar.c-extrapolated{opacity:.3!important;border:1px dashed currentColor}
+.ev-val{flex:0 0 120px;text-align:right;font-size:10.5px;color:var(--ink3)}
+.lane-cursor{position:absolute;top:30px;bottom:0;width:1px;background:var(--brass);
+  margin-left:170px;pointer-events:none;opacity:.85}
+
+/* 節點上的必要性標記 */
+.fl-need{display:inline-block;width:6px;height:6px;border-radius:50%;margin-left:6px;
+  vertical-align:middle;border:1px solid var(--rule)}
+.n-yes{background:var(--hippocampus);border-color:var(--hippocampus)}
+.n-partial{background:var(--brass);border-color:var(--brass)}
+.n-contested{background:var(--amygdala);border-color:var(--amygdala)}
+.n-no{background:transparent;border-color:var(--ink3)}
+.need-yes{color:var(--hippocampus);border-color:var(--hippocampus)}
+.need-partial{color:var(--brass);border-color:var(--brass)}
+.need-contested{color:var(--amygdala);border-color:var(--amygdala)}
+.need-no{color:var(--ink3)}
+
+/* 時間參數卡 */
+.tm{border-left:2px solid var(--rule);padding:2px 0 4px 9px;margin-bottom:9px}
+.tm:last-child{margin-bottom:0}
+.tm-h{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.tm-v{font-size:13.5px;color:var(--ink);font-weight:500}
+.tm-b{font-size:10px;letter-spacing:.08em;padding:1px 6px;border-radius:1px;border:1px solid var(--rule)}
+.b-established{color:var(--hippocampus);border-color:var(--hippocampus)}
+.b-contested{color:var(--amygdala);border-color:var(--amygdala)}
+.b-extrapolated{color:var(--ink3)}
+.tm-w{font-size:12.5px;color:var(--ink2);margin-top:2px;line-height:1.55}
+.tm-e{font-size:11.5px;color:var(--ink3);margin-top:3px;line-height:1.6}
+.tm-c{color:var(--amygdala)}
+.tag-hr{border:0;border-top:1px dashed var(--rule);margin:8px 0}
+
 /* ---------- 出處 ---------- */
 .credit{
   grid-column:1 / -1;
@@ -712,6 +792,10 @@ svg text{font-family:"Noto Sans TC","PingFang TC",system-ui,sans-serif}
       <span class="n">04</span><span class="t">分區與網絡</span>
       <span class="d">腦葉、DMN、查核守衛</span>
     </button>
+    <button class="station-btn" data-station="flow" aria-pressed="false">
+      <span class="n">05</span><span class="t">運作流程</span>
+      <span class="d">刺激到行動，毫秒時間軸</span>
+    </button>
     <div class="rail-foot">
       點畫面上任何一個構造，右邊會出現它的標本籤。<br>
       鍵盤：<span class="mono">← →</span> 換層或換刀。
@@ -737,12 +821,14 @@ svg text{font-family:"Noto Sans TC","PingFang TC",system-ui,sans-serif}
     <div class="canvas" id="canvas">
       <canvas id="gl"></canvas>
       <div id="histoWrap" hidden></div>
+      <div id="flowLabels" hidden></div>
       <div id="loading">
         <span class="ld-t">載入標本中</span>
         <span class="ld-s mono">45 萬個三角面</span>
         <noscript><span class="ld-s">這個頁面需要 JavaScript 才能執行。</span></noscript>
       </div>
     </div>
+    <!-- flowLabels 由 build.py 插進 canvas 內 -->
 
     <div class="controls" id="controls"><!-- 各檯位控制項由此插入 --></div>
   </main>
@@ -942,6 +1028,300 @@ const PEEL = [
   { zh:'邊緣結構',   la:'Systema limbicum',       desc:'海馬與杏仁核，都在顳葉內側。杏仁核在前，海馬在後，接得很緊。轉一轉看它們的空間關係——這是平面圖講不清楚的地方。' },
   { zh:'腦室系統',   la:'Systema ventriculare',   desc:'側腦室彎成 C 形，因為它跟著顳葉發育一起捲進去。腦脊髓液在此製造，經室間孔到第三腦室，再經導水管到第四腦室。' },
   { zh:'腦幹與小腦', la:'Truncus et cerebellum',  desc:'最後剩下的中軸。腦幹掌管呼吸心跳，十二對腦神經有十對從這裡出來；小腦掛在它的背側。' },
+];
+
+/* ============================================================
+   檯位五：運作流程 — 內容資料層
+
+   這一檯的形式本身就是教學內容。設計上刻意違反「一條時間軸」的直覺：
+
+   ・零點有四個。刺激、停止訊號、反應、口語報告各自鎖時，
+     不同零點的數字**不能比較**，所以它們走不同的軌、視覺上刻意不對齊。
+   ・動物數據自成一軌，永遠不落在人類軸上。兩軌對不齊本身就是重點。
+   ・模型反推值（SSRT）與儀器極限（fMRI 4–6 秒）不上任何時間軸。
+   ・階段編號是敘事分區，不是時間順序——實測潛伏期與編號順序常常相反。
+
+   所有數值與但書出自 2026-09-07 的文獻考證與對抗性查核。
+   改內容改這個檔就好，其餘程式碼不看內容。
+   ============================================================ */
+
+/* ---------- 時間軌：每一條有自己的零點 ---------- */
+const FLOW_TRACKS = [
+  { id: 'stim', zh: '人類 · 刺激鎖時', zero: '刺激出現 = 0', span: 1500, v: '--brass', main: true,
+    note: '這是主軸。以下數字全部相對於刺激出現的瞬間。' },
+  { id: 'stop', zh: '人類 · 停止訊號鎖時', zero: '停止訊號 = 0', span: 300, v: '--lobe-parietal',
+    note: '零點是停止訊號，不是刺激。不能跟主軸上的數字比大小。' },
+  { id: 'resp', zh: '人類 · 反應鎖時', zero: '按下按鍵 = 0', span: 600, v: '--amygdala',
+    note: '零點是反應發生的瞬間。錯誤訊號發生在動作之後，本來就不該出現在刺激軸的前段。' },
+  { id: 'speech', zh: '人類 · 口語報告鎖時', zero: '開口說出 = 0（往回推）', span: 2200, v: '--hippocampus',
+    note: '零點是受試者說出答案的瞬間，時間往回算。' },
+  { id: 'animal', zh: '動物 · 各自鎖時', zero: '刺激出現 = 0（大鼠聽覺／獼猴視覺）', span: 500, v: '--ink3',
+    note: '大鼠與獼猴的數字。物種、感覺模態、麻醉狀態都不同，不能搬到人類軸上。' },
+];
+
+/* ---------- 節點：座標取自真實網格的分區重心 ---------- */
+const FLOW_NODES = {
+  v1:      { zh: '初級視覺皮質', la: 'Cortex striatus', fs: 'pericalcarine', v: '--lobe-occipital',
+             at: [-10.3, -79.6, 0.3],
+             role: '慢路的皮質入口。雙側毀損造成皮質盲，也是情緒盲視這條證據線的前提。',
+             need: { level: 'yes', note: '雙側毀損造成主觀失明（病例 TN），但仍有殘餘的情緒辨別——所以它對意識視覺必要，對全部視覺處理則不是。' } },
+  thal:    { zh: '視丘', la: 'Thalamus', fs: 'Left-Thalamus-Proper', v: '--thalamus',
+             at: [-14.3, -18.2, -6.1],
+             role: '除嗅覺外所有上行感覺的中繼。外側膝狀核走視覺，內側膝狀體走聽覺。',
+             need: { level: 'yes', note: '外側膝狀核梗塞造成楔形扇狀視野缺損，是「視丘中繼無可繞過」的乾淨案例。但扇狀缺損不是它的專屬徵象，視放線病灶也會。' } },
+  amyg:    { zh: '杏仁核', la: 'Corpus amygdaloideum', fs: 'Left-Amygdala', v: '--amygdala',
+             at: [-25.6, -10.4, -29.2],
+             role: '兩條路的匯流點。外側核收感覺輸入，中央核發出自律與運動指令——這條輸出不經前額葉。',
+             need: { level: 'partial', note: '雙側鈣化的 S.M. 認不出恐懼臉孔、不怕蛇，但吸入 35% CO2 仍出現完整恐慌。外感受威脅的樞紐，不是恐懼經驗唯一的產生處。' } },
+  insula:  { zh: '前腦島', la: 'Insula anterior', fs: 'insula', v: '--lobe-insula',
+             at: [-43.0, 2.3, -15.9],
+             role: '顯著網絡的一員，整合外感受與內感受。理論上是分流閘。',
+             need: { level: 'no', note: '至今沒有人類因果介入證據。而且唯一的人類毫秒資料顯示它反應偏晚（250–338 ms），原作者解讀為由上而下的產物，不是先動的閘門。' } },
+  acc:     { zh: '前扣帶／後內側額葉', la: 'Cortex cingularis anterior / pMFC', fs: 'caudalanteriorcingulate', v: '--lobe-insula',
+             at: [-5.9, 26.0, 4.4],
+             role: '同一塊肉、四種說法：顯著網絡節點、回饋正波來源之一、衝突下的門檻調整、錯誤偵測核心。',
+             need: { level: 'contested', note: 'Fellows & Farah 2005 的四名背側前扣帶病灶病人，衝突後調整、錯誤後減速、速度正確性權衡全部正常。n=4 的虛無結果不能否證，但足以說明「會亮」不等於「不可或缺」。' } },
+  ento:    { zh: '內嗅皮質', la: 'Cortex entorhinalis', fs: 'entorhinal', v: '--lobe-temporal',
+             at: [-26.4, -10.1, -47.8],
+             role: '海馬的總入口。穿通纖維由此進入齒狀迴。',
+             need: { level: 'yes', note: '阿茲海默症最早堆積 tau 的位置，也是記憶損害最早出現的解剖對應。' } },
+  hipp:    { zh: '海馬', la: 'Hippocampus', fs: 'Left-Hippocampus', v: '--hippocampus',
+             at: [-26.2, -26.3, -21.9],
+             role: '三突觸迴路：穿通纖維→齒狀迴→CA3→CA1→下托。齒狀迴做模式分離，CA3 做模式完成。',
+             need: { level: 'yes', note: 'H.M. 雙側切除後順向失憶。但模式分離／完成在人類只有間接證據，齧齒類才是單細胞層次的直接觀察。' } },
+  ofc:     { zh: '眶額皮質', la: 'Cortex orbitofrontalis', fs: 'lateralorbitofrontal', v: '--lobe-frontal',
+             at: [-26.0, 32.5, -37.9],
+             role: '把不同種類的東西換算成可比較的主觀價值；也是現實過濾的所在。',
+             need: { level: 'yes', note: '後內側眶額與基底前腦損傷（多為前交通動脈瘤破裂）造成虛談症。但 2023 年病灶網絡分析指出這類病灶共同連向乳頭體，眶額與間腦兩種定位要並列。' } },
+  vmpfc:   { zh: '腹內側前額葉', la: 'Cortex praefrontalis ventromedialis', fs: 'medialorbitofrontal', v: '--lobe-frontal',
+             at: [-7.3, 29.5, -37.0],
+             role: '主觀價值的共同貨幣，被主張是不同選項可以互相比較的地方。',
+             need: { level: 'contested', note: '「common currency」是模型主張，人類證據多為相關法。' } },
+  nacc:    { zh: '依核', la: 'Nucleus accumbens', fs: 'Left-Accumbens-area', v: '--striatum',
+             at: [-10.0, 6.5, -19.9],
+             role: '腹側紋狀體。把價值轉成行動的動機權重。',
+             need: { level: 'contested', note: '多巴胺促效劑相關的衝動控制障礙是最貼近的人類證據，但那是橫斷面關聯，不是因果。' } },
+  dlpfc:   { zh: '背外側前額葉', la: 'Cortex praefrontalis dorsolateralis', fs: 'rostralmiddlefrontal', v: '--lobe-frontal',
+             at: [-34.5, 53.9, -9.9],
+             role: '與後頂葉構成維持迴路，把當下要用的東西撐住。',
+             need: { level: 'yes', note: '背外側受損：計畫散掉、講話流利但做事沒次序。不過持續性活動作為工作記憶機制，近年受 activity-silent 假說挑戰。' } },
+  fpc:     { zh: '額極', la: 'Polus frontalis (BA 10)', fs: 'frontalpole', v: '--lobe-frontal',
+             at: [-9.2, 65.3, -33.7],
+             role: '在主目標與次目標之間來回；監控自己的判斷可不可靠。',
+             need: { level: 'partial', note: 'Shallice & Burgess 1991 三名病人各項測驗正常，卻無法在多目標作業中分配時間。Fleming 2014 七名額極病灶病人知覺後設認知效率下降。兩者 n 都極小，病灶都超出額極。' } },
+  vlpfc:   { zh: '右下額回／腹外側前額葉', la: 'Gyrus frontalis inferior', fs: 'parstriangularis', v: '--lobe-frontal',
+             at: [-54.9, 31.0, -14.9],
+             role: '抑制的觸發端。經超直接路徑繞過紋狀體直接興奮底丘腦核。',
+             need: { level: 'yes', note: '右下額回病灶造成停止失敗，但機制是 trigger failure（沒有啟動煞車）而非煞車變慢。' } },
+  stn:     { zh: '底丘腦核（腹側間腦）', la: 'Nucleus subthalamicus', fs: 'Left-VentralDC', v: '--brainstem',
+             at: [-12.7, -18.3, -19.4],
+             role: '超直接路徑的收件端，被興奮後把運動輸出整體壓下去。',
+             need: { level: 'yes', note: 'FreeSurfer 的 aseg 沒有底丘腦核標籤，這裡落在 VentralDC——那是為分割方便造出的集合標籤，不是功能單位。' } },
+  pallid:  { zh: '蒼白球', la: 'Globus pallidus', fs: 'Left-Pallidum', v: '--pallidum',
+             at: [-23.5, -5.1, -16.0],
+             role: '基底核的輸出站。',
+             need: { level: 'yes', note: 'FreeSurfer 不分內外節，也不含腹側蒼白球。' } },
+  m1:      { zh: '初級運動皮質', la: 'Gyrus precentralis', fs: 'precentral', v: '--lobe-frontal',
+             at: [-44.9, 4.2, 25.6],
+             role: '受控輸出的最後一站，經皮質脊髓束下行。',
+             need: { level: 'yes', note: '' } },
+  pcc:     { zh: '後扣帶／楔前葉', la: 'Cortex cingularis posterior', fs: 'posteriorcingulate', v: '--lobe-parietal',
+             at: [-5.9, -12.4, 26.3],
+             role: '預設模式網絡的主樞紐。任務一來就去活化。',
+             need: { level: 'contested', note: 'DMN 是分布式網絡，與前額葉、記憶系統的分類有重疊。' } },
+  stem:    { zh: '腦幹', la: 'Truncus encephali', fs: 'Brain-Stem', v: '--brainstem',
+             at: [-1.5, -36.7, -35.4],
+             role: '上丘、下丘、導水管周圍灰質、腦橋尾側網狀核都在其中。早期防禦輸出在此執行。',
+             need: { level: 'yes', note: 'aseg 沒有藍斑、中縫核、VTA、黑質緻密部的標籤，全部落在這一塊。' } },
+};
+
+/* ---------- 事件：每一筆都掛在一條軌上 ---------- */
+const FLOW_EVENTS = [
+  // ── 人類 · 刺激鎖時 ──
+  { track: 'stim', t0: 50, t1: 60, node: 'v1', stage: 'input', conf: 'established',
+    label: 'V1 最早反應', value: '約 50–60 ms',
+    evidence: '顱內電極紀錄與高密度 EEG 的 C1 成分源分析',
+    caveat: '這是「最快看得到的」而不是「典型的」。C1 起始對刺激對比、大小與離心率高度敏感，換一組刺激就位移十幾毫秒。' },
+  { track: 'stim', t0: 74, t1: 74, node: 'amyg', stage: 'input', conf: 'contested',
+    label: '杏仁核場電位分化', value: '約 74 ms',
+    evidence: '癲癇病人顱內局部場電位（Méndez-Bértolo 2016）',
+    caveat: '另一組研究同方向但給 45 ms（低頻 gamma）與 88 ms（iERP）。數字隨訊號成分而變，不是定點。而且電生理量得到時間，量不到路徑——杏仁核比梭狀迴早，推論不出訊號走了哪一條路。' },
+  { track: 'stim', t0: 101, t1: 271, node: 'hipp', stage: 'memory', conf: 'established',
+    label: '內側顳葉選擇性反應', value: '最早 101–220 ms，中位數 271–397 ms',
+    evidence: '癲癇病人顱內單細胞（海馬旁 271、內嗅 392、海馬 394、杏仁核 397 ms）',
+    caveat: '海馬不是只在晚期才參與。但要注意癲癇病人的內側顳葉本身可能已有病變。' },
+  { track: 'stim', t0: 150, t1: 150, node: 'insula', stage: 'salience', conf: 'extrapolated',
+    label: 'MMN（偏差偵測）', value: '約 150 ms',
+    evidence: 'Menon & Uddin 2010 提出的五階段時間表，第 1 階段',
+    caveat: '這是模型提出的時間表，不是單一實驗量到的傳導鏈。' },
+  { track: 'stim', t0: 200, t1: 300, node: 'ofc', stage: 'conflict', conf: 'contested',
+    label: '眶額現實過濾', value: '約 200–300 ms 的額區負波',
+    evidence: 'Schnider 團隊',
+    caveat: '幾乎只有他自己的團隊做過，屬單一實驗室證據。而且它判斷的是「這個念頭跟此刻現實有沒有關係」，不是一般意義的事實查核。' },
+  { track: 'stim', t0: 250, t1: 338, node: 'insula', stage: 'salience', conf: 'established',
+    label: '前腦島顱內反應', value: 'P300 類成分 250–338 ms',
+    evidence: '立體腦電圖 n=8；僅 39% 接觸點有此反應',
+    caveat: '**這是本教材最重要的一個反直覺點**：原作者把它解讀為由上而下的產物，也就是說前腦島在這份資料裡是晚的，不是先動的分流閘。' },
+  { track: 'stim', t0: 250, t1: 300, node: 'acc', stage: 'salience', conf: 'established',
+    label: 'P3a（新奇刺激）', value: '約 250–300 ms',
+    evidence: '頭皮 ERP，教科書常見引用值',
+    caveat: '此為約值而非量測常數。潛伏期在兒童期遞減、成年後隨老化遞增。' },
+  { track: 'stim', t0: 300, t1: 400, node: 'dlpfc', stage: 'control', conf: 'established',
+    label: 'CDA 對側延遲活動', value: '約 300–400 ms 出現並持續整個維持期',
+    evidence: '頭皮 ERP，視覺工作記憶的維持指標',
+    caveat: '這是維持期的指標，不是「工作記憶開始」的時刻。' },
+  { track: 'stim', t0: 300, t1: 500, node: 'hipp', stage: 'memory', conf: 'contested',
+    label: 'FN400 早期熟悉感', value: '約 300–500 ms 的分析時窗',
+    evidence: '頭皮 ERP',
+    caveat: '各研究另有 300–450、350–500 等取法，並無公認標準。' },
+  { track: 'stim', t0: 900, t1: 1300, node: 'hipp', stage: 'memory', conf: 'contested',
+    label: '海馬提取放電升高', value: '通過檢定的群集落在 900–1300 ms',
+    evidence: '人類顱內單細胞',
+    caveat: '描述上常寫 500–1500 ms，但真正通過統計檢定的只有 900–1300 ms 這一段。' },
+
+  // ── 人類 · 停止訊號鎖時 ──
+  { track: 'stop', t0: 115, t1: 129, node: 'vlpfc', stage: 'control', conf: 'contested',
+    label: '右額 beta burst', value: '115±6 ms 與 129±7 ms',
+    evidence: '兩個獨立樣本（n=11、n=13）',
+    caveat: '只在約 15% 的成功停止試次偵測得到。' },
+  { track: 'stop', t0: 140, t1: 140, node: 'm1', stage: 'control', conf: 'contested',
+    label: 'M1 全域抑制可測', value: '停止訊號後 140 ms',
+    evidence: 'TMS 誘發電位振幅下降',
+    caveat: '140 ms 是取樣點，不是抑制的起始時刻。' },
+  { track: 'stop', t0: 147, t1: 147, node: 'm1', stage: 'control', conf: 'established',
+    label: 'CancelTime（肌電開始下降）', value: '147±5 ms（n=42）',
+    evidence: '手部肌電，Jana 等 2020 eLife',
+    caveat: '同一篇的研究三另得 160±9 ms（n=17）。' },
+
+  // ── 人類 · 反應鎖時 ──
+  { track: 'resp', t0: 50, t1: 100, node: 'acc', stage: 'conflict', conf: 'established',
+    label: 'ERN 錯誤相關負波', value: '錯誤反應後約 50–100 ms',
+    evidence: '額中線 FCz 最大，頭皮 ERP',
+    caveat: '這是波峰時間，不是歷程長度——theta 功率增加會延續到數百毫秒。而且「ERN 由前扣帶產生」不能當定論：頭皮電位的逆問題沒有唯一解，最一致的候選是 pMFC（含 aMCC 與 pre-SMA），不是單指 ACC。' },
+  { track: 'resp', t0: 100, t1: 150, node: 'acc', stage: 'conflict', conf: 'contested',
+    label: 'pre-SMA 先於 dACC', value: '約 50 ms 的先後差',
+    evidence: '顱內紀錄，29 位癲癇術前病人、1171 個單位',
+    caveat: '方向有兩個獨立實驗室支持，數字沒有——這個 50 ms 至今沒有第二個世代複製。' },
+  { track: 'resp', t0: 200, t1: 400, node: 'acc', stage: 'conflict', conf: 'established',
+    label: 'Pe 錯誤正波', value: '錯誤反應後約 200–400 ms',
+    evidence: '中央頂區最大，頭皮 ERP',
+    caveat: '與主觀察覺的關係比 ERN 密切，但「ERN 與察覺完全無關」的說法證據並不一致。' },
+  { track: 'resp', t0: 250, t1: 350, node: 'nacc', stage: 'value', conf: 'established',
+    label: 'RewP 報酬正波', value: '回饋後約 250–350 ms',
+    evidence: '額中線 FCz，頭皮 ERP',
+    caveat: '零點是「回饋出現」，與同軌的 ERN（零點是「按下按鍵」）也不是同一個零點——嚴格說這是第五個零點。' },
+
+  // ── 人類 · 口語報告鎖時 ──
+  { track: 'speech', t0: 200, t1: 1200, node: 'hipp', stage: 'memory', conf: 'established',
+    label: 'Sharp-wave ripple 速率上升', value: '說出答案前約 1–2 秒',
+    evidence: '人類顱內紀錄，自由回憶作業（Norman 2019）',
+    caveat: '自由回憶是自發、自訂步調的內生提取。把它放進刺激驅動的架構是類別錯誤——這也是它必須獨立一軌的原因。' },
+
+  // ── 動物 ──
+  { track: 'animal', t0: 12, t1: 15, node: 'amyg', stage: 'input', conf: 'established',
+    label: '大鼠 · 聽覺快路', value: '約 12–15 ms（分布常記 12–25 ms）',
+    evidence: '大鼠單細胞；Bordi & LeDoux 1992 為麻醉標本，Quirk 1995 為自由活動標本',
+    caveat: '通俗版「12 ms」的真正出處。三重限制：物種是大鼠、模態是聽覺、量的是第一次放電。12 ms 接近下界不是平均值。**它不能標在人類視覺的時間軸上**，也不代表此時杏仁核已判定這是威脅。' },
+  { track: 'animal', t0: 20, t1: 20, node: 'v1', stage: 'input', conf: 'established',
+    label: '大鼠 · 聽覺皮質路（推估）', value: '推估大於 20 ms',
+    evidence: '麻醉大鼠電刺激誘發紀錄推估',
+    caveat: '這是電刺激推估值，不是聲音誘發的實測潛伏期。教材要保留的是順序（視丘路先、皮質路後），不是數字。' },
+  { track: 'animal', t0: 50, t1: 70, node: 'amyg', stage: 'input', conf: 'contested',
+    label: '獼猴 · 杏仁核群體解碼', value: '約 50 ms（同批顳葉皮質約 70 ms）',
+    evidence: '2 隻獼猴，杏仁核 104 個神經元',
+    caveat: '這是群體解碼出現訊息的時間，不是單一神經元首發潛伏期。樣本 2 隻猴，尚未獨立複製。' },
+  { track: 'animal', t0: 70, t1: 100, node: 'stem', stage: 'value', conf: 'established',
+    label: '獼猴 · 多巴胺放電起始', value: '約 70–100 ms（跨研究 50–110 ms）',
+    evidence: '中腦多巴胺神經元單細胞紀錄',
+    caveat: '放電持續小於 200 ms。這是整段裡動物證據最漂亮、人類證據最鬆的對比。' },
+  { track: 'animal', t0: 200, t1: 220, node: 'stem', stage: 'value', conf: 'contested',
+    label: '獼猴 · 帶價值訊息的晚期成分', value: '刺激後約 200–220 ms 才分化',
+    evidence: '兩隻猴分別為 80–219／220–439 ms 與 100–199／200–519 ms',
+    caveat: '早期成分不隨試驗類型變化，晚期才帶價值訊息。' },
+];
+
+/* ---------- 不上時間軸的量 ---------- */
+const FLOW_OFFAXIS = [
+  { zh: 'SSRT 停止訊號反應時間', value: '健康年輕成人約 200–250 ms',
+    why: '這是從賽馬模型**反推**出來的煞車潛伏期，沒有實體零點，所以不落在任何一條軌上。',
+    detail: 'Jana 等 2020 eLife 五個研究：216±8、204±4、219±6、214±9、219±6 ms。病灶組的標準差高達 124 ms（平均 307）。' },
+  { zh: '皮質脊髓傳導延遲', value: '約 23 ms（23±0.3）',
+    why: '這是電纜長度，不是歷程。放在同一條線性軸上會被壓在跟 147 ms 差不多的位置。',
+    detail: '運動皮質訊號到手部肌肉。' },
+  { zh: '刺激底丘腦核的皮質誘發電位', value: '起始 1.8±0.3 ms，波峰 2.6±0.3 ms',
+    why: '同樣是傳導時間，與 SSRT 差兩個數量級。',
+    detail: '三種可能來源：逆向傳導、皮質間突觸傳遞、底丘腦核到皮質的投射——不能直接讀成超直接路徑的傳導時間。' },
+  { zh: 'fMRI 的時間下限', value: '血氧反應在神經活動後約 4–6 秒達峰',
+    why: '這是量測工具的性質，不是任何腦區的處理時間。',
+    detail: '所以本頁所有毫秒級的人類數字，沒有一個來自 fMRI。' },
+  { zh: '錯誤後減速 PES', value: '沒有可跨作業引用的定值',
+    why: '同一批受試者的減速幅度會隨反應與刺激間隔改變，短間隔才穩定出現，長間隔可能大幅縮小甚至反轉。',
+    detail: '' },
+];
+
+/* ---------- 兩個出口：不是接力，是競爭 ---------- */
+const FLOW_EXITS = [
+  { id: 'early', zh: '早期防禦輸出', la: 'Defensive output',
+    path: '杏仁核中央核 → 下視丘外側（交感）／導水管周圍灰質（僵直與逃跑）／腦橋尾側網狀核（驚跳增強）',
+    note: '這條輸出**不經過任何一個前額葉節點**。它本身就是一個完成的行動。臨床上最重要的反射性行為，正好是不跑完整條流程的那一類。',
+    nodes: ['amyg', 'stem'] },
+  { id: 'late', zh: '晚期受控輸出', la: 'Controlled output',
+    path: '右下額回 → 底丘腦核（超直接路徑）→ 蒼白球內節 → 視丘 → 初級運動皮質 → 皮質脊髓束',
+    note: '晚出口可以攔截早出口，但會攔不住——這才是衝動控制的臨床意義。兩者是競爭關係，不是先後接力。',
+    nodes: ['vlpfc', 'stn', 'pallid', 'm1'] },
+];
+
+/* ---------- 六個主題分區（敘事順序，不是時間順序） ---------- */
+const FLOW_STAGES = [
+  { id: 'input', zh: '感覺輸入與雙通路威脅偵測', v: '--amygdala', subq: 'threat',
+    summary: '視丘換元後分兩支：一支經膝狀體到初級感覺皮質再到杏仁核，一支是所謂的快路，繞過皮質直接進杏仁核。',
+    warn: '快路的完整證據鏈（毀損、電生理、軸突追蹤三重確立）只存在於**大鼠的聽覺系統**。搬到人類的視覺系統是一場還沒結束的爭論——獼猴實驗甚至顯示上丘的視覺反應在 V1 失活後幾乎消失，若成立，這條「繞過皮質」的路在靈長類根本繞不過皮質。' },
+  { id: 'salience', zh: '顯著性偵測與注意分配', v: '--lobe-insula', subq: 'conflict',
+    summary: '前腦島與前扣帶被主張是「這件事值不值得動用資源」的分流閘，並負責在預設模式與中央執行網絡之間切換。',
+    warn: '這一節最大的教學價值是示範「好用的模型」與「被證實的機制」中間有多遠。前腦島至今沒有人類因果介入證據，而唯一的人類毫秒資料顯示它是晚的、是由上而下的產物。' },
+  { id: 'memory', zh: '記憶調閱與脈絡比對', v: '--hippocampus', subq: 'memory',
+    summary: '內嗅皮質經穿通纖維進海馬，齒狀迴做模式分離、CA3 做模式完成，再由下托送回新皮質。',
+    warn: '人類的資料來自癲癇術前病人，而他們的內側顳葉本身可能已有病變。模式分離與完成在人類只有間接證據。' },
+  { id: 'value', zh: '價值評估與報酬預測', v: '--striatum', subq: 'reward',
+    summary: '眶額與腹內側前額葉把不同種類的東西換算成可比較的主觀價值，腹側紋狀體轉成動機權重，中腦多巴胺回報預測誤差。',
+    warn: '這是整條流程裡動物證據最漂亮、人類證據最鬆的一段。帕金森病人回饋學習偏向那個經典發現，2017 年的複製研究沒有複製出來。' },
+  { id: 'control', zh: '工作記憶、規劃與抑制否決', v: '--lobe-frontal', subq: 'plan',
+    summary: '背外側前額葉與後頂葉撐住當下要用的東西，額極管次目標，右下額回經超直接路徑把運動輸出整體壓下去。',
+    warn: '抑制那一半在人類有肌電、TMS、術中電生理三種可互相對照的量測；維持與規劃那一半幾乎沒有可靠的毫秒級人類數據。投影片上要把這兩半分開。' },
+  { id: 'conflict', zh: '衝突監控、錯誤偵測與學習回寫', v: '--lobe-parietal', subq: 'inhibit',
+    summary: '動作送出去之後，腦不等外界回饋就先自行比對。後內側額葉拿運動指令副本比對仍在累積的證據。',
+    warn: '三路輸出（調高控制、推高閾值、寫入情節記憶）是整合多份研究與計算模型後的**推論**，不是任何單一實驗量到的傳導鏈。而且它作用在「下一試次」，不是本試次。' },
+];
+
+/* ---------- 狀態調節層：整條軸會隨它伸縮 ---------- */
+const FLOW_STATE = {
+  zh: '狀態調節層',
+  note: '覺醒、麻醉、藥物、睡眠與年齡會讓整條軸**整體伸縮**，不是個別節點位移。本頁的數字全部是健康年輕成人的組平均。',
+  items: [
+    '藍斑正腎上腺素系統：與 P300、顯著網絡、瞳孔指標直接相關，但本圖沒畫。',
+    '基底前腦膽鹼系統：抗膽鹼性譫妄是醫學生一定會遇到的臨床對照。',
+    '麻醉：本頁大鼠 12–15 ms 有一部分來自氯醛糖／水合氯醛麻醉標本，麻醉與清醒標本的數字不能混用。',
+    '年齡：P300 潛伏期在兒童期遞減、成年後隨老化遞增；額極是全腦最晚成熟的區域之一。',
+    '睡眠與疲勞：記憶鞏固主要發生在本頁涵蓋不到的時段（NREM 重放）；疲勞會拉長 SSRT、推高反應時間變異度。',
+  ],
+};
+
+/* ---------- 本模型不涵蓋 ---------- */
+const FLOW_OUTOFSCOPE = [
+  '小腦：參與時序、前向模型與運動修正，但不在本圖的主鏈上。',
+  'HPA 軸與體液性慢迴路：本圖的回饋全部是毫秒到秒級的神經回饋。',
+  '語言產出、技能性運動序列、長時程決策、社會互動。',
+];
+
+/* ---------- 畫面上必須寫出來的但書 ---------- */
+const FLOW_CAVEATS = [
+  '零點不只一個：刺激、停止訊號、反應、口語報告各自鎖時。不同零點的數字不能互相比較，也不能落在同一條線上。',
+  '動物數字走獨立的一軌，不落在人類軸上。兩軌對不齊本身就是重點。',
+  '節點亮起代表訊號抵達或出現分化，不代表處理完成，也不代表該區為必要。必要性只能由病灶證據建立，與時間無關。',
+  '人類的深部毫秒資料幾乎全部來自癲癇或帕金森手術病人（n 多為 8 至 35），且為組平均，個體分布重疊嚴重，不可用於個案判讀。',
+  '本圖是實驗室單一試次的前饋簡化。真實歷程並行、有回饋，且整條軸會隨覺醒、麻醉、藥物、睡眠與年齡整體伸縮。',
+  '階段編號是敘事分區，不是時間順序——實測潛伏期與編號順序常常相反。',
+  '「知識查核守衛」是後設認知與驗算的教學比喻，不是腦區，解剖檯上找不到它的標籤。',
 ];
 
 /* ============================================================
@@ -1192,6 +1572,7 @@ function tick() {
     if (Math.abs(dth) < 0.002 && Math.abs(camTarget.dist - cam.dist) < 0.5) camTarget = null;
     applyCamera();
   }
+  if (typeof positionFlowLabels === 'function' && FLOW_OBJ.group) positionFlowLabels();
   renderer.render(scene, camera);
 }
 
@@ -1916,6 +2297,410 @@ function buildHistoSVG() {
 }
 
 /* ============================================================
+   檯位五：運作流程 — 呈現層
+
+   設計上的一個刻意限制：一次只能掃一條時間軌。
+   因為四個零點（刺激／停止訊號／反應／口語報告）不能比較，
+   所以介面上就不給你把它們一起拖的能力。這個限制本身是教學內容。
+
+   節點座標取自真實網格的分區重心，不是示意位置。
+   ============================================================ */
+
+let flowTrack = 'stim';
+let flowT = 0;
+let flowPlaying = false;
+let flowRAF = null;
+let flowLast = 0;
+let flowSpeed = 0.4;
+
+const FLOW_OBJ = { group: null, nodes: {}, edges: [] };
+
+const trackDef = (id) => FLOW_TRACKS.find((t) => t.id === id) || FLOW_TRACKS[0];
+const eventsOf = (id) => FLOW_EVENTS.filter((e) => e.track === id);
+
+/* ---------- 三維圖元 ---------- */
+function buildFlowScene() {
+  if (FLOW_OBJ.group) return;
+  const g = new THREE.Group();
+  FLOW_OBJ.group = g;
+  pivot.add(g);
+  const layer = document.getElementById('flowLabels');
+  layer.innerHTML = '';
+
+  for (const key in FLOW_NODES) {
+    const n = FLOW_NODES[key];
+    const pos = new THREE.Vector3(n.at[0], n.at[1], n.at[2]);
+    const base = col(n.v || '--brass');
+
+    const mesh = new THREE.Mesh(
+      new THREE.SphereGeometry(3.2, 20, 16),
+      new THREE.MeshPhongMaterial({ color: base, shininess: 40 })
+    );
+    mesh.position.copy(pos);
+    g.add(mesh);
+
+    const halo = new THREE.Mesh(
+      new THREE.SphereGeometry(3.2, 20, 16),
+      new THREE.MeshBasicMaterial({ color: base, transparent: true, opacity: 0, depthWrite: false })
+    );
+    halo.position.copy(pos);
+    g.add(halo);
+
+    const el = document.createElement('button');
+    el.className = 'fl-label';
+    el.type = 'button';
+    el.innerHTML = `<span class="fl-zh">${n.zh}</span>`
+      + `<span class="fl-need n-${n.need.level}"></span>`;
+    el.title = n.zh + '　' + n.la;
+    el.addEventListener('click', () => showFlowNodeTag(key));
+    layer.appendChild(el);
+
+    FLOW_OBJ.nodes[key] = { mesh, halo, labelEl: el, pos, base };
+  }
+
+  // 兩個出口的路徑
+  for (const ex of FLOW_EXITS) {
+    for (let i = 0; i < ex.nodes.length - 1; i++) {
+      const a = FLOW_OBJ.nodes[ex.nodes[i]], b = FLOW_OBJ.nodes[ex.nodes[i + 1]];
+      if (!a || !b) continue;
+      const mid = a.pos.clone().add(b.pos).multiplyScalar(0.5);
+      mid.add(mid.clone().normalize().multiplyScalar(a.pos.distanceTo(b.pos) * 0.2));
+      const curve = new THREE.QuadraticBezierCurve3(a.pos, mid, b.pos);
+      const line = new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(curve.getPoints(40)),
+        new THREE.LineBasicMaterial({
+          color: col(ex.id === 'early' ? '--amygdala' : '--lobe-frontal'),
+          transparent: true, opacity: 0.3,
+        })
+      );
+      g.add(line);
+      FLOW_OBJ.edges.push({ exit: ex.id, line });
+    }
+  }
+}
+
+function disposeFlowScene() {
+  if (!FLOW_OBJ.group) return;
+  pivot.remove(FLOW_OBJ.group);
+  const layer = document.getElementById('flowLabels');
+  if (layer) layer.innerHTML = '';
+  FLOW_OBJ.group = null;
+  FLOW_OBJ.nodes = {};
+  FLOW_OBJ.edges = [];
+}
+
+/* ---------- 依時間更新 ---------- */
+const _v = new THREE.Vector3();
+
+function updateFlow() {
+  if (!FLOW_OBJ.group) return;
+  const evs = eventsOf(flowTrack);
+  const act = {};
+  for (const e of evs) {
+    const on = flowT >= e.t0 && flowT <= Math.max(e.t1, e.t0 + 30);
+    const fade = flowT > e.t1 ? Math.max(0, 1 - (flowT - e.t1) / 450) : 0;
+    const lv = on ? 1 : fade;
+    if (lv > 0) act[e.node] = Math.max(act[e.node] || 0, lv);
+  }
+
+  for (const key in FLOW_OBJ.nodes) {
+    const nd = FLOW_OBJ.nodes[key];
+    const a = act[key] || 0;
+    nd.mesh.scale.setScalar(1 + a * 0.9);
+    nd.halo.scale.setScalar(1 + a * 2.8);
+    nd.halo.material.opacity = a * 0.32;
+    nd.mesh.material.color.copy(nd.base).lerp(col('--brass-lit'), a * 0.7);
+    nd.labelEl.classList.toggle('on', a > 0.3);
+  }
+
+  positionFlowLabels();
+
+  const rd = document.getElementById('flowRead');
+  if (rd) rd.textContent = `${Math.round(flowT)} ms`;
+  const cur = document.getElementById('flowCursor');
+  if (cur) cur.style.left = (flowT / trackDef(flowTrack).span * 100).toFixed(2) + '%';
+
+  document.querySelectorAll('#flowLanes .ev').forEach((el) => {
+    const e = evs[+el.dataset.i];
+    if (!e) return;
+    el.classList.toggle('lit', flowT >= e.t0 && flowT <= Math.max(e.t1, e.t0 + 30));
+    el.classList.toggle('past', flowT > e.t1);
+  });
+}
+
+function positionFlowLabels() {
+  if (!FLOW_OBJ.group) return;
+  const r = canvasEl.getBoundingClientRect();
+  const shown = [];
+
+  for (const key in FLOW_OBJ.nodes) {
+    const nd = FLOW_OBJ.nodes[key];
+    _v.copy(nd.pos).applyMatrix4(pivot.matrixWorld).project(camera);
+    const behind = _v.z > 1;
+    const x = (_v.x * 0.5 + 0.5) * r.width;
+    const y = (-_v.y * 0.5 + 0.5) * r.height;
+    nd.labelEl.style.opacity = behind ? 0 : '';
+    nd.labelEl.style.pointerEvents = behind ? 'none' : 'auto';
+    if (behind) {
+      nd.labelEl.style.transform = `translate(-50%,-50%) translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`;
+      continue;
+    }
+    shown.push({ nd, x, y, expanded: nd.labelEl.classList.contains('on') });
+  }
+
+  // 展開的標籤會互相疊死。依 y 排序後把太近的往下推開，並畫一條引線回節點。
+  const wide = shown.filter((s) => s.expanded).sort((a, b) => a.y - b.y);
+  const GAP = 22;
+  for (let i = 1; i < wide.length; i++) {
+    const prev = wide[i - 1], cur = wide[i];
+    if (Math.abs(cur.x - prev.x) < 110 && cur.y - prev.y < GAP) {
+      cur.y = prev.y + GAP;
+    }
+  }
+
+  for (const s of shown) {
+    s.nd.labelEl.style.transform =
+      `translate(-50%,-50%) translate(${s.x.toFixed(1)}px,${s.y.toFixed(1)}px)`;
+  }
+}
+/* ---------- 播放 ---------- */
+function flowTick(now) {
+  if (!flowPlaying) { flowRAF = null; return; }
+  const dt = flowLast ? now - flowLast : 16;
+  flowLast = now;
+  flowT += dt * flowSpeed;
+  const span = trackDef(flowTrack).span;
+  if (flowT >= span) { flowT = span; setFlowPlaying(false); }
+  syncFlowSlider();
+  updateFlow();
+  if (flowPlaying) flowRAF = requestAnimationFrame(flowTick);
+}
+
+function setFlowPlaying(on) {
+  flowPlaying = on;
+  flowLast = 0;
+  const b = document.getElementById('flowPlay');
+  if (b) {
+    b.textContent = on ? '暫停' : (flowT >= trackDef(flowTrack).span ? '重播' : '播放');
+    b.setAttribute('aria-pressed', String(on));
+  }
+  if (on) {
+    if (flowT >= trackDef(flowTrack).span) flowT = 0;
+    if (!flowRAF) flowRAF = requestAnimationFrame(flowTick);
+  }
+}
+
+function setFlowTime(ms, byUser) {
+  flowT = Math.max(0, Math.min(trackDef(flowTrack).span, ms));
+  if (byUser) setFlowPlaying(false);
+  syncFlowSlider();
+  updateFlow();
+}
+
+function syncFlowSlider() {
+  const s = document.getElementById('flowSlider');
+  if (s && Math.abs(+s.value - flowT) > 1) s.value = Math.round(flowT);
+}
+
+function setFlowTrack(id) {
+  setFlowPlaying(false);
+  flowTrack = id;
+  flowT = 0;
+  const t = trackDef(id);
+  const s = document.getElementById('flowSlider');
+  if (s) { s.max = t.span; s.value = 0; }
+  const z = document.getElementById('flowZero');
+  if (z) z.textContent = t.zero;
+  buildFlowLanes();
+  updateFlow();
+  showTrackTag(t);
+  document.querySelectorAll('#trackSeg button').forEach((b) =>
+    b.setAttribute('aria-pressed', String(b.dataset.tr === id)));
+}
+
+/* ---------- 泳道：只畫目前這一軌 ---------- */
+function buildFlowLanes() {
+  const box = document.getElementById('flowLanes');
+  if (!box) return;
+  const t = trackDef(flowTrack);
+  const evs = eventsOf(flowTrack);
+  const rows = evs.map((e, i) => {
+    const left = (e.t0 / t.span * 100).toFixed(2);
+    const w = Math.max(1, (Math.max(e.t1, e.t0 + 20) - e.t0) / t.span * 100).toFixed(2);
+    const st = FLOW_STAGES.find((s) => s.id === e.stage);
+    return `<button class="ev" type="button" data-i="${i}" title="${e.label}　${e.value}">
+      <span class="ev-name">${e.label}</span>
+      <span class="ev-track"><span class="ev-bar c-${e.conf}"
+        style="left:${left}%;width:${w}%;background:var(${st ? st.v : '--brass'})"></span></span>
+      <span class="ev-val mono">${e.value.replace(/（.*/, '')}</span>
+    </button>`;
+  }).join('');
+  box.innerHTML = `<div class="lane-head">
+      <span class="lane-zero">零點：<b id="flowZero">${t.zero}</b></span>
+      <span class="lane-hint">${t.note}</span>
+    </div>${rows}<span id="flowCursor" class="lane-cursor"></span>`;
+
+  box.querySelectorAll('.ev').forEach((el) => {
+    el.addEventListener('click', () => {
+      const e = evs[+el.dataset.i];
+      setFlowTime(e.t0 + (Math.max(e.t1, e.t0 + 20) - e.t0) * 0.5, true);
+      showEventTag(e);
+    });
+  });
+}
+
+/* ---------- 標本籤 ---------- */
+const CONF_ZH = { established: '有共識', contested: '有爭議', extrapolated: '模型外推' };
+const NEED_ZH = { yes: '有病灶證據', partial: '部分', contested: '有爭議', no: '無因果證據' };
+
+function showTrackTag(t) {
+  renderTag({
+    swatch: t.v, kicker: '時間軌',
+    name: t.zh, latin: t.zero,
+    rows: [
+      ['這一軌是什麼', t.note],
+      ['為什麼要分軌', '不同零點的數字不能互相比較。介面上一次只能掃一條軌，就是為了讓這件事躲不掉——把它們畫在同一條線上，會得出「錯誤偵測比杏仁核分化還早」這種荒謬讀法。'],
+      ['事件數', `這一軌有 <em>${eventsOf(t.id).length}</em> 筆。點下方任何一筆看它的證據與限制。`],
+    ],
+  });
+}
+
+function showEventTag(e) {
+  const st = FLOW_STAGES.find((s) => s.id === e.stage);
+  const n = FLOW_NODES[e.node];
+  renderTag({
+    swatch: st ? st.v : '--brass',
+    kicker: `${trackDef(e.track).zh} · ${e.t0}${e.t1 !== e.t0 ? '–' + e.t1 : ''} ms`,
+    name: e.label,
+    latin: n ? n.la : '',
+    rows: [
+      ['數值', `<span class="tm-v mono">${e.value}</span>　<span class="tm-b b-${e.conf}">${CONF_ZH[e.conf]}</span>`],
+      ['證據', e.evidence],
+      ['不能怎麼用', `<em>${e.caveat}</em>`],
+      st ? ['所屬主題', `${st.zh}（敘事分區，不是時間順序）`] : null,
+    ].filter(Boolean),
+    course: st && st.subq ? `對應小問題：<b>${SUBQ[st.subq]}</b>` : null,
+  });
+}
+
+function showFlowNodeTag(key) {
+  const n = FLOW_NODES[key];
+  if (!n) return;
+  const mine = FLOW_EVENTS.filter((e) => e.node === key);
+  renderTag({
+    swatch: n.v, kicker: '流程節點',
+    name: n.zh, latin: n.la,
+    rows: [
+      ['在流程裡的角色', n.role],
+      ['必要性證據', `<span class="tm-b need-${n.need.level}">${NEED_ZH[n.need.level]}</span>`
+        + (n.need.note ? `<div class="tm-w">${n.need.note}</div>` : '')],
+      mine.length ? ['出現在哪幾筆量測', mine.map((e) =>
+        `<em>${e.label}</em>（${trackDef(e.track).zh}）`).join('<br>')] : null,
+    ].filter(Boolean),
+    course: '節點亮起代表訊號抵達或出現分化，<b>不代表該區為必要</b>。必要性只能由病灶證據建立，與時間無關。',
+  });
+}
+
+function showFlowIntro() {
+  renderTag({
+    swatch: '--brass', kicker: '運作流程',
+    name: '一個刺激如何變成一個行動', latin: 'Stimulus to action',
+    rows: [
+      ['怎麼用', '上方選一條時間軌，按播放或拖時間軸。點節點看它的必要性證據，點事件看它的來源與限制。'],
+      ['先講清楚', FLOW_CAVEATS.map((c) => `・${c}`).join('<br>')],
+      ['本模型不涵蓋', FLOW_OUTOFSCOPE.map((c) => `・${c}`).join('<br>')],
+    ],
+  });
+}
+
+function showOffAxis() {
+  renderTag({
+    swatch: '--ink3', kicker: '不上時間軸的量',
+    name: '為什麼這些數字沒有出現在軌上', latin: 'Off-axis quantities',
+    rows: FLOW_OFFAXIS.map((o) => [o.zh,
+      `<span class="tm-v mono">${o.value}</span><div class="tm-w">${o.why}</div>`
+      + (o.detail ? `<div class="tm-e">${o.detail}</div>` : '')]),
+  });
+}
+
+function showStateLayer() {
+  renderTag({
+    swatch: '--brainstem', kicker: '狀態調節層',
+    name: FLOW_STATE.zh, latin: 'State dependence',
+    rows: [['整條軸會整體伸縮', FLOW_STATE.note],
+           ['具體有哪些', FLOW_STATE.items.map((i) => `・${i}`).join('<br>')]],
+  });
+}
+
+function showExitTag(ex) {
+  renderTag({
+    swatch: ex.id === 'early' ? '--amygdala' : '--lobe-frontal',
+    kicker: '輸出路徑', name: ex.zh, latin: ex.la,
+    rows: [['通路', ex.path], ['要講的重點', `<em>${ex.note}</em>`]],
+  });
+}
+
+/* ---------- 進出檯位 ---------- */
+function enterFlow() {
+  clipOn = false;
+  for (const k in MAT) MAT[k].clippingPlanes = [];
+  for (const name in OBJ) OBJ[name].visible = false;
+  for (const n of BY_GROUP.cortex) { OBJ[n].visible = true; OBJ[n].material = MAT.cortexGhost; }
+  MAT.cortexGhost.opacity = 0.075;   // 這一檯要看穿到深部，比剝離檯位更透
+  for (const bare of ['Thalamus-Proper', 'Amygdala', 'Hippocampus', 'Accumbens-area',
+                      'Caudate', 'Putamen', 'Pallidum', 'VentralDC']) {
+    for (const side of ['Left-', 'Right-']) {
+      const k = side + bare;
+      if (OBJ[k]) { OBJ[k].visible = true; OBJ[k].material = deepMat(k); }
+    }
+  }
+  if (OBJ['Brain-Stem']) { OBJ['Brain-Stem'].visible = true; OBJ['Brain-Stem'].material = deepMat('Brain-Stem'); }
+
+  buildFlowScene();
+  document.getElementById('flowLabels').hidden = false;
+  setFlowTrack(flowTrack);
+  $('stagePlane').innerHTML = '一個刺激如何變成一個行動 · <span class="mono">五條各自鎖時的軌</span>';
+
+  const items = FLOW_STAGES.map((s) => ({ k: 's:' + s.id, zh: s.zh, v: s.v }));
+  items.push({ k: 'x:early', zh: '早期防禦輸出', v: '--amygdala' });
+  items.push({ k: 'x:late', zh: '晚期受控輸出', v: '--lobe-frontal' });
+  items.push({ k: 'meta:state', zh: '狀態調節層', v: '--brainstem' });
+  items.push({ k: 'meta:off', zh: '不上時間軸的量', v: '--rule' });
+  items.push({ k: 'meta:intro', zh: '這張圖的邊界', v: '--brass' });
+
+  buildLegend(items, '主題與但書', (k) => {
+    const [kind, id] = k.split(':');
+    if (kind === 's') {
+      const st = FLOW_STAGES.find((s) => s.id === id);
+      renderTag({
+        swatch: st.v, kicker: '主題分區（不是時間順序）',
+        name: st.zh, latin: '',
+        rows: [['這一段在做什麼', st.summary], ['最容易講太滿的地方', `<em>${st.warn}</em>`]],
+        course: st.subq ? `對應小問題：<b>${SUBQ[st.subq]}</b>` : null,
+      });
+      for (const ed of FLOW_OBJ.edges) ed.line.material.opacity = 0.3;
+    } else if (kind === 'x') {
+      const ex = FLOW_EXITS.find((e) => e.id === id);
+      showExitTag(ex);
+      for (const ed of FLOW_OBJ.edges) ed.line.material.opacity = ed.exit === id ? 0.9 : 0.08;
+    } else {
+      if (id === 'state') showStateLayer();
+      else if (id === 'off') showOffAxis();
+      else showFlowIntro();
+    }
+  });
+
+  showFlowIntro();
+}
+
+function leaveFlow() {
+  setFlowPlaying(false);
+  const layer = document.getElementById('flowLabels');
+  if (layer) layer.hidden = true;
+  disposeFlowScene();
+}
+
+/* ============================================================
    檯位切換、控制項、導覽
    ============================================================ */
 
@@ -1924,6 +2709,7 @@ const STATIONS = {
   slice: { title: '切面掃描', hint: '掃過去，看構造什麼時候出現、什麼時候消失。' },
   histo: { title: '皮質組織學', hint: '換皮質類型的時候，盯著第 IV 層。' },
   network: { title: '分區與網絡', hint: '右邊換著色依據。拖曳旋轉，滾輪縮放。' },
+  flow: { title: '運作流程', hint: '按播放，或直接拖時間軸。泳道重疊處就是同時在跑的。' },
 };
 
 let station = 'peel';
@@ -1971,6 +2757,24 @@ const CTL = {
       <span class="step-read mono" id="histoRead">六層都在</span>
     </div>`,
   network: () => viewButtons(),
+  flow: () => `
+    <div class="ctl-row">
+      <span class="ctl-label">時間軌</span>
+      <div class="seg" id="trackSeg">
+        ${FLOW_TRACKS.map((t) => `<button data-tr="${t.id}">${t.zh.replace(/^[^·]+· /, '')}</button>`).join('')}
+      </div>
+      <span class="step-read mono" id="flowZeroTop"></span>
+    </div>
+    <div class="ctl-row">
+      <span class="ctl-label">時間</span>
+      <button class="tool-btn" id="flowPlay" aria-pressed="false">播放</button>
+      <input type="range" id="flowSlider" min="0" max="1500" step="1" value="0" aria-label="時間，毫秒">
+      <span class="step-read mono" id="flowRead">0 ms</span>
+      <div class="seg" id="speedSeg">
+        <button data-s="0.15">慢</button><button data-s="0.4">中</button><button data-s="1">即時</button>
+      </div>
+    </div>
+    <div id="flowLanes"></div>${viewButtons()}`,
 };
 
 function setStation(k) {
@@ -1987,6 +2791,8 @@ function setStation(k) {
   $('gl').style.display = is3D ? 'block' : 'none';
   $('histoWrap').hidden = !is3D ? false : true;
 
+  if (station !== 'flow' && typeof leaveFlow === 'function') leaveFlow();
+
   if (k === 'peel') {
     clipOn = false;
     for (const m in MAT) MAT[m].clippingPlanes = [];
@@ -2001,6 +2807,9 @@ function setStation(k) {
   } else if (k === 'network') {
     enterNetwork();
     flyTo(...VIEWS.left);
+  } else if (k === 'flow') {
+    enterFlow();
+    flyTo(Math.PI * 0.78, Math.PI * 0.46, 385);
   } else {
     clipOn = false;
     buildLegend(Object.keys(CTX_TYPES).map((t) => ({ k: t, zh: CTX_TYPES[t].zh + '　' + CTX_TYPES[t].ba, v: '--grey-matter' })),
@@ -2063,6 +2872,13 @@ function wireControls() {
   });
 
   seg('typeSeg', 't', histoTo, (t) => setCortexType(t));
+
+  const fp = $('flowPlay');
+  if (fp) fp.addEventListener('click', () => setFlowPlaying(!flowPlaying));
+  const fs = $('flowSlider');
+  if (fs) fs.addEventListener('input', () => setFlowTime(+fs.value, true));
+  seg('speedSeg', 's', String(flowSpeed), (v) => { flowSpeed = +v; });
+  seg('trackSeg', 'tr', flowTrack, (id) => setFlowTrack(id));
   seg('viewSeg', 'v', null, (v) => flyTo(...VIEWS[v]));
 }
 
@@ -2138,7 +2954,8 @@ function setTheme(t) {
     const g = OBJ[name].userData.group;
     if (g === 'deep') OBJ[name].material = deepMat(name);
   }
-  if (station === 'peel') applyPeel(peelLevel);
+  if (station === 'flow') { disposeFlowScene(); enterFlow(); }
+  else if (station === 'peel') applyPeel(peelLevel);
   else if (station === 'slice') enterSlice();
   else if (station === 'network') enterNetwork();
   else drawHisto();
@@ -2171,6 +2988,9 @@ function boot() {
     if (tourOn && (e.key === ' ' || e.key === 'Enter')) {
       e.preventDefault(); $('tourNext').click(); return;
     }
+    if (!tourOn && station === 'flow' && e.key === ' ') {
+      e.preventDefault(); setFlowPlaying(!flowPlaying); return;
+    }
     const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
     if (!d) return;
     e.preventDefault();
@@ -2179,6 +2999,8 @@ function boot() {
       const ax = AXES[sliceAxis];
       slicePos = Math.max(ax.lo, Math.min(ax.hi, slicePos + d * 2));
       applySlice();
+    } else if (station === 'flow') {
+      setFlowTime(flowT + d * 50, true);
     } else if (station === 'histo') {
       const ks = Object.keys(CTX_TYPES);
       setCortexType(ks[(ks.indexOf(histoTo) + d + ks.length) % ks.length]);
