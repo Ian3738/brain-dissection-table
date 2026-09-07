@@ -7,3 +7,6 @@ source/brainder/
 source/meshdata/
 *.ply
 *.tar.bz2
+
+# GPT-6 Astra 的回覆先不進版控，看過再決定要不要留
+tools/astra-*.md
