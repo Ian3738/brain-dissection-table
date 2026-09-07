@@ -174,8 +174,29 @@ HISTO_CSS = """
 .ev-bar.c-contested{background-image:repeating-linear-gradient(45deg,transparent,transparent 2px,rgba(0,0,0,.35) 2px,rgba(0,0,0,.35) 4px)}
 .ev-bar.c-extrapolated{opacity:.3!important;border:1px dashed currentColor}
 .ev-val{flex:0 0 120px;text-align:right;font-size:10.5px;color:var(--ink3)}
-.lane-cursor{position:absolute;top:30px;bottom:0;width:1px;background:var(--brass);
+.lane-cursor{position:absolute;top:52px;bottom:26px;width:1px;background:var(--brass);
   margin-left:170px;pointer-events:none;opacity:.85}
+
+/* 時間刻度尺 */
+.lane-ruler{display:flex;align-items:flex-end;gap:10px;padding:0 4px 5px;height:22px}
+.ruler-pad{flex:0 0 156px}
+.ruler-tail{flex:0 0 120px}
+.ruler-track{position:relative;flex:1 1 auto;height:100%}
+.tick{position:absolute;bottom:0;transform:translateX(-50%);text-align:center}
+.tick i{display:block;width:1px;height:5px;background:var(--rule);margin:0 auto 2px}
+.tick b{font-size:10px;color:var(--ink3);font-weight:400;letter-spacing:.02em}
+
+/* 圖例 */
+.lane-key{
+  display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;
+  padding:9px 4px 2px;margin-top:5px;border-top:1px solid var(--rule-soft);
+  font-size:10.5px;color:var(--ink3);
+}
+.lane-key .k{display:inline-flex;align-items:center;gap:5px}
+.lane-key .k i{position:static;display:inline-block;width:14px;height:7px;
+  border-radius:1px;background:var(--ink3);opacity:.8}
+.lane-key .k i.t-need{width:7px;height:7px;border-radius:50%;opacity:1}
+.lane-key .k-sep{flex:0 0 1px;height:11px;background:var(--rule)}
 
 
 /* 時間參數卡 */

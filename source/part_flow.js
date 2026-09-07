@@ -261,10 +261,33 @@ function buildFlowLanes() {
       <span class="ev-val mono">${e.value.replace(/（.*/, '')}</span>
     </button>`;
   }).join('');
+  // 刻度：依跨距挑一個好讀的間距，別讓刻度擠在一起
+  const step = t.span <= 300 ? 50 : t.span <= 700 ? 100 : t.span <= 1600 ? 250 : 500;
+  let ticks = '';
+  for (let v = 0; v <= t.span; v += step) {
+    ticks += `<span class="tick" style="left:${(v / t.span * 100).toFixed(2)}%">`
+      + `<i></i><b class="mono">${v}</b></span>`;
+  }
+
   box.innerHTML = `<div class="lane-head">
       <span class="lane-zero">零點：<b id="flowZero">${t.zero}</b></span>
       <span class="lane-hint">${t.note}</span>
-    </div>${rows}<span id="flowCursor" class="lane-cursor"></span>`;
+    </div>
+    <div class="lane-ruler"><span class="ruler-pad"></span>
+      <span class="ruler-track">${ticks}</span><span class="ruler-tail"></span></div>
+    ${rows}
+    <div class="lane-key">
+      <span class="k"><i class="ev-bar c-established"></i>有共識</span>
+      <span class="k"><i class="ev-bar c-contested"></i>有爭議</span>
+      <span class="k"><i class="ev-bar c-extrapolated"></i>模型外推</span>
+      <span class="k-sep"></span>
+      <span class="k">節點旁的圓點＝必要性證據：</span>
+      <span class="k"><i class="t-need n-yes"></i>有病灶證據</span>
+      <span class="k"><i class="t-need n-partial"></i>部分</span>
+      <span class="k"><i class="t-need n-contested"></i>有爭議</span>
+      <span class="k"><i class="t-need n-no"></i>無因果證據</span>
+    </div>
+    <span id="flowCursor" class="lane-cursor"></span>`;
 
   box.querySelectorAll('.ev').forEach((el) => {
     el.addEventListener('click', () => {
@@ -394,6 +417,14 @@ function enterFlow() {
   }
   if (OBJ['Brain-Stem']) { OBJ['Brain-Stem'].visible = true; OBJ['Brain-Stem'].material = deepMat('Brain-Stem'); }
 
+  if (!FLOW_OBJ.rim) {
+    // 從背後偏上打一道暖光，讓實體半球出現亮邊，不然壓暗之後只剩一團剪影
+    FLOW_OBJ.rim = new THREE.DirectionalLight(0xffdba6, 0.55);
+    FLOW_OBJ.rim.position.set(160, 180, -220);
+    scene.add(FLOW_OBJ.rim);
+  }
+  FLOW_OBJ.rim.visible = true;
+
   buildFlowScene();
   document.getElementById('flowLabels').hidden = false;
   setFlowTrack(flowTrack);
@@ -433,6 +464,7 @@ function enterFlow() {
 
 function leaveFlow() {
   setFlowPlaying(false);
+  if (FLOW_OBJ.rim) FLOW_OBJ.rim.visible = false;
   const layer = document.getElementById('flowLabels');
   if (layer) layer.hidden = true;
   disposeFlowScene();
