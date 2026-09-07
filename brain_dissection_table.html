@@ -2525,7 +2525,9 @@ function positionFlowLabels() {
 /* ---------- 播放 ---------- */
 function flowTick(now) {
   if (!flowPlaying) { flowRAF = null; return; }
-  const dt = flowLast ? now - flowLast : 16;
+  // 分頁切走時瀏覽器會停掉 requestAnimationFrame。切回來時 now - flowLast
+  // 可能是好幾秒，不夾住的話動畫會瞬間跳到結尾——上課切去簡報再切回來就中招。
+  const dt = flowLast ? Math.min(now - flowLast, 50) : 16;
   flowLast = now;
   flowT += dt * flowSpeed;
   const span = trackDef(flowTrack).span;
@@ -2546,6 +2548,12 @@ function setFlowPlaying(on) {
   if (on) {
     if (flowT >= trackDef(flowTrack).span) flowT = 0;
     if (!flowRAF) flowRAF = requestAnimationFrame(flowTick);
+  } else if (flowRAF) {
+    // 一定要歸零。播完時是從 flowTick 內部呼叫進來的，
+    // 若留著已用掉的 frame ID，下次按播放會被 if (!flowRAF) 擋掉，
+    // 結果就是動畫只能播一次。
+    cancelAnimationFrame(flowRAF);
+    flowRAF = null;
   }
 }
 
